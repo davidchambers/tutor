@@ -1,6 +1,6 @@
-{exec} = require 'child_process'
-http   = require 'http'
-url    = require 'url'
+{exec}  = require 'child_process'
+
+request = require 'request'
 
 
 _ = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
@@ -12,34 +12,27 @@ task 'build', 'generate mtg-api.js', ->
 
 option null, '--url [URL]', 'select the URL against which to run the tests'
 
-task 'test', 'run the mtg-api test suite', (options) ->
-  options.url or= 'http://localhost:3000/'
-  options = url.parse options.url.replace /// /?$ ///, '/card/'
-  path = options.path
+task 'test', 'run the mtg-api test suite', ({url}) ->
+  url = (url or 'http://localhost:3000/').replace /// /?$ ///, '/card/'
 
   count = remaining = Object.keys(tests).length
   failures = []
 
   run = (id, expected) ->
-    options.path = path + id
-    http.get options, (res) ->
-      data = ''
-      res.setEncoding 'utf8'
-      res.on 'data', (chunk) -> data += chunk
-      res.on 'end', ->
-        data = JSON.parse data
-        for prop in properties
-          if data[prop] isnt expected[prop]
-            console.log _ """
-              \033[0;31m[fail]\033[0m tests[#{id}].#{prop}:
-              expected (#{expected[prop]}) not (#{data[prop]})"""
-            failures.push id
-            break
-        unless remaining -= 1
-          if failures.length
-            console.log "\n#{count - failures.length}/#{count} tests passed"
-          else
-            console.log "\n\033[0;32m#{count}/#{count} tests passed\033[0m"
+    request url + id, (error, response, body) ->
+      data = JSON.parse body
+      for prop in properties
+        if data[prop] isnt expected[prop]
+          console.log _ """
+            \033[0;31m[fail]\033[0m tests[#{id}].#{prop}:
+            expected (#{expected[prop]}) not (#{data[prop]})"""
+          failures.push id
+          break
+      unless remaining -= 1
+        if failures.length
+          console.log "\n#{count - failures.length}/#{count} tests passed"
+        else
+          console.log "\n\033[0;32m#{count}/#{count} tests passed\033[0m"
 
   run id, test for id, test of tests
 
