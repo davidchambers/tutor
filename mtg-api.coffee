@@ -2,6 +2,7 @@ http    = require 'http'
 
 express = require 'express'
 jsdom   = require 'jsdom'
+request = require 'request'
 
 
 symbols = White: 'W', Blue: 'U', Black: 'B', Red: 'R', Green: 'G', Two: 2
@@ -23,7 +24,7 @@ Object.defineProperty HTMLElement.prototype, 'text', get: ->
   # adjacent words: "[2/R]can be paid with any two mana or with[R]."
   text.replace(/(\w)([[(])/g, '$1 $2').replace(/\](?=[(\w])/g, '] ')
 
-gatherer_url = (id) ->
+to_gatherer_url = (id) ->
   'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=' + id
 
 get =
@@ -86,14 +87,21 @@ get =
 app = express.createServer()
 
 app.get '/card/:id', (req, res) ->
-  url = gatherer_url req.params.id
-  jsdom.env url, ['http://code.jquery.com/jquery-latest.js'], (err, window) ->
-    {jQuery} = window
-    $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
-    data = gatherer_url: url
-    for own key, fn of get
-      result = fn($, data)
-      data[key] = result unless result is undefined
-    res.json data
+  gatherer_url = to_gatherer_url req.params.id
+  request {url: gatherer_url, followRedirect: no}, (error, response, body) ->
+    if error or (status = response.statusCode) isnt 200
+      # Gatherer does a 302 redirect if the requested id does not exist.
+      # In such cases, we respond with the more appropriate status code.
+      res.json {error, status}, if status in [301, 302] then 404 else status
+      return
+
+    jquery_url = 'http://code.jquery.com/jquery-latest.js'
+    jsdom.env body, [jquery_url], (errors, {jQuery}) ->
+      $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
+      data = {gatherer_url}
+      for own key, fn of get
+        result = fn($, data)
+        data[key] = result unless result is undefined
+      res.json data
 
 app.listen 3000
