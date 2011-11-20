@@ -1,8 +1,14 @@
-http = require 'http'
-url  = require 'url'
+{exec} = require 'child_process'
+http   = require 'http'
+url    = require 'url'
 
 
 _ = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
+
+task 'build', 'generate mtg-api.js', ->
+  exec _ """
+    echo "require('http-proxy').createServer(3000, 'localhost').listen(80)"
+    | cat - mtg-api.coffee | coffee --compile --stdio > mtg-api.js"""
 
 option null, '--url [URL]', 'select the URL against which to run the tests'
 
