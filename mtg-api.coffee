@@ -24,9 +24,6 @@ Object.defineProperty HTMLElement.prototype, 'text', get: ->
   # adjacent words: "[2/R]can be paid with any two mana or with[R]."
   text.replace(/(\w)([[(])/g, '$1 $2').replace(/\](?=[(\w])/g, '] ')
 
-to_gatherer_url = (id) ->
-  'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=' + id
-
 get =
 
   name: ($) ->
@@ -47,7 +44,8 @@ get =
 
   text: ($) ->
     return unless (elements = $('Card Text').children().get()).length
-    (el.text for el in elements).join '\n\n'
+    # Ignore empty paragraphs.
+    (el.text for el in elements).filter((paragraph) -> paragraph).join '\n\n'
 
   flavor_text: ($, data) ->
     return unless ($flavor = $('Flavor Text')).length
@@ -86,9 +84,12 @@ get =
 
 app = express.createServer()
 
-app.get '/card/:id', (req, res) ->
-  gatherer_url = to_gatherer_url req.params.id
-  request {url: gatherer_url, followRedirect: no}, (error, response, body) ->
+app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///, (req, res) ->
+  [id, part] = req.params
+  url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid='
+  url += if part then id + '&part=' + part else id
+
+  request {url, followRedirect: no}, (error, response, body) ->
     if error or (status = response.statusCode) isnt 200
       # Gatherer does a 302 redirect if the requested id does not exist.
       # In such cases, we respond with the more appropriate status code.
@@ -98,7 +99,7 @@ app.get '/card/:id', (req, res) ->
     jquery_url = 'http://code.jquery.com/jquery-latest.js'
     jsdom.env body, [jquery_url], (errors, {jQuery}) ->
       $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
-      data = {gatherer_url}
+      data = gatherer_url: url
       for own key, fn of get
         result = fn($, data)
         data[key] = result unless result is undefined

@@ -117,6 +117,22 @@ tests =
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2960'
 
+  '27166/Ice':
+    name: 'Ice'
+    mana_cost: '[1][U]'
+    converted_mana_cost: 2
+    type: 'Instant'
+    text: _ """
+      Tap target permanent.
+      
+      Draw a card."""
+    expansion: 'Apocalypse'
+    rarity: 'Uncommon'
+    number: 128
+    artist: 'Franz Vohwinkel'
+    gatherer_url:
+      'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=27166&part=Ice'
+
   113505:
     name: 'Ancestral Vision'
     converted_mana_cost: 0
