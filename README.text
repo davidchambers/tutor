@@ -1,0 +1,90 @@
+# mtg-api
+
+[Gatherer][1] is the canonical source for _Magic: The Gathering_ card details.
+While useful, it lacks an interface for retrieving this data programmatically.
+The lack of an API makes creating _Magic_-related applications unnecessarily
+difficult.
+
+mtg-api provides an API for Gatherer. It's a lightweight [Express][2] app that
+reads data from Gatherer and returns neatly formatted JSON.
+
+## Starting the app
+
+Running the server locally takes just a few steps:
+
+    $ coffee --compile mtg-api.coffee
+    $ npm install express jsdom request
+    $ node mtg-api.js
+
+This starts a server listening on port 3000 which responds to GET requests to
+`/card/:id` (`:id` represents a Gatherer id). `GET /card/146017`, for example,
+returns Flame Javelin's details:
+
+    $ curl http://localhost:3000/card/146017 --silent | python -mjson.tool
+    {
+        "artist": "Trevor Hairsine", 
+        "converted_mana_cost": 6, 
+        "expansion": "Shadowmoor", 
+        "flavor_text": "Gyara Spearhurler would have been renowned for her deadly accuracy, if it weren't for her deadly accuracy.", 
+        "gatherer_url": "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=146017", 
+        "mana_cost": "[2/R][2/R][2/R]", 
+        "name": "Flame Javelin", 
+        "number": 92, 
+        "rarity": "Uncommon", 
+        "text": "([2/R] can be paid with any two mana or with [R]. This card's converted mana cost is 6.)\n\nFlame Javelin deals 4 damage to target creature or player.", 
+        "type": "Instant"
+    }
+
+![Flame Javelin][3]
+
+The steps for deployment are slightly different:
+
+    $ cake build
+    $ npm install express http-proxy jsdom request
+    $ node mtg-api.js
+
+The extra dependency, `http-proxy`, lets the app accept requests on port 80.
+`cake build` inserts the accompanying code before running `coffee --compile`.
+
+## Attributes
+
+These attributes may be included in a response:
+
+  - `name`
+  - `mana_cost`
+  - `converted_mana_cost`
+  - `type`
+  - `subtype`
+  - `text`
+  - `flavor_text`
+  - `flavor_text_attribution`
+  - `color_indicator`
+  - `power`
+  - `toughness`
+  - `loyalty`
+  - `expansion`
+  - `rarity`
+  - `number`
+  - `artist`
+  - `gatherer_url`
+
+Attributes not applicable to the card type (e.g. lands have no mana cost) or
+not present (e.g. certain creatures have no rules text) are omitted.
+
+## Running the tests
+
+    $ cake test
+    
+    7/7 tests passed
+
+The `--url` option can be used to run the tests against a URL other than
+`http://localhost:3000/`:
+
+    $ cake --url http://api.mtg-apps.com/ test
+    
+    7/7 tests passed
+
+
+[1]: http://gatherer.wizards.com/
+[2]: http://expressjs.com/
+[3]: http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=146017&type=card
