@@ -59,6 +59,7 @@ These attributes may be included in a response:
   - `flavor_text`
   - `flavor_text_attribution`
   - `color_indicator`
+  - `watermark`
   - `power`
   - `toughness`
   - `loyalty`
