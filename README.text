@@ -76,14 +76,14 @@ not present (e.g. certain creatures have no rules text) are omitted.
 
     $ cake test
     
-    8/8 tests passed
+    9/9 tests passed
 
 The `--url` option can be used to run the tests against a URL other than
 `http://localhost:3000/`:
 
     $ cake --url http://api.mtg-apps.com/ test
     
-    8/8 tests passed
+    9/9 tests passed
 
 
 [1]: http://gatherer.wizards.com/
