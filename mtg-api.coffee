@@ -58,6 +58,9 @@ get =
   color_indicator: ($) ->
     el.text if el = $('Color Indicator')[0]
 
+  watermark: ($) ->
+    el.text if el = $('Watermark')[0]
+
   stats: ($, data) ->
     return unless el = $('P/T')[0]
     [match, p, t] = ///^([^/]+?)\s*/\s*([^/]+)$///.exec el.text

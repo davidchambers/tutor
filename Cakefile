@@ -46,6 +46,7 @@ properties = [
   'flavor_text'
   'flavor_text_attribution'
   'color_indicator'
+  'watermark'
   'power'
   'toughness'
   'loyalty'
@@ -219,3 +220,26 @@ tests =
     artist: 'Carl Critchlow'
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=191312'
+
+  214064:
+    name: 'Hero of Bladehold'
+    mana_cost: '[2][W][W]'
+    converted_mana_cost: 4
+    type: 'Creature'
+    subtype: 'Human Knight'
+    text: _ """
+      Battle cry (Whenever this creature attacks, each other attacking
+      creature gets +1/+0 until end of turn.)
+      
+      Whenever Hero of Bladehold attacks, put two 1/1 white Soldier
+      creature tokens onto the battlefield tapped and attacking.
+    """
+    watermark: 'Mirran'
+    power: 3
+    toughness: 4
+    expansion: 'Mirrodin Besieged'
+    rarity: 'Mythic Rare'
+    number: 8
+    artist: 'Austin Hsu'
+    gatherer_url:
+      'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=214064'
