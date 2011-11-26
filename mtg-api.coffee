@@ -101,7 +101,8 @@ gid_specific_attrs =
     el.text if el = $('Artist')[0]
 
 
-handler = ({params}, res) ->
+handler = (req, res) ->
+  {params} = req
   url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx'
   if gid_provided = 'name' not of params
     [id, part] = params
@@ -129,7 +130,12 @@ handler = ({params}, res) ->
       if gid_provided
         attach_attrs gid_specific_attrs, data
         data.gatherer_url = url
-      res.json data
+
+      if callback = req.param 'callback'
+        text = "#{callback}(#{JSON.stringify data})"
+        res.send text, 'Content-Type': 'text/plain'
+      else
+        res.json data
 
 app = express.createServer()
 app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///, handler
