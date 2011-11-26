@@ -81,6 +81,36 @@ tests =
         expansion: 'Unlimited Edition'
         rarity: 'Rare'
 
+  1496:
+    name: 'Recall'
+    mana_cost: '[X][X][U]'
+    converted_mana_cost: 1
+    type: 'Sorcery'
+    text: __ """
+      Discard X cards, then return a card from your graveyard to your
+      hand for each card discarded this way. Exile Recall.
+    """
+    expansion: 'Legends'
+    rarity: 'Rare'
+    artist: 'Brian Snoddy'
+    gatherer_url:
+      'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=1496'
+    versions:
+      1496:
+        expansion: 'Legends'
+        rarity: 'Rare'
+      2812:
+        expansion: 'Chronicles'
+        rarity: 'Uncommon'
+      3936:
+        expansion: 'Fifth Edition'
+        rarity: 'Rare'
+      11467:
+        expansion: 'Classic Sixth Edition'
+        rarity: 'Rare'
+      201161:
+        expansion: 'Masters Edition III'
+        rarity: 'Uncommon'
 
   2960:
     name: 'An-Havva Constable'

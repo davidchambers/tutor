@@ -5,7 +5,9 @@ jsdom   = require 'jsdom'
 request = require 'request'
 
 
-symbols = White: 'W', Blue: 'U', Black: 'B', Red: 'R', Green: 'G', Two: 2
+symbols =
+  White: 'W', Blue: 'U', Black: 'B', Red: 'R', Green: 'G', Two: 2,
+  'Variable Colorless': 'X'
 
 to_symbol = (alt) ->
   match = /^(\S+) or (\S+)$/.exec alt
