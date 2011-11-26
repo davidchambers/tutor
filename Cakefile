@@ -290,35 +290,40 @@ tests =
         expansion: 'Magic 2010'
         rarity: 'Mythic Rare'
 
-  214064:
-    name: 'Hero of Bladehold'
-    mana_cost: '[2][W][W]'
-    converted_mana_cost: 4
-    type: 'Creature'
-    subtype: 'Human Knight'
+  217984:
+    name: 'Vault Skirge'
+    mana_cost: '[1][B/P]'
+    converted_mana_cost: 2
+    type: 'Artifact Creature'
+    subtype: 'Imp'
     text: __ """
-      Battle cry (Whenever this creature attacks, each other attacking
-      creature gets +1/+0 until end of turn.)
+      ([B/P] can be paid with either [B] or 2 life.)
       
-      Whenever Hero of Bladehold attacks, put two 1/1 white Soldier
-      creature tokens onto the battlefield tapped and attacking.
+      Flying
+      
+      Lifelink (Damage dealt by this creature also causes you to gain
+      that much life.)
     """
-    watermark: 'Mirran'
-    power: 3
-    toughness: 4
-    expansion: 'Mirrodin Besieged'
-    rarity: 'Mythic Rare'
-    number: 8
-    artist: 'Austin Hsu'
+    flavor_text: __ """
+      From the remnants of the dead, Geth forged a swarm to safeguard
+      his throne.
+    """
+    watermark: 'Phyrexian'
+    power: 1
+    toughness: 1
+    expansion: 'New Phyrexia'
+    rarity: 'Common'
+    number: 76
+    artist: 'Brad Rigney'
     gatherer_url:
-      'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=214064'
+      'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=217984'
     versions:
-      214064:
-        expansion: 'Mirrodin Besieged'
-        rarity: 'Mythic Rare'
+      217984:
+        expansion: 'New Phyrexia'
+        rarity: 'Common'
 
-  "Æther Storm":
-    name: "Æther Storm"
+  'Æther Storm':
+    name: 'Æther Storm'
     mana_cost: '[3][U]'
     converted_mana_cost: 4
     type: 'Enchantment'

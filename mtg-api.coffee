@@ -6,8 +6,12 @@ request = require 'request'
 
 
 symbols =
-  White: 'W', Blue: 'U', Black: 'B', Red: 'R', Green: 'G', Two: 2,
-  'Variable Colorless': 'X'
+  White: 'W', 'Phyrexian White':  'W/P'
+  Blue:  'U', 'Phyrexian Blue':   'U/P'
+  Black: 'B', 'Phyrexian Black':  'B/P'
+  Red:   'R', 'Phyrexian Red':    'R/P'
+  Green: 'G', 'Phyrexian Green':  'G/P'
+  Two:   '2', 'Variable Colorless': 'X'
 
 to_symbol = (alt) ->
   match = /^(\S+) or (\S+)$/.exec alt
