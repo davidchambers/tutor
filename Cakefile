@@ -1,12 +1,13 @@
 {exec}  = require 'child_process'
 
 request = require 'request'
+{_}     = require 'underscore'
 
 
-_ = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
+__ = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
 
 task 'build', 'generate mtg-api.js', ->
-  exec _ """
+  exec __ """
     echo "require('http-proxy').createServer(3000, 'localhost').listen(80)"
     | cat - mtg-api.coffee | coffee --compile --stdio > mtg-api.js"""
 
@@ -17,45 +18,41 @@ task 'test', 'run the mtg-api test suite', ({url}) ->
 
   count = remaining = Object.keys(tests).length
   failures = []
+  fail = (reason, key, attr) ->
+    failures.push key
+    message = "\033[0;31m[fail]\033[0m tests['#{key}']"
+    message += "['#{attr}']" if attr
+    message += ": #{reason}"
+    console.log message
 
-  run = (id, expected) ->
-    request url + id, (error, response, body) ->
-      data = JSON.parse body
-      for prop in properties
-        if data[prop] isnt expected[prop]
-          console.log _ """
-            \033[0;31m[fail]\033[0m tests[#{id}].#{prop}:
-            expected (#{expected[prop]}) not (#{data[prop]})"""
-          failures.push id
-          break
+  run = (key, expected) ->
+    components = (encodeURIComponent comp for comp in key.split '/')
+    request url + components.join('/'), (error, response, body) ->
+      errors = []
+      d = _.keys data = JSON.parse body
+      e = _.keys expected
+
+      if (e_only = _.difference e, d).length
+        errors.push """expected "#{e_only.join('", "')}" amongst keys"""
+
+      if (d_only = _.difference d, e).length
+        errors.push """didn't expect "#{d_only.join('", "')}" amongst keys"""
+
+      if errors.length
+        fail errors.join('; '), key
+      else
+        for attr, value of data
+          unless _.isEqual value, expected[attr]
+            fail "expected (#{expected[attr]}) not (#{value})", key, attr
+            break
+
       unless remaining -= 1
         if failures.length
           console.log "\n#{count - failures.length}/#{count} tests passed"
         else
           console.log "\n\033[0;32m#{count}/#{count} tests passed\033[0m"
 
-  run id, test for id, test of tests
-
-properties = [
-  'name'
-  'mana_cost'
-  'converted_mana_cost'
-  'type'
-  'subtype'
-  'text'
-  'flavor_text'
-  'flavor_text_attribution'
-  'color_indicator'
-  'watermark'
-  'power'
-  'toughness'
-  'loyalty'
-  'expansion'
-  'rarity'
-  'number'
-  'artist'
-  'gatherer_url'
-]
+  run key, test for key, test of tests
 
 tests =
 
@@ -64,38 +61,26 @@ tests =
     mana_cost: '[0]'
     converted_mana_cost: 0
     type: 'Artifact'
-    text: _ """
+    text: __ """
       [Tap], Sacrifice Black Lotus: Add three mana of any one color to
-      your mana pool."""
+      your mana pool.
+    """
     expansion: 'Limited Edition Alpha'
     rarity: 'Rare'
     artist: 'Christopher Rush'
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=3'
+    versions:
+      3:
+        expansion: 'Limited Edition Alpha'
+        rarity: 'Rare'
+      298:
+        expansion: 'Limited Edition Beta'
+        rarity: 'Rare'
+      600:
+        expansion: 'Unlimited Edition'
+        rarity: 'Rare'
 
-  1783:
-    name: 'Ball Lightning'
-    mana_cost: '[R][R][R]'
-    converted_mana_cost: 3
-    type: 'Creature'
-    subtype: 'Elemental'
-    text: _ """
-      Trample (If this creature would assign enough damage to its
-      blockers to destroy them, you may have it assign the rest of
-      its damage to defending player or planeswalker.)
-      
-      Haste (This creature can attack and [Tap] as soon as it comes
-      under your control.)
-      
-      At the beginning of the end step, sacrifice Ball Lightning.
-      """
-    power: 6
-    toughness: 1
-    expansion: 'The Dark'
-    rarity: 'Rare'
-    artist: 'Quinton Hoover'
-    gatherer_url:
-      'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=1783'
 
   2960:
     name: 'An-Havva Constable'
@@ -103,12 +88,14 @@ tests =
     converted_mana_cost: 3
     type: 'Creature'
     subtype: 'Human'
-    text: _ """
+    text: __ """
       An-Havva Constable's toughness is equal to 1 plus the number of
-      green creatures on the battlefield."""
-    flavor_text: _ """
+      green creatures on the battlefield.
+    """
+    flavor_text: __ """
       Joskun and the other Constables serve with passion, if not with
-      grace."""
+      grace.
+    """
     flavor_text_attribution: 'Devin, Faerie Noble'
     power: 2
     toughness: '1+*'
@@ -117,28 +104,46 @@ tests =
     artist: 'Dan Frazier'
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2960'
+    versions:
+      2960:
+        expansion: 'Homelands'
+        rarity: 'Rare'
+      3960:
+        expansion: 'Fifth Edition'
+        rarity: 'Rare'
 
   '27166/Ice':
     name: 'Ice'
     mana_cost: '[1][U]'
     converted_mana_cost: 2
     type: 'Instant'
-    text: _ """
+    text: __ """
       Tap target permanent.
       
-      Draw a card."""
+      Draw a card.
+    """
     expansion: 'Apocalypse'
     rarity: 'Uncommon'
     number: 128
     artist: 'Franz Vohwinkel'
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=27166&part=Ice'
+    versions:
+      27165:
+        expansion: 'Apocalypse'
+        rarity: 'Uncommon'
+      27166:
+        expansion: 'Apocalypse'
+        rarity: 'Uncommon'
+      247159:
+        expansion: 'Magic: The Gathering-Commander'
+        rarity: 'Uncommon'
 
   113505:
     name: 'Ancestral Vision'
     converted_mana_cost: 0
     type: 'Sorcery'
-    text: _ """
+    text: __ """
       Suspend 4\u2014[U] (Rather than cast this card from your hand,
       pay [U] and exile it with four time counters on it. At the
       beginning of your upkeep, remove a time counter. When the last
@@ -153,6 +158,13 @@ tests =
     artist: 'Mark Poole'
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=113505'
+    versions:
+      113505:
+        expansion: 'Time Spiral'
+        rarity: 'Rare'
+      189244:
+        expansion: 'Duel Decks: Jace vs. Chandra'
+        rarity: 'Rare'
 
   140233:
     name: 'Ajani Goldmane'
@@ -160,7 +172,7 @@ tests =
     converted_mana_cost: 4
     type: 'Planeswalker'
     subtype: 'Ajani'
-    text: _ """
+    text: __ """
       +1: You gain 2 life.
       
       -1: Put a +1/+1 counter on each creature you control. Those
@@ -169,7 +181,7 @@ tests =
       -6: Put a white Avatar creature token onto the battlefield.
       It has "This creature's power and toughness are each equal
       to your life total."
-      """
+    """
     loyalty: 4
     expansion: 'Lorwyn'
     rarity: 'Rare'
@@ -177,26 +189,45 @@ tests =
     artist: 'Aleksi Briclot'
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=140233'
+    versions:
+      140233:
+        expansion: 'Lorwyn'
+        rarity: 'Rare'
+      191239:
+        expansion: 'Magic 2010'
+        rarity: 'Mythic Rare'
+      205957:
+        expansion: 'Magic 2011'
+        rarity: 'Mythic Rare'
 
   146017:
     name: 'Flame Javelin'
     mana_cost: '[2/R][2/R][2/R]'
     converted_mana_cost: 6
     type: 'Instant'
-    text: _ """
+    text: __ """
       ([2/R] can be paid with any two mana or with [R]. This card's
       converted mana cost is 6.)
       
-      Flame Javelin deals 4 damage to target creature or player."""
-    flavor_text: _ """
+      Flame Javelin deals 4 damage to target creature or player.
+    """
+    flavor_text: __ """
       Gyara Spearhurler would have been renowned for her deadly
-      accuracy, if it weren't for her deadly accuracy."""
+      accuracy, if it weren't for her deadly accuracy.
+    """
     expansion: 'Shadowmoor'
     rarity: 'Uncommon'
     number: 92
     artist: 'Trevor Hairsine'
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=146017'
+    versions:
+      146017:
+        expansion: 'Shadowmoor'
+        rarity: 'Uncommon'
+      189220:
+        expansion: 'Duel Decks: Jace vs. Chandra'
+        rarity: 'Uncommon'
 
   191312:
     name: 'Darksteel Colossus'
@@ -204,14 +235,15 @@ tests =
     converted_mana_cost: 11
     type: 'Artifact Creature'
     subtype: 'Golem'
-    text: _ """
+    text: __ """
       Trample
       
       Darksteel Colossus is indestructible.
       
       If Darksteel Colossus would be put into a graveyard from anywhere,
       reveal Darksteel Colossus and shuffle it into its owner's library
-      instead."""
+      instead.
+    """
     power: 11
     toughness: 11
     expansion: 'Magic 2010'
@@ -220,6 +252,13 @@ tests =
     artist: 'Carl Critchlow'
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=191312'
+    versions:
+      48158:
+        expansion: 'Darksteel'
+        rarity: 'Rare'
+      191312:
+        expansion: 'Magic 2010'
+        rarity: 'Mythic Rare'
 
   214064:
     name: 'Hero of Bladehold'
@@ -227,7 +266,7 @@ tests =
     converted_mana_cost: 4
     type: 'Creature'
     subtype: 'Human Knight'
-    text: _ """
+    text: __ """
       Battle cry (Whenever this creature attacks, each other attacking
       creature gets +1/+0 until end of turn.)
       
@@ -243,3 +282,54 @@ tests =
     artist: 'Austin Hsu'
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=214064'
+    versions:
+      214064:
+        expansion: 'Mirrodin Besieged'
+        rarity: 'Mythic Rare'
+
+  "Æther Storm":
+    name: "Æther Storm"
+    mana_cost: '[3][U]'
+    converted_mana_cost: 4
+    type: 'Enchantment'
+    text: __ """
+      Creature spells can't be cast.
+      
+      Pay 4 life: Destroy Æther Storm. It can't be regenerated. Any
+      player may activate this ability.
+    """
+    versions:
+      2935:
+        expansion: 'Homelands'
+        rarity: 'Uncommon'
+      3891:
+        expansion: 'Fifth Edition'
+        rarity: 'Uncommon'
+      184722:
+        expansion: 'Masters Edition II'
+        rarity: 'Uncommon'
+
+  'Phantasmal Sphere':
+    name: 'Phantasmal Sphere'
+    mana_cost: '[1][U]'
+    converted_mana_cost: 2
+    type: 'Creature'
+    subtype: 'Illusion'
+    text: __ """
+      Flying
+      
+      At the beginning of your upkeep, put a +1/+1 counter on Phantasmal
+      Sphere, then sacrifice Phantasmal Sphere unless you pay [1] for
+      each +1/+1 counter on it.
+      
+      When Phantasmal Sphere leaves the battlefield, put a blue Orb
+      creature token with flying onto the battlefield under target
+      opponent's control. That creature's power and toughness are each
+      equal to the number of +1/+1 counters on Phantasmal Sphere.
+    """
+    power: 0
+    toughness: 1
+    versions:
+      3113:
+        expansion: 'Alliances'
+        rarity: 'Rare'

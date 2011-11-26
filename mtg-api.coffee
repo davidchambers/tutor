@@ -24,7 +24,7 @@ Object.defineProperty HTMLElement.prototype, 'text', get: ->
   # adjacent words: "[2/R]can be paid with any two mana or with[R]."
   text.replace(/(\w)([[(])/g, '$1 $2').replace(/\](?=[(\w])/g, '] ')
 
-get =
+common_attrs =
 
   name: ($) ->
     el.text if el = $('Card Name')[0]
@@ -47,14 +47,6 @@ get =
     # Ignore empty paragraphs.
     (el.text for el in elements).filter((paragraph) -> paragraph).join '\n\n'
 
-  flavor_text: ($, data) ->
-    return unless ($flavor = $('Flavor Text')).length
-    $children = $flavor.children()
-    if match = /^\u2014(.+)$/.exec $children.get(-1).text
-      data.flavor_text_attribution = match[1]
-      $children.last().remove()
-    (/^"(.+)"$/.exec(text = $flavor[0].text) or [])[1] or text
-
   color_indicator: ($) ->
     el.text if el = $('Color Indicator')[0]
 
@@ -72,6 +64,30 @@ get =
   loyalty: ($) ->
     +el.text if el = $('Loyalty')[0]
 
+  versions: ($, {expansion, rarity}) ->
+    versions = {}
+
+    {length} = $('All Sets').find('img').each ->
+      [match, expansion, rarity] = /^(.+)\b\s+[(](.+)[)]$/.exec @alt
+      versions[/\d+$/.exec @parentNode.href] = {expansion, rarity}
+
+    if length is 0 and img = $('Expansion').find('img')[0]
+      {expansion, rarity} = gid_specific_attrs
+      if (expansion = expansion $) and (rarity = rarity $)
+        versions[/\d+$/.exec img.parentNode.href] = {expansion, rarity}
+
+    versions
+
+gid_specific_attrs =
+
+  flavor_text: ($, data) ->
+    return unless ($flavor = $('Flavor Text')).length
+    $children = $flavor.children()
+    if match = /^\u2014(.+)$/.exec $children.get(-1).text
+      data.flavor_text_attribution = match[1]
+      $children.last().remove()
+    (/^"(.+)"$/.exec(text = $flavor[0].text) or [])[1] or text
+
   expansion: ($) ->
     el.text if el = $('Expansion').find('a:last-child')[0]
 
@@ -85,12 +101,14 @@ get =
     el.text if el = $('Artist')[0]
 
 
-app = express.createServer()
-
-app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///, (req, res) ->
-  [id, part] = req.params
-  url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid='
-  url += if part then id + '&part=' + part else id
+handler = ({params}, res) ->
+  url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx'
+  if gid_provided = 'name' not of params
+    [id, part] = params
+    url += '?multiverseid=' + id
+    url += '&part=' + encodeURIComponent part if part
+  else
+    url += '?name=' + encodeURIComponent params.name
 
   request {url, followRedirect: no}, (error, response, body) ->
     if error or (status = response.statusCode) isnt 200
@@ -102,10 +120,18 @@ app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///, (req, res) ->
     jquery_url = 'http://code.jquery.com/jquery-latest.js'
     jsdom.env body, [jquery_url], (errors, {jQuery}) ->
       $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
-      data = gatherer_url: url
-      for own key, fn of get
-        result = fn($, data)
-        data[key] = result unless result is undefined
+      attach_attrs = (attrs, data) ->
+        for own key, fn of attrs
+          result = fn($, data)
+          data[key] = result unless result is undefined
+        data
+      data = attach_attrs common_attrs, {}
+      if gid_provided
+        attach_attrs gid_specific_attrs, data
+        data.gatherer_url = url
       res.json data
 
+app = express.createServer()
+app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///, handler
+app.get '/card/:name', handler
 app.listen 3000

@@ -16,9 +16,22 @@ Running the server locally takes just a few steps:
     $ npm install express jsdom request
     $ node mtg-api.js
 
-This starts a server listening on port 3000 which responds to GET requests to
-`/card/:id` (`:id` represents a Gatherer id). `GET /card/146017`, for example,
-returns Flame Javelin's details:
+This starts a server listening on port 3000: [http://localhost:3000/][3].
+
+The steps for deployment are slightly different:
+
+    $ cake build
+    $ npm install express http-proxy jsdom request
+    $ node mtg-api.js
+
+The extra dependency, `http-proxy`, lets the app accept requests on port 80.
+`cake build` inserts the accompanying code before running `coffee --compile`.
+
+## `GET /card/:id`
+
+Returns a JSON representation of the card specified (by Gatherer id) in the
+request path. The response includes version-specific metadata such as flavor
+text and rarity.
 
     $ curl http://localhost:3000/card/146017 --silent | python -mjson.tool
     {
@@ -32,19 +45,55 @@ returns Flame Javelin's details:
         "number": 92, 
         "rarity": "Uncommon", 
         "text": "([2/R] can be paid with any two mana or with [R]. This card's converted mana cost is 6.)\n\nFlame Javelin deals 4 damage to target creature or player.", 
-        "type": "Instant"
+        "type": "Instant", 
+        "versions": {
+            "146017": {
+                "expansion": "Shadowmoor", 
+                "rarity": "Uncommon"
+            }, 
+            "189220": {
+                "expansion": "Duel Decks: Jace vs. Chandra", 
+                "rarity": "Uncommon"
+            }
+        }
     }
 
-![Flame Javelin][3]
+![Flame Javelin][4]
 
-The steps for deployment are slightly different:
+## `GET /card/:id/:part`
 
-    $ cake build
-    $ npm install express http-proxy jsdom request
-    $ node mtg-api.js
+Returns a JSON representation of the specified part of the specified multipart
+card. For example, `GET /card/27166/Ice` returns the Ice half of Fire and Ice.
 
-The extra dependency, `http-proxy`, lets the app accept requests on port 80.
-`cake build` inserts the accompanying code before running `coffee --compile`.
+![Fire and Ice][5]
+
+## `GET /card/:name`
+
+Returns a JSON representation of the specified card. The response does *not*
+include version-specific metadata such as flavor text and rarity.
+
+    $ curl http://localhost:3000/card/%C3%86ther%20Storm --silent | python -mjson.tool
+    {
+        "converted_mana_cost": 4, 
+        "mana_cost": "[3][U]", 
+        "name": "\u00c6ther Storm", 
+        "text": "Creature spells can't be cast.\n\nPay 4 life: Destroy \u00c6ther Storm. It can't be regenerated. Any player may activate this ability.", 
+        "type": "Enchantment", 
+        "versions": {
+            "184722": {
+                "expansion": "Masters Edition II", 
+                "rarity": "Uncommon"
+            }, 
+            "2935": {
+                "expansion": "Homelands", 
+                "rarity": "Uncommon"
+            }, 
+            "3891": {
+                "expansion": "Fifth Edition", 
+                "rarity": "Uncommon"
+            }
+        }
+    }
 
 ## Attributes
 
@@ -68,6 +117,7 @@ These attributes may be included in a response:
   - `number`
   - `artist`
   - `gatherer_url`
+  - `versions`
 
 Attributes not applicable to the card type (e.g. lands have no mana cost) or
 not present (e.g. certain creatures have no rules text) are omitted.
@@ -76,16 +126,18 @@ not present (e.g. certain creatures have no rules text) are omitted.
 
     $ cake test
     
-    9/9 tests passed
+    10/10 tests passed
 
 The `--url` option can be used to run the tests against a URL other than
 `http://localhost:3000/`:
 
     $ cake --url http://api.mtg-apps.com/ test
     
-    9/9 tests passed
+    10/10 tests passed
 
 
 [1]: http://gatherer.wizards.com/
 [2]: http://expressjs.com/
-[3]: http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=146017&type=card
+[3]: http://localhost:3000/
+[4]: http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=146017&type=card
+[5]: http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=27166&type=card&options=rotate90
