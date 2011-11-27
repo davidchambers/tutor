@@ -75,7 +75,7 @@ common_attrs =
     versions = {}
 
     {length} = $('All Sets').find('img').each ->
-      [match, expansion, rarity] = /^(.+)\b\s+[(](.+)[)]$/.exec @alt
+      [match, expansion, rarity] = /^(.*\S)\s+[(](.+)[)]$/.exec @alt
       versions[/\d+$/.exec @parentNode.href] = {expansion, rarity}
 
     if length is 0 and img = $('Expansion').find('img')[0]

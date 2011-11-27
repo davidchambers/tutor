@@ -56,31 +56,6 @@ task 'test', 'run the mtg-api test suite', ({url}) ->
 
 tests =
 
-  3:
-    name: 'Black Lotus'
-    mana_cost: '[0]'
-    converted_mana_cost: 0
-    type: 'Artifact'
-    text: __ """
-      [Tap], Sacrifice Black Lotus: Add three mana of any one color to
-      your mana pool.
-    """
-    expansion: 'Limited Edition Alpha'
-    rarity: 'Rare'
-    artist: 'Christopher Rush'
-    gatherer_url:
-      'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=3'
-    versions:
-      3:
-        expansion: 'Limited Edition Alpha'
-        rarity: 'Rare'
-      298:
-        expansion: 'Limited Edition Beta'
-        rarity: 'Rare'
-      600:
-        expansion: 'Unlimited Edition'
-        rarity: 'Rare'
-
   1496:
     name: 'Recall'
     mana_cost: '[X][X][U]'
@@ -398,3 +373,29 @@ tests =
       3113:
         expansion: 'Alliances'
         rarity: 'Rare'
+
+  'Serrated Arrows':
+    name: 'Serrated Arrows'
+    mana_cost: '[4]'
+    converted_mana_cost: 4
+    type: 'Artifact'
+    text: __ """
+      Serrated Arrows enters the battlefield with three arrowhead
+      counters on it.
+      
+      At the beginning of your upkeep, if there are no arrowhead
+      counters on Serrated Arrows, sacrifice it.
+      
+      [Tap], Remove an arrowhead counter from Serrated Arrows:
+      Put a -1/-1 counter on target creature.
+    """
+    versions:
+      2909:
+        expansion: 'Homelands'
+        rarity: 'Common'
+      109730:
+        expansion: 'Time Spiral "Timeshifted"'
+        rarity: 'Special'
+      202280:
+        expansion: 'Duel Decks: Garruk vs. Liliana'
+        rarity: 'Common'
