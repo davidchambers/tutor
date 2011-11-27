@@ -12,6 +12,7 @@ symbols =
   Red:   'R', 'Phyrexian Red':    'R/P'
   Green: 'G', 'Phyrexian Green':  'G/P'
   Two:   '2', 'Variable Colorless': 'X'
+  Snow:  'S'
 
 to_symbol = (alt) ->
   match = /^(\S+) or (\S+)$/.exec alt
@@ -28,7 +29,7 @@ Object.defineProperty HTMLElement.prototype, 'text', get: ->
       when 3 then text += node.nodeValue.trim()
   # Due to our aggressive trimming, mana symbols can end up touching
   # adjacent words: "[2/R]can be paid with any two mana or with[R]."
-  text.replace(/(\w)([[(])/g, '$1 $2').replace(/\](?=[(\w])/g, '] ')
+  text.replace(/[\w.](?=[[(])/g, '$& ').replace(/\](?=[(\w])/g, '] ')
 
 common_attrs =
 
