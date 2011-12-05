@@ -86,6 +86,20 @@ tests =
       201161:
         expansion: 'Masters Edition III'
         rarity: 'Uncommon'
+    rulings: [
+      ['2009-10-01', __ """
+        You don't discard cards until Recall resolves. If you don't have
+        X cards in your hand at that time, you discard all the cards in
+        your hand.
+      """]
+      ['2009-10-01', __ """
+        You don't choose which cards in your graveyard you'll return to
+        your hand until after you discard cards. You choose a card in
+        your graveyard for each card you discarded, then you put all
+        cards chosen this way into your hand at the same time. You may
+        choose to return some or all of the cards you just discarded.
+      """]
+    ]
 
   2960:
     name: 'An-Havva Constable'
@@ -116,6 +130,7 @@ tests =
       3960:
         expansion: 'Fifth Edition'
         rarity: 'Rare'
+    rulings: []
 
   '27166/Ice':
     name: 'Ice'
@@ -143,6 +158,7 @@ tests =
       247159:
         expansion: 'Magic: The Gathering-Commander'
         rarity: 'Uncommon'
+    rulings: []
 
   113505:
     name: 'Ancestral Vision'
@@ -170,6 +186,18 @@ tests =
       189244:
         expansion: 'Duel Decks: Jace vs. Chandra'
         rarity: 'Rare'
+    rulings: [
+      ['2006-10-15', __ """
+        This has no mana cost, which means it can't normally
+        be cast as a spell. You could, however, cast it via some
+        alternate means, like with Fist of Suns or Mind’s Desire.
+      """]
+      ['2006-10-15', __ """
+        Because it has no mana cost, it can't be cast with the
+        replicate-granting ability of Djinn Illuminatus or by
+        somehow giving it flashback.
+      """]
+    ]
 
   121138:
     name: 'Diamond Faerie'
@@ -200,6 +228,7 @@ tests =
       121138:
         expansion: 'Coldsnap'
         rarity: 'Rare'
+    rulings: []
 
   140233:
     name: 'Ajani Goldmane'
@@ -234,6 +263,17 @@ tests =
       205957:
         expansion: 'Magic 2011'
         rarity: 'Mythic Rare'
+    rulings: [
+      ['2007-10-01', __ """
+        The vigilance granted to a creature by the second ability
+        remains until the end of the turn even if the +1/+1 counter
+        is removed.
+      """]
+      ['2007-10-01', __ """
+        The power and toughness of the Avatar created by the third
+        ability will change as your life total changes.
+      """]
+    ]
 
   146017:
     name: 'Flame Javelin'
@@ -263,6 +303,33 @@ tests =
       189220:
         expansion: 'Duel Decks: Jace vs. Chandra'
         rarity: 'Uncommon'
+    rulings: [
+      ['2008-05-01', __ """
+        If an effect reduces the cost to cast a spell by an
+        amount of generic mana, it applies to a monocolored
+        hybrid spell only if you've chosen a method of paying
+        for it that includes generic mana.
+      """]
+      ['2008-05-01', __ """
+        A card with a monocolored hybrid mana symbol in its mana
+        cost is each of the colors that appears in its mana cost,
+        regardless of what mana was spent to cast it. Thus, Flame
+        Javelin is red even if you spend six green mana to cast it.
+      """]
+      ['2008-05-01', __ """
+        A card with monocolored hybrid mana symbols in its
+        mana cost has a converted mana cost equal to the highest
+        possible cost it could be cast for. Its converted mana
+        cost never changes. Thus, Flame Javelin has a converted
+        mana cost of 6, even if you spend [R][R][R] to cast it.
+      """]
+      ['2008-05-01', __ """
+        If a cost includes more than one monocolored hybrid
+        mana symbol, you can choose a different way to pay for
+        each symbol. For example, you can pay for Flame Javelin
+        by spending [R][R][R], [2][R][R], [4][R], or [6].
+      """]
+    ]
 
   191312:
     name: 'Darksteel Colossus'
@@ -294,6 +361,18 @@ tests =
       191312:
         expansion: 'Magic 2010'
         rarity: 'Mythic Rare'
+    rulings: [
+      ['2009-10-01', __ """
+        Lethal damage, damage from a source with deathtouch, and effects
+        that say "destroy" won't cause an indestructible creature to be
+        put into the graveyard. However, an indestructible creature can
+        be put into the graveyard for a number of reasons. The most
+        likely reasons are if it's sacrificed or if its toughness is 0
+        or less. (In these cases, of course, Darksteel Colossus would
+        be shuffled into its owner's library instead of being put into
+        its owner's graveyard.)
+      """]
+    ]
 
   217984:
     name: 'Vault Skirge'
@@ -326,6 +405,30 @@ tests =
       217984:
         expansion: 'New Phyrexia'
         rarity: 'Common'
+    rulings: [
+      ['2011-06-01', __ """
+        A card with Phyrexian mana symbols in its mana cost is each
+        color that appears in that mana cost, regardless of how that
+        cost may have been paid.
+      """]
+      ['2011-06-01', __ """
+        To calculate the converted mana cost of a card with Phyrexian
+        mana symbols in its cost, count each Phyrexian mana symbol as 1.
+      """]
+      ['2011-06-01', __ """
+        As you cast a spell or activate an activated ability with one
+        or more Phyrexian mana symbols in its cost, you choose how to
+        pay for each Phyrexian mana symbol at the same time you would
+        choose modes or choose a value for X.
+      """]
+      ['2011-06-01', __ """
+        If you're at 1 life or less, you can't pay 2 life.
+      """]
+      ['2011-06-01', __ """
+        Phyrexian mana is not a new color. Players can't add Phyrexian
+        mana to their mana pools.
+      """]
+    ]
 
   'Æther Storm':
     name: 'Æther Storm'
@@ -348,6 +451,17 @@ tests =
       184722:
         expansion: 'Masters Edition II'
         rarity: 'Uncommon'
+    rulings: [
+      ['2004-10-04', __ """
+        This does not stop a creature card from being put directly onto
+        the battlefield by a spell or ability.
+      """]
+      ['2008-08-01', __ """
+        Affects any spell with the type creature, including those with
+        other types such as artifact or enchantment. This includes older
+        cards with "summon" on their type line.
+      """]
+    ]
 
   'Phantasmal Sphere':
     name: 'Phantasmal Sphere'
@@ -373,6 +487,7 @@ tests =
       3113:
         expansion: 'Alliances'
         rarity: 'Rare'
+    rulings: []
 
   'Serrated Arrows':
     name: 'Serrated Arrows'
@@ -399,3 +514,12 @@ tests =
       202280:
         expansion: 'Duel Decks: Garruk vs. Liliana'
         rarity: 'Common'
+    rulings: [
+      ['2008-08-01', __ """
+        The upkeep trigger checks the number of counters at the start
+        of upkeep, and only goes on the stack if there are no arrowhead
+        counters at that time. It will check again on resolution, and
+        will do nothing if you've somehow manage to get a new arrowhead
+        counter on the Arrows.
+      """]
+    ]

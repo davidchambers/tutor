@@ -85,6 +85,17 @@ common_attrs =
 
     versions
 
+  rulings: ($, data, jQuery) ->
+    rulings = []
+    jQuery('.cardDetails').find('tr.post').each ->
+      return unless ($td = jQuery(this).children()).length is 2
+      [match, month, date, year] = /(\d+)\/(\d+)\/(\d+)/.exec $td.get(0).text
+      month = "0#{month}" if month.length is 1
+      date = "0#{date}" if date.length is 1
+      text = $td.get(1).textContent.trim().replace(/[{](.+?)[}]/g, '[$1]')
+      rulings.push ["#{year}-#{month}-#{date}", text]
+    rulings
+
 gid_specific_attrs =
 
   flavor_text: ($, data) ->
@@ -130,7 +141,7 @@ handler = (req, res) ->
       $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
       attach_attrs = (attrs, data) ->
         for own key, fn of attrs
-          result = fn($, data)
+          result = fn($, data, jQuery)
           data[key] = result unless result is undefined
         data
       data = attach_attrs common_attrs, {}
