@@ -45,9 +45,10 @@ common_attrs =
 
   type: ($, data) ->
     return unless el = $('Types')[0]
-    match = /^([^\u2014]+?)(?:\s+\u2014\s+([^\u2014]+))?$/.exec el.text
-    data.subtype = subtype if subtype = match[2]
-    match[1]
+    [match, type, subtype] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec el.text
+    data.type = type if type
+    data.subtype = subtype if subtype
+    return
 
   text: ($) ->
     return unless (elements = $('Card Text').children().get()).length
