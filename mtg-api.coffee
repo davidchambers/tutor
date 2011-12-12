@@ -31,17 +31,42 @@ Object.defineProperty HTMLElement.prototype, 'text', get: ->
   # adjacent words: "[2/R]can be paid with any two mana or with[R]."
   text.replace(/[\w.](?=[[(])/g, '$& ').replace(/\](?=[(\w])/g, '] ')
 
+get_name = (identifier) ->
+  ($) -> $(identifier)[0]?.text
+
+get_mana_cost = (identifier) ->
+  ($) ->
+    images = $(identifier).children().get()
+    ('[' + to_symbol(alt) + ']' for {alt} in images).join('') if images.length
+
+get_converted_mana_cost = (identifier) ->
+  ($) -> +$(identifier)[0]?.text or 0
+
+get_text = (identifier) ->
+  ($) ->
+    return unless (elements = $(identifier).children().get()).length
+    # Ignore empty paragraphs.
+    (el.text for el in elements).filter((paragraph) -> paragraph).join '\n\n'
+
+get_versions = ($el) ->
+  versions = {}
+  $el.find('img').each ->
+    [match, expansion, rarity] = /^(.*\S)\s+[(](.+)[)]$/.exec @alt
+    versions[/\d+$/.exec @parentNode.href] = {expansion, rarity}
+  versions
+
+to_stat = (stat_as_string) ->
+  stat_as_number = +stat_as_string
+  # Use string representation if coercing to a number gives `NaN`.
+  if stat_as_number is stat_as_number then stat_as_number else stat_as_string
+
 common_attrs =
 
-  name: ($) ->
-    $('Card Name')[0]?.text
+  name: get_name 'Card Name'
 
-  mana_cost: ($) ->
-    return unless (images = $('Mana Cost').children().get()).length
-    ('[' + to_symbol(alt) + ']' for {alt} in images).join ''
+  mana_cost: get_mana_cost 'Mana Cost'
 
-  converted_mana_cost: ($) ->
-    +$('Converted Mana Cost')[0]?.text or 0
+  converted_mana_cost: get_converted_mana_cost 'Converted Mana Cost'
 
   type: ($, data) ->
     return unless el = $('Types')[0]
@@ -50,10 +75,7 @@ common_attrs =
     data.subtype = subtype if subtype
     return
 
-  text: ($) ->
-    return unless (elements = $('Card Text').children().get()).length
-    # Ignore empty paragraphs.
-    (el.text for el in elements).filter((paragraph) -> paragraph).join '\n\n'
+  text: get_text 'Card Text'
 
   color_indicator: ($) ->
     $('Color Indicator')[0]?.text
@@ -63,27 +85,22 @@ common_attrs =
 
   stats: ($, data) ->
     return unless el = $('P/T')[0]
-    [match, p, t] = ///^([^/]+?)\s*/\s*([^/]+)$///.exec el.text
-    # Use string representation if coercing to a number gives `NaN`.
-    data.power     = if +p is +p then +p else p
-    data.toughness = if +t is +t then +t else t
+    [match, power, toughness] = ///^([^/]+?)\s*/\s*([^/]+)$///.exec el.text
+    data.power = to_stat power
+    data.toughness = to_stat toughness
     return
 
   loyalty: ($) ->
     +$('Loyalty')[0]?.text
 
   versions: ($, {expansion, rarity}) ->
-    versions = {}
+    versions = get_versions $('All Sets')
+    return versions unless Object.keys(versions).length is 0
 
-    {length} = $('All Sets').find('img').each ->
-      [match, expansion, rarity] = /^(.*\S)\s+[(](.+)[)]$/.exec @alt
-      versions[/\d+$/.exec @parentNode.href] = {expansion, rarity}
-
-    if length is 0 and img = $('Expansion').find('img')[0]
+    if img = $('Expansion').find('img')[0]
       {expansion, rarity} = gid_specific_attrs
       if (expansion = expansion $) and (rarity = rarity $)
         versions[/\d+$/.exec img.parentNode.href] = {expansion, rarity}
-
     versions
 
   rulings: ($, data, jQuery) ->
@@ -119,8 +136,60 @@ gid_specific_attrs =
   artist: ($) ->
     $('Artist')[0]?.text
 
+get_gatherer_id = ($) ->
+  # Abuse the fact that `[123]` can be coerced to `123`.
+  +/\d+$/.exec $('.cardTitle').find('a').attr('href')
 
-handler = (req, res) ->
+list_view_attrs =
+
+  name: get_name '.cardTitle'
+
+  mana_cost: get_mana_cost '.manaCost'
+
+  converted_mana_cost: get_converted_mana_cost '.convertedManaCost'
+
+  type: ($, data) ->
+    return unless el = $('.typeLine')[0]
+    regex = ///^
+      ([^\u2014]+?)             # type
+      (?:\s+\u2014\s+(.+?))?    # subtype
+      (?:\s+[(](?:              # "("
+        ([^/]+?)\s*/\s*([^/]+)  # power and toughness
+        |                       # or...
+        (\d+)                   # loyalty
+      )[)])?                    # ")"
+    $///
+    [match, type, subtype, power, toughness, loyalty] = regex.exec el.text
+    data.type = type
+    data.subtype = subtype
+    data.power = to_stat power
+    data.toughness = to_stat toughness
+    data.loyalty = +loyalty
+    return
+
+  text: get_text '.rulesText'
+
+  expansion: ($) -> list_view_attrs.versions($)[get_gatherer_id($)].expansion
+
+  rarity: ($) -> list_view_attrs.versions($)[get_gatherer_id($)].rarity
+
+  gatherer_url: ($) ->
+    id = get_gatherer_id($)
+    'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=' + id
+
+  versions: ($) -> get_versions $('.setVersions')
+
+
+jquery_url = 'http://code.jquery.com/jquery-latest.js'
+
+respond = (req, res, data) ->
+  if callback = req.param 'callback'
+    text = "#{callback}(#{JSON.stringify data})"
+    res.send text, 'Content-Type': 'text/plain'
+  else
+    res.json data
+
+card_handler = (req, res) ->
   {params} = req
   url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx'
   if gid_provided = 'name' not of params
@@ -137,7 +206,6 @@ handler = (req, res) ->
       res.json {error, status}, if status in [301, 302] then 404 else status
       return
 
-    jquery_url = 'http://code.jquery.com/jquery-latest.js'
     jsdom.env body, [jquery_url], (errors, {jQuery}) ->
       $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
       attach_attrs = (attrs, data) ->
@@ -153,13 +221,47 @@ handler = (req, res) ->
       for own key, value of data
         delete data[key] if value is undefined or value isnt value # NaN
 
-      if callback = req.param 'callback'
-        text = "#{callback}(#{JSON.stringify data})"
-        res.send text, 'Content-Type': 'text/plain'
-      else
-        res.json data
+      respond req, res, data
+
+set_handler = (req, res) ->
+  {params} = req
+  page = if params.page? then +params.page else 1
+  url  = 'http://gatherer.wizards.com/Pages/Search/Default.aspx'
+  url += "?set=[%22#{encodeURIComponent params.name}%22]&page=#{page - 1}"
+
+  request {url}, (error, response, body) ->
+    jsdom.env body, [jquery_url], (errors, {jQuery}) ->
+      $ = (el) -> (selector) -> jQuery(el).find(selector)
+
+      pages = do ->
+        for {text} in jQuery('.paging').find('a').get().reverse()
+          return number if (number = +text) > 0
+        1
+
+      # Gatherer returns the last page of results for a specified page
+      # parameter beyond the upper bound. This is undesirable behaviour;
+      # 404 is the appropriate response in such cases.
+      # 
+      # Requests for nonexistent sets receive 404 responses, also.
+      valid_page = 1 <= page <= pages
+      if not valid_page or /[(]0[)]$/.test jQuery('.contentTitle')[0].text
+        res.json {error: 'Not Found', status: 404}, 404
+        return
+
+      cards = []
+      jQuery('.cardItem').each ->
+        card = {}
+        for own key, fn of list_view_attrs
+          result = fn $(this), card
+          card[key] = result unless result is undefined
+        for own key, value of card
+          delete card[key] if value is undefined or value isnt value # NaN
+        cards.push card
+
+      respond req, res, {page, pages, cards}
 
 app = express.createServer()
-app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///, handler
-app.get '/card/:name', handler
+app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///, card_handler
+app.get '/card/:name', card_handler
+app.get '/set/:name/:page?', set_handler
 app.listen 3000

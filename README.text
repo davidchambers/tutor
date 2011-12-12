@@ -151,18 +151,44 @@ These attributes may be included in a response:
 Attributes not applicable to the card type (e.g. lands have no mana cost) or
 not present (e.g. certain creatures have no rules text) are omitted.
 
+## `GET /set/:name/:page?`
+
+Returns a page of cards (up to 25) from the specified set. The first page of
+results is returned if `page` is omitted. Responses contain `page`, `pages`,
+and `cards`. For example:
+
+    page: 1
+    pages: 5
+    cards: [...]
+
+Each card in `cards` contains all applicable attributes among the following:
+
+  - `name`
+  - `mana_cost`
+  - `converted_mana_cost`
+  - `type`
+  - `subtype`
+  - `text`
+  - `power`
+  - `toughness`
+  - `loyalty`
+  - `expansion`
+  - `rarity`
+  - `gatherer_url`
+  - `versions`
+
 ## Running the tests
 
     $ cake test
     
-    12/12 tests passed
+    16/16 tests passed
 
 The `--url` option can be used to run the tests against a URL other than
 `http://localhost:3000/`:
 
     $ cake --url http://api.mtg-apps.com/ test
     
-    12/12 tests passed
+    16/16 tests passed
 
 ## Contributing
 
