@@ -34,14 +34,14 @@ Object.defineProperty HTMLElement.prototype, 'text', get: ->
 common_attrs =
 
   name: ($) ->
-    el.text if el = $('Card Name')[0]
+    $('Card Name')[0]?.text
 
   mana_cost: ($) ->
     return unless (images = $('Mana Cost').children().get()).length
     ('[' + to_symbol(alt) + ']' for {alt} in images).join ''
 
   converted_mana_cost: ($) ->
-    if el = $('Converted Mana Cost')[0] then +el.text else 0
+    +$('Converted Mana Cost')[0]?.text or 0
 
   type: ($, data) ->
     return unless el = $('Types')[0]
@@ -56,10 +56,10 @@ common_attrs =
     (el.text for el in elements).filter((paragraph) -> paragraph).join '\n\n'
 
   color_indicator: ($) ->
-    el.text if el = $('Color Indicator')[0]
+    $('Color Indicator')[0]?.text
 
   watermark: ($) ->
-    el.text if el = $('Watermark')[0]
+    $('Watermark')[0]?.text
 
   stats: ($, data) ->
     return unless el = $('P/T')[0]
@@ -70,7 +70,7 @@ common_attrs =
     return
 
   loyalty: ($) ->
-    +el.text if el = $('Loyalty')[0]
+    +$('Loyalty')[0]?.text
 
   versions: ($, {expansion, rarity}) ->
     versions = {}
@@ -108,16 +108,16 @@ gid_specific_attrs =
     (/^"(.+)"$/.exec(text = $flavor[0].text) or [])[1] or text
 
   expansion: ($) ->
-    el.text if el = $('Expansion').find('a:last-child')[0]
+    $('Expansion').find('a:last-child')[0]?.text
 
   rarity: ($) ->
-    el.text if el = $('Rarity')[0]
+    $('Rarity')[0]?.text
 
   number: ($) ->
-    +el.text if el = $('Card #')[0]
+    +$('Card #')[0]?.text
 
   artist: ($) ->
-    el.text if el = $('Artist')[0]
+    $('Artist')[0]?.text
 
 
 handler = (req, res) ->
@@ -149,6 +149,9 @@ handler = (req, res) ->
       if gid_provided
         attach_attrs gid_specific_attrs, data
         data.gatherer_url = url
+
+      for own key, value of data
+        delete data[key] if value is undefined or value isnt value # NaN
 
       if callback = req.param 'callback'
         text = "#{callback}(#{JSON.stringify data})"
