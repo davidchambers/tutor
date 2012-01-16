@@ -430,6 +430,51 @@ tests =
       """]
     ]
 
+  '/card/220371':
+    name: 'Ghost Quarter'
+    converted_mana_cost: 0
+    type: 'Land'
+    text: __ """
+      [Tap]: Add [1] to your mana pool.
+      
+      [Tap], Sacrifice Ghost Quarter: Destroy target land. Its
+      controller may search his or her library for a basic land card,
+      put it onto the battlefield, then shuffle his or her library.
+    """
+    flavor_text: 'Deserted, but not uninhabited.'
+    expansion: 'Innistrad'
+    rarity: 'Uncommon'
+    number: 240
+    artist: 'Peter Mohrbacher'
+    gatherer_url:
+      'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=220371'
+    versions:
+      107504:
+        expansion: 'Dissension'
+        rarity: 'Uncommon'
+      220371:
+        expansion: 'Innistrad'
+        rarity: 'Uncommon'
+    rulings: [
+      ['2006-05-01', __ """
+        The target land's controller gets to search for a basic land
+        card even if that land wasn't destroyed by Ghost Quarter's
+        ability. This may happen because the land is indestructible
+        or because it was regenerated.
+      """]
+      ['2006-05-01', __ """
+        If you target Ghost Quarter with its own ability, the ability
+        will be countered because its target is no longer on the
+        battlefield. You won't get to search for a land card.
+      """]
+      ['2011-09-22', __ """
+        If the targeted land is an illegal target by the time Ghost
+        Quarter's ability resolves, it will be countered and none of
+        its effects will happen. The land's controller won't get to
+        search for a basic land card.
+      """]
+    ]
+
   '/card/Æther Storm':
     name: 'Æther Storm'
     mana_cost: '[3][U]'

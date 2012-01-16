@@ -181,14 +181,14 @@ Each card in `cards` contains all applicable attributes among the following:
 
     $ cake test
     
-    16/16 tests passed
+    17/17 tests passed
 
 The `--url` option can be used to run the tests against a URL other than
 `http://localhost:3000/`:
 
     $ cake --url http://api.mtg-apps.com/ test
     
-    16/16 tests passed
+    17/17 tests passed
 
 ## Contributing
 

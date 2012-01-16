@@ -111,7 +111,7 @@ common_attrs =
       month = "0#{month}" if month.length is 1
       date = "0#{date}" if date.length is 1
       text = $td.get(1).textContent.trim().replace(/[{](.+?)[}]/g, '[$1]')
-      rulings.push ["#{year}-#{month}-#{date}", text]
+      rulings.push ["#{year}-#{month}-#{date}", text.replace(/[ ]{2,}/g, ' ')]
     rulings
 
 gid_specific_attrs =
