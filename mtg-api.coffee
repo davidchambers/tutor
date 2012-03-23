@@ -264,4 +264,4 @@ app = express.createServer()
 app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///, card_handler
 app.get '/card/:name', card_handler
 app.get '/set/:name/:page?', set_handler
-app.listen 3000
+app.listen process.env.PORT, -> console.log("Listening on " + process.env.PORT)
