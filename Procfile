@@ -1,1 +1,1 @@
-web: coffee mtg-api.coffee
+web: coffee server.coffee
