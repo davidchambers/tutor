@@ -12,7 +12,6 @@ reads data from Gatherer and returns neatly formatted JSON.
 
 Running the server locally takes just a few steps:
 
-    :::console
     $ npm install express jsdom request underscore
     $ coffee --compile mtg-api.coffee
     $ node mtg-api.js
@@ -21,7 +20,6 @@ This starts a server listening on port 3000: [http://localhost:3000/][3].
 
 The steps for deployment are slightly different:
 
-    :::console
     $ npm install express http-proxy jsdom request underscore
     $ cake build
     $ node mtg-api.js
@@ -35,7 +33,6 @@ Returns a JSON representation of the card specified (by Gatherer id) in the
 request path. The response includes version-specific metadata such as flavor
 text and rarity.
 
-    :::console
     $ curl http://localhost:3000/card/146017 --silent | python -mjson.tool
     {
         "artist": "Trevor Hairsine", 
@@ -93,7 +90,6 @@ card. For example, `GET /card/27166/Ice` returns the Ice half of Fire and Ice.
 Returns a JSON representation of the specified card. The response does *not*
 include version-specific metadata such as flavor text and rarity.
 
-    :::console
     $ curl http://localhost:3000/card/%C3%86ther%20Storm --silent | python -mjson.tool
     {
         "converted_mana_cost": 4, 
@@ -183,7 +179,6 @@ Each card in `cards` contains all applicable attributes among the following:
 
 ## Running the tests
 
-    :::console
     $ cake test
     
     17/17 tests passed
@@ -191,7 +186,6 @@ Each card in `cards` contains all applicable attributes among the following:
 The `--url` option can be used to run the tests against a URL other than
 `http://localhost:3000/`:
 
-    :::console
     $ cake --url http://api.mtg-apps.com/ test
     
     17/17 tests passed
