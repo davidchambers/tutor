@@ -224,3 +224,16 @@ exports.set = (body, options, callback) ->
       cards.push card
     callback null, {page: options.page, pages, cards}
   return
+
+collect_options = (selector_id) ->
+  (body, callback) ->
+    jsdom.env body, [jquery_url], (errors, {jQuery}) ->
+      set_elements = jQuery "##{selector_id} > option"
+      callback null, (set.value for set in set_elements when set.value isnt "")
+    return
+
+exports.sets = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_setAddText'
+
+exports.formats = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_formatAddText'
+
+exports.types = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_typeAddText'
