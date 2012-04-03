@@ -1,9 +1,4 @@
-http    = require 'http'
-
-express = require 'express'
 jsdom   = require 'jsdom'
-request = require 'request'
-
 
 symbols =
   White: 'W', 'Phyrexian White':  'W/P'
@@ -179,89 +174,53 @@ list_view_attrs =
 
   versions: ($) -> get_versions $('.setVersions')
 
-
 jquery_url = 'http://code.jquery.com/jquery-latest.js'
 
-respond = (req, res, data) ->
-  if callback = req.param 'callback'
-    text = "#{callback}(#{JSON.stringify data})"
-    res.send text, 'Content-Type': 'text/plain'
-  else
-    res.json data
+exports.card = (body, options, callback) ->
+  jsdom.env body, [jquery_url], (errors, {jQuery}) ->
+    $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
+    attach_attrs = (attrs, data) ->
+      for own key, fn of attrs
+        result = fn($, data, jQuery)
+        data[key] = result unless result is undefined
+      data
+    data = attach_attrs common_attrs, {}
+    if options.gid_attributes
+      data = attach_attrs gid_specific_attrs, data
+      data.gatherer_url = options.url if options.url?
 
-card_handler = (req, res) ->
-  {params} = req
-  url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx'
-  if gid_provided = 'name' not of params
-    [id, part] = params
-    url += '?multiverseid=' + id
-    url += '&part=' + encodeURIComponent part if part
-  else
-    url += '?name=' + encodeURIComponent params.name
+    for own key, value of data
+      delete data[key] if value is undefined or value isnt value # NaN
 
-  request {url, followRedirect: no}, (error, response, body) ->
-    if error or (status = response.statusCode) isnt 200
-      # Gatherer does a 302 redirect if the requested id does not exist.
-      # In such cases, we respond with the more appropriate status code.
-      res.json {error, status}, if status in [301, 302] then 404 else status
+    callback null, data
+  return
+
+exports.set = (body, options, callback) ->
+  jsdom.env body, [jquery_url], (errors, {jQuery}) ->
+    $ = (el) -> (selector) -> jQuery(el).find(selector)
+    pages = do ->
+      for {text} in jQuery('.paging').find('a').get().reverse()
+        return number if (number = +text) > 0
+      1
+
+    # Gatherer returns the last page of results for a specified page
+    # parameter beyond the upper bound. This is undesirable behaviour;
+    # 404 is the appropriate response in such cases.
+    #
+    # Requests for nonexistent sets receive 404 responses, also.
+    valid_page = 1 <= options.page <= pages
+    if not valid_page or /[(]0[)]$/.test jQuery('.contentTitle')[0].text
+      callback 'Not Found', {error: 'Not Found', status: 404}
       return
 
-    jsdom.env body, [jquery_url], (errors, {jQuery}) ->
-      $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
-      attach_attrs = (attrs, data) ->
-        for own key, fn of attrs
-          result = fn($, data, jQuery)
-          data[key] = result unless result is undefined
-        data
-      data = attach_attrs common_attrs, {}
-      if gid_provided
-        attach_attrs gid_specific_attrs, data
-        data.gatherer_url = url
-
-      for own key, value of data
-        delete data[key] if value is undefined or value isnt value # NaN
-
-      respond req, res, data
-
-set_handler = (req, res) ->
-  {params} = req
-  page = if params.page? then +params.page else 1
-  url  = 'http://gatherer.wizards.com/Pages/Search/Default.aspx'
-  url += "?set=[%22#{encodeURIComponent params.name}%22]&page=#{page - 1}"
-
-  request {url}, (error, response, body) ->
-    jsdom.env body, [jquery_url], (errors, {jQuery}) ->
-      $ = (el) -> (selector) -> jQuery(el).find(selector)
-
-      pages = do ->
-        for {text} in jQuery('.paging').find('a').get().reverse()
-          return number if (number = +text) > 0
-        1
-
-      # Gatherer returns the last page of results for a specified page
-      # parameter beyond the upper bound. This is undesirable behaviour;
-      # 404 is the appropriate response in such cases.
-      # 
-      # Requests for nonexistent sets receive 404 responses, also.
-      valid_page = 1 <= page <= pages
-      if not valid_page or /[(]0[)]$/.test jQuery('.contentTitle')[0].text
-        res.json {error: 'Not Found', status: 404}, 404
-        return
-
-      cards = []
-      jQuery('.cardItem').each ->
-        card = {}
-        for own key, fn of list_view_attrs
-          result = fn $(this), card
-          card[key] = result unless result is undefined
-        for own key, value of card
-          delete card[key] if value is undefined or value isnt value # NaN
-        cards.push card
-
-      respond req, res, {page, pages, cards}
-
-app = express.createServer()
-app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///, card_handler
-app.get '/card/:name', card_handler
-app.get '/set/:name/:page?', set_handler
-app.listen 3000
+    cards = []
+    jQuery('.cardItem').each ->
+      card = {}
+      for own key, fn of list_view_attrs
+        result = fn $(this), card
+        card[key] = result unless result is undefined
+      for own key, value of card
+        delete card[key] if value is undefined or value isnt value # NaN
+      cards.push card
+    callback null, {page: options.page, pages, cards}
+  return

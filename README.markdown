@@ -10,22 +10,14 @@ reads data from Gatherer and returns neatly formatted JSON.
 
 ## Starting the app
 
-Running the server locally takes just a few steps:
+To run the server:
 
-    $ npm install express jsdom request underscore
-    $ coffee --compile mtg-api.coffee
-    $ node mtg-api.js
+    :::console
+    $ npm install
+    $ coffee server.coffee
 
-This starts a server listening on port 3000: [http://localhost:3000/][3].
-
-The steps for deployment are slightly different:
-
-    $ npm install express http-proxy jsdom request underscore
-    $ cake build
-    $ node mtg-api.js
-
-The extra dependency, `http-proxy`, lets the app accept requests on port 80.
-`cake build` inserts the accompanying code before running `coffee --compile`.
+This starts a server listening on the port set as the environment variable PORT,
+or on port 3000 if PORT is undefined.
 
 ## `GET /card/:id`
 
@@ -179,16 +171,8 @@ Each card in `cards` contains all applicable attributes among the following:
 
 ## Running the tests
 
-    $ cake test
-    
-    17/17 tests passed
-
-The `--url` option can be used to run the tests against a URL other than
-`http://localhost:3000/`:
-
-    $ cake --url http://api.mtg-apps.com/ test
-    
-    17/17 tests passed
+    :::console
+    $ npm test
 
 ## Contributing
 
