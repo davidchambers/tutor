@@ -20,6 +20,7 @@ set_handler = (req, res) ->
   api.fetch_set req.params, build_responder req, res
 
 app = express.createServer()
+app.get '/card/random', (req, res) -> api.random_card build_responder req, res
 app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///, card_handler
 app.get '/card/:name', card_handler
 app.get '/set/:name/:page?', set_handler

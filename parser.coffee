@@ -131,6 +131,9 @@ gid_specific_attrs =
   artist: ($) ->
     $('Artist')[0]?.text
 
+  gatherer_url: ($, data, jQuery) ->
+    jQuery('#aspnetForm')[0].action
+
 get_gatherer_id = ($) ->
   # Abuse the fact that `[123]` can be coerced to `123`.
   +/\d+$/.exec $('.cardTitle').find('a').attr('href')
