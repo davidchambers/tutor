@@ -34,3 +34,15 @@ exports.fetch_set = (params, callback) ->
   request {url}, (error, response, body) ->
     parser.set body, {page}, callback
   return
+
+index = (parse_function) ->
+  (callback) ->
+    request {url: gatherer_url}, (error, response, body) ->
+      parse_function body, callback
+    return
+
+exports.sets = index parser.sets
+
+exports.formats = index parser.formats
+
+exports.types = index parser.types

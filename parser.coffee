@@ -229,3 +229,18 @@ exports.set = (body, options, callback) ->
     process.nextTick ->
       callback error, data
   return
+
+collect_options = (selector_id) ->
+  (body, callback) ->
+    jsdom.env body, [jquery_url], (errors, {jQuery}) ->
+      set_elements = jQuery "##{selector_id} > option"
+      [error, data] = [null, (set.value for set in set_elements when set.value isnt "")]
+      process.nextTick ->
+        callback error, data
+    return
+
+exports.sets = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_setAddText'
+
+exports.formats = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_formatAddText'
+
+exports.types = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_typeAddText'
