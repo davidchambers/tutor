@@ -34,3 +34,8 @@ exports.fetch_set = (params, callback) ->
   request {url}, (error, response, body) ->
     parser.set body, {page}, callback
   return
+
+exports.random_card = (callback) ->
+  url = gatherer_url + 'Card/Details.aspx?action=random'
+  request {url}, (error, response, body) ->
+    parser.card body, {gid_attributes: true}, callback

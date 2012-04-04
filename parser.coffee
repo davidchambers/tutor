@@ -134,6 +134,9 @@ gid_specific_attrs =
   artist: ($) ->
     $('Artist')[0]?.text
 
+  gatherer_url: ($, data, jQuery) ->
+    jQuery('#aspnetForm')[0].action
+
 get_gatherer_id = ($) ->
   match = /multiverseid=(\d+)/.exec $('.cardTitle').find('a').attr('href')
   +match[1]
