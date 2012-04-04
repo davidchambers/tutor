@@ -191,8 +191,8 @@ exports.card = (body, options, callback) ->
 
     for own key, value of data
       delete data[key] if value is undefined or value isnt value # NaN
-
-    callback null, data
+    process.nextTick ->
+      callback null, data
   return
 
 exports.set = (body, options, callback) ->
@@ -210,17 +210,19 @@ exports.set = (body, options, callback) ->
     # Requests for nonexistent sets receive 404 responses, also.
     valid_page = 1 <= options.page <= pages
     if not valid_page or /[(]0[)]$/.test jQuery('.contentTitle')[0].text
-      callback 'Not Found', {error: 'Not Found', status: 404}
-      return
-
-    cards = []
-    jQuery('.cardItem').each ->
-      card = {}
-      for own key, fn of list_view_attrs
-        result = fn $(this), card
-        card[key] = result unless result is undefined
-      for own key, value of card
-        delete card[key] if value is undefined or value isnt value # NaN
-      cards.push card
-    callback null, {page: options.page, pages, cards}
+      error = 'Not Found'
+      data = {error, status: 404}
+    else
+      cards = []
+      jQuery('.cardItem').each ->
+        card = {}
+        for own key, fn of list_view_attrs
+          result = fn $(this), card
+          card[key] = result unless result is undefined
+        for own key, value of card
+          delete card[key] if value is undefined or value isnt value # NaN
+        cards.push card
+      [error, data] = [null, {page: options.page, pages, cards}]
+    process.nextTick ->
+      callback error, data
   return
