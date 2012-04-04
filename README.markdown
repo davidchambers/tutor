@@ -12,7 +12,6 @@ reads data from Gatherer and returns neatly formatted JSON.
 
 To run the server:
 
-    :::console
     $ npm install
     $ coffee server.coffee
 
@@ -171,7 +170,6 @@ Each card in `cards` contains all applicable attributes among the following:
 
 ## Running the tests
 
-    :::console
     $ npm test
 
 ## Contributing
