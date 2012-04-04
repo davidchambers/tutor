@@ -1,4 +1,4 @@
-jsdom   = require 'jsdom'
+jsdom = require 'jsdom'
 
 symbols =
   White: 'W', 'Phyrexian White':  'W/P'
@@ -132,8 +132,8 @@ gid_specific_attrs =
     $('Artist')[0]?.text
 
 get_gatherer_id = ($) ->
-  # Abuse the fact that `[123]` can be coerced to `123`.
-  +/\d+$/.exec $('.cardTitle').find('a').attr('href')
+  match = /multiverseid=(\d+)/.exec $('.cardTitle').find('a').attr('href')
+  +match[1]
 
 list_view_attrs =
 
