@@ -27,7 +27,10 @@ Object.defineProperty HTMLElement.prototype, 'text', get: ->
   text.replace(/[\w.](?=[[(])/g, '$& ').replace(/\](?=[(\w])/g, '] ')
 
 get_name = (identifier) ->
-  ($) -> $(identifier)[0]?.text
+  ($) ->
+    name = $(identifier)[0]?.text
+    # Extract, for example, "Altar's Reap" from "Altar’s Reap (Altar's Reap)".
+    if (match = /^(.+)’(.+) [(](\1'\2)[)]$/.exec name) then match[3] else name
 
 get_mana_cost = (identifier) ->
   ($) ->
