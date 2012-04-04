@@ -1,11 +1,11 @@
-# mtg-api
+# Tutor
 
 [Gatherer][1] is the canonical source for _Magic: The Gathering_ card details.
 While useful, it lacks an interface for retrieving this data programmatically.
 The lack of an API makes creating _Magic_-related applications unnecessarily
 difficult.
 
-mtg-api provides an API for Gatherer. It's a lightweight [Express][2] app that
+Tutor provides an API for Gatherer. It's a lightweight [Express][2] app that
 reads data from Gatherer and returns neatly formatted JSON.
 
 ## Starting the app
