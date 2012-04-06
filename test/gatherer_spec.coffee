@@ -41,7 +41,7 @@ gets_set = (set_fixture) ->
 describe 'Gatherer API', ->
   describe '.fetch_card', ->
     describe 'when given an id parameter', ->
-      it "errors out on an invalid id", gets_card
+      it 'errors out on an invalid id', gets_card
         params: ['1A7gaf', null]
         response: err_302
       describe 'for a sorcery card', ->
@@ -52,7 +52,7 @@ describe 'Gatherer API', ->
         it 'can find Diamond Faerie', gets_card cards.diamond_faerie
       describe 'for an instant card', ->
         describe 'with hybrid mana cost', ->
-          it "can find Flame Javelin", gets_card cards.flame_javelin
+          it 'can find Flame Javelin', gets_card cards.flame_javelin
       describe 'for a planeswalker card', ->
         it 'can find Ajani Goldmane', gets_card cards.ajani
       describe 'for an artifact creature card', ->

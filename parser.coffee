@@ -1,4 +1,4 @@
-jsdom   = require 'jsdom'
+jsdom = require 'jsdom'
 
 symbols =
   White: 'W', 'Phyrexian White':  'W/P'
@@ -27,7 +27,10 @@ Object.defineProperty HTMLElement.prototype, 'text', get: ->
   text.replace(/[\w.](?=[[(])/g, '$& ').replace(/\](?=[(\w])/g, '] ')
 
 get_name = (identifier) ->
-  ($) -> $(identifier)[0]?.text
+  ($) ->
+    name = $(identifier)[0]?.text
+    # Extract, for example, "Altar's Reap" from "Altar’s Reap (Altar's Reap)".
+    if (match = /^(.+)’(.+) [(](\1'\2)[)]$/.exec name) then match[3] else name
 
 get_mana_cost = (identifier) ->
   ($) ->
@@ -132,8 +135,8 @@ gid_specific_attrs =
     $('Artist')[0]?.text
 
 get_gatherer_id = ($) ->
-  # Abuse the fact that `[123]` can be coerced to `123`.
-  +/\d+$/.exec $('.cardTitle').find('a').attr('href')
+  match = /multiverseid=(\d+)/.exec $('.cardTitle').find('a').attr('href')
+  +match[1]
 
 list_view_attrs =
 
@@ -226,3 +229,18 @@ exports.set = (body, options, callback) ->
     process.nextTick ->
       callback error, data
   return
+
+collect_options = (selector_id) ->
+  (body, callback) ->
+    jsdom.env body, [jquery_url], (errors, {jQuery}) ->
+      set_elements = jQuery "##{selector_id} > option"
+      [error, data] = [null, (set.value for set in set_elements when set.value isnt "")]
+      process.nextTick ->
+        callback error, data
+    return
+
+exports.sets = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_setAddText'
+
+exports.formats = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_formatAddText'
+
+exports.types = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_typeAddText'
