@@ -203,7 +203,7 @@ exports.card = (body, callback) ->
         delete data[key] if value is undefined or value isnt value # NaN
       process.nextTick ->
         callback null, data
-    return
+      return
 
 exports.set = (body, callback) ->
   jsdom.env
@@ -240,7 +240,7 @@ exports.set = (body, callback) ->
         data = {error, status: 404}
       process.nextTick ->
         callback error, data
-    return
+      return
 
 collect_options = (selector_id) ->
   (body, callback) ->
@@ -252,7 +252,7 @@ collect_options = (selector_id) ->
         [error, data] = [null, (set.value for set in set_elements when set.value isnt "")]
         process.nextTick ->
           callback error, data
-      return
+        return
 
 exports.sets = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_setAddText'
 
