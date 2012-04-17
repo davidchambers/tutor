@@ -1,4 +1,5 @@
 jsdom = require 'jsdom'
+fs    = require 'fs'
 
 symbols =
   White: 'W', 'Phyrexian White':  'W/P'
@@ -177,67 +178,76 @@ list_view_attrs =
 
   versions: ($) -> get_versions $('.setVersions')
 
-jquery_url = 'http://code.jquery.com/jquery-latest.js'
+jquery_172 = fs.readFileSync("./jquery-1.7.2.min.js").toString()
 
 exports.card = (body, options, callback) ->
-  jsdom.env body, [jquery_url], (errors, {jQuery}) ->
-    $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
-    attach_attrs = (attrs, data) ->
-      for own key, fn of attrs
-        result = fn($, data, jQuery)
-        data[key] = result unless result is undefined
-      data
-    data = attach_attrs common_attrs, {}
-    if options.gid_attributes
-      data = attach_attrs gid_specific_attrs, data
-      data.gatherer_url = options.url if options.url?
+  jsdom.env
+    html: body
+    src: [jquery_172]
+    done: (errors, {jQuery}) ->
+      $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
+      attach_attrs = (attrs, data) ->
+        for own key, fn of attrs
+          result = fn($, data, jQuery)
+          data[key] = result unless result is undefined
+        data
+      data = attach_attrs common_attrs, {}
+      if options.gid_attributes
+        data = attach_attrs gid_specific_attrs, data
+        data.gatherer_url = options.url if options.url?
 
-    for own key, value of data
-      delete data[key] if value is undefined or value isnt value # NaN
-    process.nextTick ->
-      callback null, data
-  return
+      for own key, value of data
+        delete data[key] if value is undefined or value isnt value # NaN
+      process.nextTick ->
+        callback null, data
+    return
 
 exports.set = (body, options, callback) ->
-  jsdom.env body, [jquery_url], (errors, {jQuery}) ->
-    $ = (el) -> (selector) -> jQuery(el).find(selector)
-    pages = do ->
-      for {text} in jQuery('.paging').find('a').get().reverse()
-        return number if (number = +text) > 0
-      1
+  jsdom.env
+    html: body
+    src: [jquery_172]
+    done: (errors, {jQuery}) ->
+      $ = (el) -> (selector) -> jQuery(el).find(selector)
+      pages = do ->
+        for {text} in jQuery('.paging').find('a').get().reverse()
+          return number if (number = +text) > 0
+        1
 
-    # Gatherer returns the last page of results for a specified page
-    # parameter beyond the upper bound. This is undesirable behaviour;
-    # 404 is the appropriate response in such cases.
-    #
-    # Requests for nonexistent sets receive 404 responses, also.
-    valid_page = 1 <= options.page <= pages
-    if not valid_page or /[(]0[)]$/.test jQuery('.contentTitle')[0].text
-      error = 'Not Found'
-      data = {error, status: 404}
-    else
-      cards = []
-      jQuery('.cardItem').each ->
-        card = {}
-        for own key, fn of list_view_attrs
-          result = fn $(this), card
-          card[key] = result unless result is undefined
-        for own key, value of card
-          delete card[key] if value is undefined or value isnt value # NaN
-        cards.push card
-      [error, data] = [null, {page: options.page, pages, cards}]
-    process.nextTick ->
-      callback error, data
-  return
-
-collect_options = (selector_id) ->
-  (body, callback) ->
-    jsdom.env body, [jquery_url], (errors, {jQuery}) ->
-      set_elements = jQuery "##{selector_id} > option"
-      [error, data] = [null, (set.value for set in set_elements when set.value isnt "")]
+      # Gatherer returns the last page of results for a specified page
+      # parameter beyond the upper bound. This is undesirable behaviour;
+      # 404 is the appropriate response in such cases.
+      #
+      # Requests for nonexistent sets receive 404 responses, also.
+      valid_page = 1 <= options.page <= pages
+      if not valid_page or /[(]0[)]$/.test jQuery('.contentTitle')[0].text
+        error = 'Not Found'
+        data = {error, status: 404}
+      else
+        cards = []
+        jQuery('.cardItem').each ->
+          card = {}
+          for own key, fn of list_view_attrs
+            result = fn $(this), card
+            card[key] = result unless result is undefined
+          for own key, value of card
+            delete card[key] if value is undefined or value isnt value # NaN
+          cards.push card
+        [error, data] = [null, {page: options.page, pages, cards}]
       process.nextTick ->
         callback error, data
     return
+
+collect_options = (selector_id) ->
+  (body, callback) ->
+    jsdom.env
+      html: body
+      src: [jquery_172]
+      done: (errors, {jQuery}) ->
+        set_elements = jQuery "##{selector_id} > option"
+        [error, data] = [null, (set.value for set in set_elements when set.value isnt "")]
+        process.nextTick ->
+          callback error, data
+      return
 
 exports.sets = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_setAddText'
 
