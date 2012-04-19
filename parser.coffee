@@ -1,6 +1,8 @@
 jsdom = require 'jsdom'
 fs    = require 'fs'
 
+gatherer_root = 'http://gatherer.wizards.com/Pages/'
+
 symbols =
   White: 'W', 'Phyrexian White':  'W/P'
   Blue:  'U', 'Phyrexian Blue':   'U/P'
@@ -174,13 +176,13 @@ list_view_attrs =
 
   gatherer_url: ($) ->
     id = get_gatherer_id($)
-    'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=' + id
+    gatherer_root + 'Card/Details.aspx?multiverseid=' + id
 
   versions: ($) -> get_versions $('.setVersions')
 
 jquery_172 = fs.readFileSync("./jquery-1.7.2.min.js").toString()
 
-exports.card = (body, options, callback) ->
+exports.card = (body, callback) ->
   jsdom.env
     html: body
     src: [jquery_172]
@@ -192,9 +194,10 @@ exports.card = (body, options, callback) ->
           data[key] = result unless result is undefined
         data
       data = attach_attrs common_attrs, {}
-      if options.gid_attributes
+      data.gatherer_url = gatherer_root + 'Card/' + jQuery('#aspnetForm').attr('action')
+
+      if /multiverseid/.test data.gatherer_url
         data = attach_attrs gid_specific_attrs, data
-        data.gatherer_url = options.url if options.url?
 
       for own key, value of data
         delete data[key] if value is undefined or value isnt value # NaN
