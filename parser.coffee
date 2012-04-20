@@ -1,6 +1,8 @@
 jsdom = require 'jsdom'
 fs    = require 'fs'
 
+gatherer_root = 'http://gatherer.wizards.com/Pages/'
+
 symbols =
   White: 'W', 'Phyrexian White':  'W/P'
   Blue:  'U', 'Phyrexian Blue':   'U/P'
@@ -174,13 +176,13 @@ list_view_attrs =
 
   gatherer_url: ($) ->
     id = get_gatherer_id($)
-    'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=' + id
+    gatherer_root + 'Card/Details.aspx?multiverseid=' + id
 
   versions: ($) -> get_versions $('.setVersions')
 
 jquery_172 = fs.readFileSync("./jquery-1.7.2.min.js").toString()
 
-exports.card = (body, options, callback) ->
+exports.card = (body, callback) ->
   jsdom.env
     html: body
     src: [jquery_172]
@@ -192,17 +194,18 @@ exports.card = (body, options, callback) ->
           data[key] = result unless result is undefined
         data
       data = attach_attrs common_attrs, {}
-      if options.gid_attributes
+      data.gatherer_url = gatherer_root + 'Card/' + jQuery('#aspnetForm').attr('action')
+
+      if /multiverseid/.test data.gatherer_url
         data = attach_attrs gid_specific_attrs, data
-        data.gatherer_url = options.url if options.url?
 
       for own key, value of data
         delete data[key] if value is undefined or value isnt value # NaN
       process.nextTick ->
         callback null, data
-    return
+      return
 
-exports.set = (body, options, callback) ->
+exports.set = (body, callback) ->
   jsdom.env
     html: body
     src: [jquery_172]
@@ -218,11 +221,10 @@ exports.set = (body, options, callback) ->
       # 404 is the appropriate response in such cases.
       #
       # Requests for nonexistent sets receive 404 responses, also.
-      valid_page = 1 <= options.page <= pages
-      if not valid_page or /[(]0[)]$/.test jQuery('.contentTitle')[0].text
-        error = 'Not Found'
-        data = {error, status: 404}
-      else
+      $el = jQuery('#ctl00_ctl00_ctl00_MainContent_SubContent_topPagingControlsContainer')
+      page = +$el.children('a[style="text-decoration: underline;"]').text()
+      requested_page = +jQuery('#aspnetForm').attr('action').match(/page=(\d+)/)?[1]+1
+      if requested_page is page
         cards = []
         jQuery('.cardItem').each ->
           card = {}
@@ -232,10 +234,13 @@ exports.set = (body, options, callback) ->
           for own key, value of card
             delete card[key] if value is undefined or value isnt value # NaN
           cards.push card
-        [error, data] = [null, {page: options.page, pages, cards}]
+        [error, data] = [null, {page, pages, cards}]
+      else
+        error = 'Not Found'
+        data = {error, status: 404}
       process.nextTick ->
         callback error, data
-    return
+      return
 
 collect_options = (selector_id) ->
   (body, callback) ->
@@ -247,7 +252,7 @@ collect_options = (selector_id) ->
         [error, data] = [null, (set.value for set in set_elements when set.value isnt "")]
         process.nextTick ->
           callback error, data
-      return
+        return
 
 exports.sets = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_setAddText'
 
