@@ -205,7 +205,7 @@ exports.card = (body, callback) ->
         callback null, data
     return
 
-exports.set = (body, options, callback) ->
+exports.set = (body, callback) ->
   jsdom.env
     html: body
     src: [jquery_172]
@@ -221,11 +221,10 @@ exports.set = (body, options, callback) ->
       # 404 is the appropriate response in such cases.
       #
       # Requests for nonexistent sets receive 404 responses, also.
-      valid_page = 1 <= options.page <= pages
-      if not valid_page or /[(]0[)]$/.test jQuery('.contentTitle')[0].text
-        error = 'Not Found'
-        data = {error, status: 404}
-      else
+      $el = jQuery('#ctl00_ctl00_ctl00_MainContent_SubContent_topPagingControlsContainer')
+      page = +$el.children('a[style="text-decoration: underline;"]').text()
+      requested_page = +jQuery('#aspnetForm').attr('action').match(/page=(\d+)/)?[1]+1
+      if requested_page is page
         cards = []
         jQuery('.cardItem').each ->
           card = {}
@@ -235,7 +234,10 @@ exports.set = (body, options, callback) ->
           for own key, value of card
             delete card[key] if value is undefined or value isnt value # NaN
           cards.push card
-        [error, data] = [null, {page: options.page, pages, cards}]
+        [error, data] = [null, {page, pages, cards}]
+      else
+        error = 'Not Found'
+        data = {error, status: 404}
       process.nextTick ->
         callback error, data
     return

@@ -32,7 +32,7 @@ exports.fetch_set = (params, callback) ->
   page = +(params.page ? 1)
   url = build_set_url params.name, page
   request {url}, (error, response, body) ->
-    parser.set body, {page}, callback
+    parser.set body, callback
   return
 
 index = (parse_function) ->
