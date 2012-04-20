@@ -99,7 +99,7 @@ exports.ice =
     number: 128
     artist: 'Franz Vohwinkel'
     gatherer_url:
-      'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=27166&part=Ice'
+      'http://gatherer.wizards.com/Pages/Card/Details.aspx?part=Ice&multiverseid=27166'
     versions:
       27165:
         expansion: 'Apocalypse'
@@ -138,7 +138,7 @@ exports.fire =
     rarity: 'Uncommon'
     number: 128
     artist: 'Franz Vohwinkel'
-    gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=27166&part=Fire'
+    gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?part=Fire&multiverseid=27166'
 
 exports.ancestral_vision =
   params: ['113505', null]
@@ -435,6 +435,7 @@ exports.storm =
       Pay 4 life: Destroy Æther Storm. It can't be regenerated. Any
       player may activate this ability.
     """
+    gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=%u00c6ther+Storm'
     versions:
       2935:
         expansion: 'Homelands'
@@ -479,6 +480,7 @@ exports.sphere =
       """
       power: 0
       toughness: 1
+      gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Phantasmal+Sphere'
       versions:
         3113:
           expansion: 'Alliances'
@@ -502,6 +504,7 @@ exports.arrows =
       [Tap], Remove an arrowhead counter from Serrated Arrows:
       Put a -1/-1 counter on target creature.
     """
+    gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Serrated+Arrows'
     versions:
       2909:
         expansion: 'Homelands'
