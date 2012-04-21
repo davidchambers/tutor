@@ -58,7 +58,8 @@ describe 'Parser', ->
       it 'can parse Vanguards', parser_matches_fixture cards.akroma
       it 'can parse Schemes'
     describe 'special cases', ->
-      it 'can parse both sides of a transforming card'
+      it 'can parse the first side of a transforming card', parser_matches_fixture cards.deserter
+      it 'can parse the second side of a transforming card', parser_matches_fixture cards.ransacker
       it 'can parse cards that have odd entities in their names'
       it 'can parse the BFM'
   describe '.set', ->
