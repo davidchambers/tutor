@@ -7,6 +7,7 @@ cards    = require './fixtures/cards'
 sets     = require './fixtures/sets'
 
 web_fixture = (filename) ->
+  filename = filename.toLowerCase().replace(/( )|-/g, "")
   fs.readFileSync("#{__dirname}/fixtures/web/#{filename}.html").toString()
 
 card_should_match = (obj_fixture, filename) ->
@@ -15,45 +16,41 @@ card_should_match = (obj_fixture, filename) ->
       obj.should.eql obj_fixture.response
       done()
 
-parse_match = (obj_fixture, filename) ->
+parser_matches_fixture = (card_fixture) ->
   (done) ->
-    parser.card web_fixture(filename), (err, obj) ->
-      obj.should.eql obj_fixture.response
+    parser.card web_fixture(card_fixture.response.name), (err, obj) ->
+      obj.should.eql card_fixture.response
+      done()
+
+parser_builds_index = (func, fixture) ->
+  (done) ->
+    func web_fixture('gatherer_index'), (err, obj) ->
+      obj.should.eql fixture
       done()
 
 describe 'Parser', ->
   describe 'indices', ->
-    page = web_fixture 'gatherer_index'
     describe '.sets', ->
-      it 'extracts set names from index', (done) ->
-        parser.sets page, (err, obj) ->
-          obj.should.eql indices.sets
-          done()
+      it 'extracts set names from index', parser_builds_index parser.sets, indices.sets
     describe '.formats', ->
-      it 'should pass an array of format names', (done) ->
-        parser.formats page, (err, obj) ->
-          obj.should.eql indices.formats
-          done()
+      it 'should pass an array of format names', parser_builds_index parser.formats, indices.formats
     describe '.types', ->
-      it 'should pass an array of types', (done) ->
-        parser.types page, (err, obj) ->
-          obj.should.eql indices.types
-          done()
+      it 'should pass an array of types', parser_builds_index parser.types, indices.types
   describe '.card', ->
     describe 'old tests', ->
-      it 'can find Recall', card_should_match cards.recall, 'recall'
-      it 'can find Ancestral Vision', card_should_match cards.ancestral_vision, 'ancestralvision' # 0 converted mana cost
-      it 'can find An-Havva Constable', card_should_match cards.constable, 'anhavvaconstable'
-      it 'can find Diamond Faerie', card_should_match cards.diamond_faerie, 'diamondfaerie'
-      it 'can find Flame Javelin', card_should_match cards.flame_javelin, 'flamejavelin' #hybrid mana cost
-      it 'can find Ajani Goldmane', card_should_match cards.ajani, 'ajani'
-      it 'can find Darksteel Colossus', card_should_match cards.colossus, 'darksteelcolossus'
-      it 'can find Vault Skirge', card_should_match cards.skirge, 'vaultskirge' # phyrexian mana
-      it 'can find Fire', card_should_match cards.fire, 'fire' # multipart card
-      it 'can find Ice', card_should_match cards.ice, 'ice' # multipart card
-      it 'can find Æther Storm', parse_match cards.storm, 'aetherstorm'
-      it 'can find Phantasmal Sphere', parse_match cards.sphere, 'phantasmalsphere'
-      it 'can find Serrated Arrows', parse_match cards.arrows, 'serratedarrows'
+      it 'can find Recall', parser_matches_fixture cards.recall
+      it 'can find Ancestral Vision', parser_matches_fixture cards.ancestral_vision # 0 converted mana cost
+      it 'can find An-Havva Constable', parser_matches_fixture cards.constable
+      it 'can find Diamond Faerie', parser_matches_fixture cards.diamond_faerie
+      it 'can find Flame Javelin', parser_matches_fixture cards.flame_javelin #hybrid mana cost
+      it 'can find Ajani Goldmane', parser_matches_fixture cards.ajani
+      it 'can find Darksteel Colossus', parser_matches_fixture cards.colossus
+      it 'can find Vault Skirge', parser_matches_fixture cards.skirge # phyrexian mana
+      it 'can find Fire', parser_matches_fixture cards.fire # multipart card
+      it 'can find Ice', parser_matches_fixture cards.ice # multipart card
+      it 'can find Æther Storm', parser_matches_fixture cards.storm
+      it 'can find Phantasmal Sphere', parser_matches_fixture cards.sphere
+      it 'can find Serrated Arrows', parser_matches_fixture cards.arrows
     describe 'basic types', ->
       it 'can parse Artifacts'
       it 'can parse Creatures'
