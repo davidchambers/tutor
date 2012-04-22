@@ -26,20 +26,17 @@ exports.fetch_card = (params, callback) ->
       callback error, {error, status}
       return
     parser.card body, callback
-  return
 
 exports.fetch_set = (params, callback) ->
   page = +(params.page ? 1)
   url = build_set_url params.name, page
   request {url}, (error, response, body) ->
     parser.set body, callback
-  return
 
 index = (parse_function) ->
   (callback) ->
     request {url: gatherer_url}, (error, response, body) ->
       parse_function body, callback
-    return
 
 exports.sets = index parser.sets
 
