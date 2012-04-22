@@ -7,14 +7,8 @@ cards    = require './fixtures/cards'
 sets     = require './fixtures/sets'
 
 web_fixture = (filename) ->
-  filename = filename.toLowerCase().replace(/( )|-/g, "")
+  filename = filename.toLowerCase().replace(/[ -]/g, "")
   fs.readFileSync("#{__dirname}/fixtures/web/#{filename}.html").toString()
-
-card_should_match = (obj_fixture, filename) ->
-  (done) ->
-    parser.card web_fixture(filename), (err, obj) ->
-      obj.should.eql obj_fixture.response
-      done()
 
 parser_matches_fixture = (card_fixture) ->
   (done) ->
