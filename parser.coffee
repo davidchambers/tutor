@@ -180,7 +180,7 @@ list_view_attrs =
 
   versions: ($) -> get_versions $('.setVersions')
 
-jquery_172 = fs.readFileSync("./jquery-1.7.2.min.js").toString()
+jquery_172 = fs.readFileSync('./jquery-1.7.2.min.js').toString()
 
 exports.card = (body, callback) ->
   jsdom.env
