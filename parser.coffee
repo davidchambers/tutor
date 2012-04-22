@@ -240,19 +240,14 @@ exports.set = (body, callback) ->
       process.nextTick ->
         callback error, data
 
-collect_options = (selector_id) ->
+collect_options = (label) ->
   (body, callback) ->
-    jsdom.env
-      html: body
-      src: [jquery_172]
-      done: (errors, {jQuery}) ->
-        set_elements = jQuery "##{selector_id} > option"
-        [error, data] = [null, (set.value for set in set_elements when set.value isnt "")]
-        process.nextTick ->
-          callback error, data
+    jsdom.env html: body, src: [jquery_172], done: (errors, {jQuery}) ->
+      id = "#ctl00_ctl00_MainContent_Content_SearchControls_#{label}AddText"
+      $options = jQuery(id).children('option')
+      process.nextTick ->
+        callback null, (value for {value} in $options when value)
 
-exports.sets = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_setAddText'
-
-exports.formats = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_formatAddText'
-
-exports.types = collect_options 'ctl00_ctl00_MainContent_Content_SearchControls_typeAddText'
+exports.sets    = collect_options 'set'
+exports.formats = collect_options 'format'
+exports.types   = collect_options 'type'
