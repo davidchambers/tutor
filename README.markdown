@@ -13,7 +13,7 @@ reads data from Gatherer and returns neatly formatted JSON.
 To run the server:
 
     $ npm install
-    $ coffee server.coffee
+    $ coffee server
 
 This starts a server listening on the port set as the environment variable PORT,
 or on port 3000 if PORT is undefined.
