@@ -56,6 +56,10 @@ get_versions = ($el) ->
     versions[/\d+$/.exec @parentNode.href] = {expansion, rarity}
   versions
 
+vanguard_modifier = (pattern) ->
+  ($) ->
+    +match?[1] if match = pattern.exec $('Hand/Life')[0]?.text
+
 to_stat = (stat_as_string) ->
   stat_as_number = +stat_as_string
   # Use string representation if coercing to a number gives `NaN`.
@@ -124,6 +128,10 @@ gid_specific_attrs =
       data.flavor_text_attribution = match[1]
       $children.last().remove()
     (/^"(.+)"$/.exec(text = $flavor[0].text) or [])[1] or text
+
+  hand_modifier: vanguard_modifier /Hand Modifier: ([+-]\d+)/
+
+  life_modifier: vanguard_modifier /Life Modifier: ([+-]\d+)/
 
   expansion: ($) ->
     $('Expansion').find('a:last-child')[0]?.text
