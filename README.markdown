@@ -53,8 +53,9 @@ text and rarity.
                 "If a cost includes more than one monocolored hybrid mana symbol, you can choose a different way to pay for each symbol. For example, you can pay for Flame Javelin by spending [R][R][R], [2][R][R], [4][R], or [6]."
             ]
         ], 
+        "subtypes": [], 
         "text": "([2/R] can be paid with any two mana or with [R]. This card's converted mana cost is 6.)\n\nFlame Javelin deals 4 damage to target creature or player.", 
-        "type": "Instant", 
+        "types": ["Instant"], 
         "versions": {
             "146017": {
                 "expansion": "Shadowmoor", 
@@ -96,8 +97,9 @@ include version-specific metadata such as flavor text and rarity.
                 "Affects any spell with the type creature, including those with other types such as artifact or enchantment. This includes older cards with \"summon\" on their type line."
             ]
         ], 
+        "subtypes": [], 
         "text": "Creature spells can't be cast.\n\nPay 4 life: Destroy \u00c6ther Storm. It can't be regenerated. Any player may activate this ability.", 
-        "type": "Enchantment", 
+        "types": ["Enchantment"], 
         "versions": {
             "184722": {
                 "expansion": "Masters Edition II", 
@@ -121,8 +123,8 @@ These attributes may be included in a response:
   - `name`
   - `mana_cost`
   - `converted_mana_cost`
-  - `type`
-  - `subtype`
+  - `types`
+  - `subtypes`
   - `text`
   - `flavor_text`
   - `flavor_text_attribution`
@@ -157,8 +159,8 @@ Each card in `cards` contains all applicable attributes among the following:
   - `name`
   - `mana_cost`
   - `converted_mana_cost`
-  - `type`
-  - `subtype`
+  - `types`
+  - `subtypes`
   - `text`
   - `power`
   - `toughness`

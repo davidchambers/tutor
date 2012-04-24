@@ -13,8 +13,8 @@ exports.homelands_pg1 =
       name: 'Abbey Gargoyles'
       mana_cost: '[2][W][W][W]'
       converted_mana_cost: 5
-      type: 'Creature'
-      subtype: 'Gargoyle'
+      types: ['Creature']
+      subtypes: ['Gargoyle']
       power: 3
       toughness: 4
       text: 'Flying, protection from red'
@@ -36,8 +36,8 @@ exports.homelands_pg1 =
       name: 'Abbey Matron'
       mana_cost: '[2][W]'
       converted_mana_cost: 3
-      type: 'Creature'
-      subtype: 'Human Cleric'
+      types: ['Creature']
+      subtypes: ['Human', 'Cleric']
       power: 1
       toughness: 3
       text: '[W],[Tap]: Abbey Matron gets +0/+3 until end of turn.'
@@ -56,7 +56,8 @@ exports.homelands_pg1 =
       name: 'Æther Storm'
       mana_cost: '[3][U]'
       converted_mana_cost: 4
-      type: 'Enchantment'
+      types: ['Enchantment']
+      subtypes: []
       text: __ """
         Creature spells can't be cast.
 
@@ -81,7 +82,8 @@ exports.homelands_pg1 =
       name: "Aliban's Tower"
       mana_cost: '[1][R]'
       converted_mana_cost: 2
-      type: 'Instant'
+      types: ['Instant']
+      subtypes: []
       text: 'Target blocking creature gets +3/+1 until end of turn.'
       expansion: 'Homelands'
       rarity: 'Common'
@@ -98,7 +100,8 @@ exports.homelands_pg1 =
       name: 'Ambush'
       mana_cost: '[3][R]'
       converted_mana_cost: 4
-      type: 'Instant'
+      types: ['Instant']
+      subtypes: []
       text: 'Blocking creatures gain first strike until end of turn.'
       expansion: 'Homelands'
       rarity: 'Common'
@@ -112,8 +115,8 @@ exports.homelands_pg1 =
       name: 'Ambush Party'
       mana_cost: '[4][R]'
       converted_mana_cost: 5
-      type: 'Creature'
-      subtype: 'Human Rogue'
+      types: ['Creature']
+      subtypes: ['Human', 'Rogue']
       power: 3
       toughness: 1
       text: 'First strike, haste'
@@ -138,8 +141,8 @@ exports.homelands_pg1 =
       name: 'Anaba Ancestor'
       mana_cost: '[1][R]'
       converted_mana_cost: 2
-      type: 'Creature'
-      subtype: 'Minotaur Spirit'
+      types: ['Creature']
+      subtypes: ['Minotaur', 'Spirit']
       power: 1
       toughness: 1
       text: __ """
@@ -161,8 +164,8 @@ exports.homelands_pg1 =
       name: 'Anaba Bodyguard'
       mana_cost: '[3][R]'
       converted_mana_cost: 4
-      type: 'Creature'
-      subtype: 'Minotaur'
+      types: ['Creature']
+      subtypes: ['Minotaur']
       power: 2
       toughness: 3
       text: __ """
@@ -190,8 +193,8 @@ exports.homelands_pg1 =
       name: 'Anaba Shaman'
       mana_cost: '[3][R]'
       converted_mana_cost: 4
-      type: 'Creature'
-      subtype: 'Minotaur Shaman'
+      types: ['Creature']
+      subtypes: ['Minotaur', 'Shaman']
       power: 2
       toughness: 2
       text: __ """
@@ -222,8 +225,8 @@ exports.homelands_pg1 =
       name: 'Anaba Spirit Crafter'
       mana_cost: '[2][R][R]'
       converted_mana_cost: 4
-      type: 'Creature'
-      subtype: 'Minotaur Shaman'
+      types: ['Creature']
+      subtypes: ['Minotaur', 'Shaman']
       power: 1
       toughness: 3
       text: 'Minotaur creatures get +1/+0.'
@@ -242,8 +245,8 @@ exports.homelands_pg1 =
       name: 'An-Havva Constable'
       mana_cost: '[1][G][G]'
       converted_mana_cost: 3
-      type: 'Creature'
-      subtype: 'Human'
+      types: ['Creature']
+      subtypes: ['Human']
       power: 2
       toughness: '1+*'
       text: __ """
@@ -265,7 +268,8 @@ exports.homelands_pg1 =
       name: 'An-Havva Inn'
       mana_cost: '[1][G][G]'
       converted_mana_cost: 3
-      type: 'Sorcery'
+      types: ['Sorcery']
+      subtypes: []
       text: __ """
         You gain X plus 1 life, where X is the number of green
         creatures on the battlefield.
@@ -281,7 +285,8 @@ exports.homelands_pg1 =
     ,
       name: 'An-Havva Township'
       converted_mana_cost: 0
-      type: 'Land'
+      types: ['Land']
+      subtypes: []
       text: __ """
         [Tap]: Add [1] to your mana pool.
 
@@ -301,7 +306,8 @@ exports.homelands_pg1 =
       name: 'An-Zerrin Ruins'
       mana_cost: '[2][R][R]'
       converted_mana_cost: 4
-      type: 'Enchantment'
+      types: ['Enchantment']
+      subtypes: []
       text: __ """
         As An-Zerrin Ruins enters the battlefield, choose a
         creature type.
@@ -324,7 +330,8 @@ exports.homelands_pg1 =
       name: 'Apocalypse Chime'
       mana_cost: '[2]'
       converted_mana_cost: 2
-      type: 'Artifact'
+      types: ['Artifact']
+      subtypes: []
       text: __ """
         [2],[Tap], Sacrifice Apocalypse Chime: Destroy all
         nontoken permanents from the Homelands expansion.
@@ -342,8 +349,8 @@ exports.homelands_pg1 =
       name: 'Autumn Willow'
       mana_cost: '[4][G][G]'
       converted_mana_cost: 6
-      type: 'Legendary Creature'
-      subtype: 'Avatar'
+      types: ['Legendary', 'Creature']
+      subtypes: ['Avatar']
       power: 4
       toughness: 4
       text: __ """
@@ -367,7 +374,8 @@ exports.homelands_pg1 =
     ,
       name: 'Aysen Abbey'
       converted_mana_cost: 0
-      type: 'Land'
+      types: ['Land']
+      subtypes: []
       text: __ """
         [Tap]: Add [1] to your mana pool.
 
@@ -387,8 +395,8 @@ exports.homelands_pg1 =
       name: 'Aysen Bureaucrats'
       mana_cost: '[1][W]'
       converted_mana_cost: 2
-      type: 'Creature'
-      subtype: 'Human Advisor'
+      types: ['Creature']
+      subtypes: ['Human', 'Advisor']
       power: 1
       toughness: 1
       text: '[Tap]: Tap target creature with power 2 or less.'
@@ -413,8 +421,8 @@ exports.homelands_pg1 =
       name: 'Aysen Crusader'
       mana_cost: '[2][W][W]'
       converted_mana_cost: 4
-      type: 'Creature'
-      subtype: 'Human Knight'
+      types: ['Creature']
+      subtypes: ['Human', 'Knight']
       power: '2+*'
       toughness: '2+*'
       text: __ """
@@ -436,7 +444,8 @@ exports.homelands_pg1 =
       name: 'Aysen Highway'
       mana_cost: '[3][W][W][W]'
       converted_mana_cost: 6
-      type: 'Enchantment'
+      types: ['Enchantment']
+      subtypes: []
       text: 'White creatures have plainswalk.'
       expansion: 'Homelands'
       rarity: 'Rare'
@@ -450,7 +459,8 @@ exports.homelands_pg1 =
       name: "Baki's Curse"
       mana_cost: '[2][U][U]'
       converted_mana_cost: 4
-      type: 'Sorcery'
+      types: ['Sorcery']
+      subtypes: []
       text: __ """
         Baki's Curse deals 2 damage to each creature for each
         Aura attached to that creature.
@@ -467,8 +477,8 @@ exports.homelands_pg1 =
       name: 'Baron Sengir'
       mana_cost: '[5][B][B][B]'
       converted_mana_cost: 8
-      type: 'Legendary Creature'
-      subtype: 'Vampire'
+      types: ['Legendary', 'Creature']
+      subtypes: ['Vampire']
       power: 5
       toughness: 5
       text: __ """
@@ -494,8 +504,8 @@ exports.homelands_pg1 =
       name: 'Beast Walkers'
       mana_cost: '[1][W][W]'
       converted_mana_cost: 3
-      type: 'Creature'
-      subtype: 'Human Beast Soldier'
+      types: ['Creature']
+      subtypes: ['Human', 'Beast', 'Soldier']
       power: 2
       toughness: 2
       text: __ """
@@ -520,8 +530,8 @@ exports.homelands_pg1 =
       name: 'Black Carriage'
       mana_cost: '[3][B][B]'
       converted_mana_cost: 5
-      type: 'Creature'
-      subtype: 'Horse'
+      types: ['Creature']
+      subtypes: ['Horse']
       power: 4
       toughness: 4
       text: __ """
@@ -544,7 +554,8 @@ exports.homelands_pg1 =
       name: 'Broken Visage'
       mana_cost: '[4][B]'
       converted_mana_cost: 5
-      type: 'Instant'
+      types: ['Instant']
+      subtypes: []
       text: __ """
         Destroy target nonartifact attacking creature. It can't
         be regenerated. Put a black Spirit creature token with

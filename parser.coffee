@@ -56,6 +56,9 @@ get_versions = ($el) ->
     versions[/\d+$/.exec @parentNode.href] = {expansion, rarity}
   versions
 
+split_types = (types, subtypes) ->
+  [types.split(/\s+/), if subtypes then subtypes.split(/\s+/) else []]
+
 vanguard_modifier = (pattern) ->
   ($) ->
     +match?[1] if match = pattern.exec $('Hand/Life')[0]?.text
@@ -73,11 +76,10 @@ common_attrs =
 
   converted_mana_cost: get_converted_mana_cost 'Converted Mana Cost'
 
-  type: ($, data) ->
+  types: ($, data) ->
     return unless el = $('Types')[0]
-    [match, type, subtype] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec el.text
-    data.type = type if type
-    data.subtype = subtype if subtype
+    [match, types, subtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec el.text
+    [data.types, data.subtypes] = split_types types, subtypes
     return
 
   text: get_text 'Card Text'
@@ -157,20 +159,19 @@ list_view_attrs =
 
   converted_mana_cost: get_converted_mana_cost '.convertedManaCost'
 
-  type: ($, data) ->
+  types: ($, data) ->
     return unless el = $('.typeLine')[0]
     regex = ///^
-      ([^\u2014]+?)             # type
-      (?:\s+\u2014\s+(.+?))?    # subtype
+      ([^\u2014]+?)             # types
+      (?:\s+\u2014\s+(.+?))?    # subtypes
       (?:\s+[(](?:              # "("
         ([^/]+?)\s*/\s*([^/]+)  # power and toughness
         |                       # or...
         (\d+)                   # loyalty
       )[)])?                    # ")"
     $///
-    [match, type, subtype, power, toughness, loyalty] = regex.exec el.text
-    data.type = type
-    data.subtype = subtype
+    [match, types, subtypes, power, toughness, loyalty] = regex.exec el.text
+    [data.types, data.subtypes] = split_types types, subtypes
     data.power = to_stat power
     data.toughness = to_stat toughness
     data.loyalty = +loyalty

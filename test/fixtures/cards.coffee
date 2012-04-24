@@ -8,7 +8,8 @@ exports.recall =
     name: 'Recall'
     mana_cost: '[X][X][U]'
     converted_mana_cost: 1
-    type: 'Sorcery'
+    types: ['Sorcery']
+    subtypes: []
     text: __ """
       Discard X cards, then return a card from your graveyard to your
       hand for each card discarded this way. Exile Recall.
@@ -55,8 +56,8 @@ exports.constable =
     name: 'An-Havva Constable'
     mana_cost: '[1][G][G]'
     converted_mana_cost: 3
-    type: 'Creature'
-    subtype: 'Human'
+    types: ['Creature']
+    subtypes: ['Human']
     text: __ """
       An-Havva Constable's toughness is equal to 1 plus the number of
       green creatures on the battlefield.
@@ -88,7 +89,8 @@ exports.ice =
     name: 'Ice'
     mana_cost: '[1][U]'
     converted_mana_cost: 2
-    type: 'Instant'
+    types: ['Instant']
+    subtypes: []
     text: __ """
       Tap target permanent.
 
@@ -118,7 +120,8 @@ exports.fire =
     name: 'Fire'
     mana_cost: '[1][R]'
     converted_mana_cost: 2
-    type: 'Instant'
+    types: ['Instant']
+    subtypes: []
     text: __ """
       Fire deals 2 damage divided as you choose among one or two target
       creatures and/or players.
@@ -145,7 +148,8 @@ exports.ancestral_vision =
   response:
     name: 'Ancestral Vision'
     converted_mana_cost: 0
-    type: 'Sorcery'
+    types: ['Sorcery']
+    subtypes: []
     text: __ """
       Suspend 4\u2014[U] (Rather than cast this card from your hand,
       pay [U] and exile it with four time counters on it. At the
@@ -187,8 +191,8 @@ exports.diamond_faerie =
     name: 'Diamond Faerie'
     mana_cost: '[2][G][W][U]'
     converted_mana_cost: 5
-    type: 'Snow Creature'
-    subtype: 'Faerie'
+    types: ['Snow', 'Creature']
+    subtypes: ['Faerie']
     text: __ """
       Flying
 
@@ -220,8 +224,8 @@ exports.ajani =
     name: 'Ajani Goldmane'
     mana_cost: '[2][W][W]'
     converted_mana_cost: 4
-    type: 'Planeswalker'
-    subtype: 'Ajani'
+    types: ['Planeswalker']
+    subtypes: ['Ajani']
     text: __ """
       +1: You gain 2 life.
 
@@ -267,7 +271,8 @@ exports.flame_javelin =
     name: 'Flame Javelin'
     mana_cost: '[2/R][2/R][2/R]'
     converted_mana_cost: 6
-    type: 'Instant'
+    types: ['Instant']
+    subtypes: []
     text: __ """
       ([2/R] can be paid with any two mana or with [R]. This card's
       converted mana cost is 6.)
@@ -325,8 +330,8 @@ exports.colossus =
     name: 'Darksteel Colossus'
     mana_cost: '[11]'
     converted_mana_cost: 11
-    type: 'Artifact Creature'
-    subtype: 'Golem'
+    types: ['Artifact', 'Creature']
+    subtypes: ['Golem']
     text: __ """
       Trample
 
@@ -370,8 +375,8 @@ exports.skirge =
     name: 'Vault Skirge'
     mana_cost: '[1][B/P]'
     converted_mana_cost: 2
-    type: 'Artifact Creature'
-    subtype: 'Imp'
+    types: ['Artifact', 'Creature']
+    subtypes: ['Imp']
     text: __ """
       ([B/P] can be paid with either [B] or 2 life.)
 
@@ -428,7 +433,8 @@ exports.storm =
     name: 'Æther Storm'
     mana_cost: '[3][U]'
     converted_mana_cost: 4
-    type: 'Enchantment'
+    types: ['Enchantment']
+    subtypes: []
     text: __ """
       Creature spells can't be cast.
 
@@ -464,8 +470,8 @@ exports.sphere =
       name: 'Phantasmal Sphere'
       mana_cost: '[1][U]'
       converted_mana_cost: 2
-      type: 'Creature'
-      subtype: 'Illusion'
+      types: ['Creature']
+      subtypes: ['Illusion']
       text: __ """
         Flying
 
@@ -493,7 +499,8 @@ exports.arrows =
     name: 'Serrated Arrows'
     mana_cost: '[4]'
     converted_mana_cost: 4
-    type: 'Artifact'
+    types: ['Artifact']
+    subtypes: []
     text: __ """
       Serrated Arrows enters the battlefield with three arrowhead
       counters on it.
@@ -529,7 +536,8 @@ exports.akroma =
   response:
     name: "Akroma, Angel of Wrath Avatar"
     converted_mana_cost:0
-    type: "Vanguard"
+    types: ["Vanguard"]
+    subtypes: []
     text: __ """
       Whenever a creature enters the battlefield under your control, it
       gains two abilities chosen at random from flying, first strike, trample,
@@ -554,8 +562,8 @@ exports.deserter =
     name: 'Afflicted Deserter'
     mana_cost: '[3][R]'
     converted_mana_cost: 4
-    type: 'Creature'
-    subtype: 'Human Werewolf'
+    types: ['Creature']
+    subtypes: ['Human', 'Werewolf']
     text: __ """
       At the beginning of each upkeep, if no spells were cast last turn,
       transform Afflicted Deserter.
@@ -607,8 +615,8 @@ exports.ransacker =
   response:
     name: 'Werewolf Ransacker'
     converted_mana_cost: 0
-    type: 'Creature'
-    subtype: 'Werewolf'
+    types: ['Creature']
+    subtypes: ['Werewolf']
     text: __ """
       Whenever this creature transforms into Werewolf Ransacker, you may
       destroy target artifact. If that artifact is put into a graveyard
