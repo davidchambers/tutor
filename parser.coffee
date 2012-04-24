@@ -140,7 +140,7 @@ gid_specific_attrs =
     $('Rarity')[0]?.text
 
   number: ($) ->
-    +$('Card #')[0]?.text
+    to_stat $('Card #')[0]?.text
 
   artist: ($) ->
     $('Artist')[0]?.text
@@ -195,6 +195,15 @@ exports.card = (body, callback) ->
     html: body
     src: [jquery_172]
     done: (errors, {jQuery}) ->
+      # check for transforming cards
+      prefix = '#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent'
+      subtitle = jQuery(prefix + 'Header_subtitleDisplay').text()
+      col2_title = jQuery(prefix + '_ctl06_nameRow > .value').text()
+      if subtitle == col2_title.trim()
+        jQuery(prefix + '_ctl05_rightCol').remove()
+      else
+        jQuery(prefix + '_cardComponent1').remove()
+
       $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
       attach_attrs = (attrs, data) ->
         for own key, fn of attrs
