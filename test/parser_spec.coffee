@@ -48,7 +48,7 @@ describe 'Parser', ->
     describe 'basic types', ->
       it 'can parse Artifacts'
       it 'can parse Creatures'
-      it 'can parse Enchantements'
+      it 'can parse Enchantments'
       it 'can parse Instants'
       it 'can parse Lands'
       it 'can parse Planeswalkers'
