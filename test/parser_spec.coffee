@@ -7,7 +7,7 @@ cards    = require './fixtures/cards'
 sets     = require './fixtures/sets'
 
 web_fixture = (filename) ->
-  filename = filename.toLowerCase().replace(/[ -]/g, "")
+  filename = filename.toLowerCase().replace(/[ ,-]/g, "")
   fs.readFileSync("#{__dirname}/fixtures/web/#{filename}.html").toString()
 
 parser_matches_fixture = (card_fixture) ->
@@ -55,7 +55,7 @@ describe 'Parser', ->
       it 'can parse Sorceries'
       it 'can parse Tribals'
       it 'can parse Planes'
-      it 'can parse Vanguards'
+      it 'can parse Vanguards', parser_matches_fixture cards.akroma
       it 'can parse Schemes'
     describe 'special cases', ->
       it 'can parse both sides of a transforming card'
