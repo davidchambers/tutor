@@ -467,31 +467,31 @@ exports.storm =
 exports.sphere =
   params: {name: 'Phantasmal Sphere'}
   response:
-      name: 'Phantasmal Sphere'
-      mana_cost: '[1][U]'
-      converted_mana_cost: 2
-      types: ['Creature']
-      subtypes: ['Illusion']
-      text: __ """
-        Flying
+    name: 'Phantasmal Sphere'
+    mana_cost: '[1][U]'
+    converted_mana_cost: 2
+    types: ['Creature']
+    subtypes: ['Illusion']
+    text: __ """
+      Flying
 
-        At the beginning of your upkeep, put a +1/+1 counter on
-        Phantasmal Sphere, then sacrifice Phantasmal Sphere unless
-        you pay [1] for each +1/+1 counter on it.
+      At the beginning of your upkeep, put a +1/+1 counter on
+      Phantasmal Sphere, then sacrifice Phantasmal Sphere unless
+      you pay [1] for each +1/+1 counter on it.
 
-        When Phantasmal Sphere leaves the battlefield, put a blue Orb
-        creature token with flying onto the battlefield under target
-        opponent's control. That creature's power and toughness are each
-        equal to the number of +1/+1 counters on Phantasmal Sphere.
-      """
-      power: 0
-      toughness: 1
-      gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Phantasmal+Sphere'
-      versions:
-        3113:
-          expansion: 'Alliances'
-          rarity: 'Rare'
-      rulings: []
+      When Phantasmal Sphere leaves the battlefield, put a blue Orb
+      creature token with flying onto the battlefield under target
+      opponent's control. That creature's power and toughness are each
+      equal to the number of +1/+1 counters on Phantasmal Sphere.
+    """
+    power: 0
+    toughness: 1
+    gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Phantasmal+Sphere'
+    versions:
+      3113:
+        expansion: 'Alliances'
+        rarity: 'Rare'
+    rulings: []
 
 exports.arrows =
   params: {name: 'Serrated Arrows'}
@@ -534,9 +534,9 @@ exports.arrows =
 
 exports.akroma =
   response:
-    name: "Akroma, Angel of Wrath Avatar"
-    converted_mana_cost:0
-    types: ["Vanguard"]
+    name: 'Akroma, Angel of Wrath Avatar'
+    converted_mana_cost: 0
+    types: ['Vanguard']
     subtypes: []
     text: __ """
       Whenever a creature enters the battlefield under your control, it
@@ -547,15 +547,17 @@ exports.akroma =
     life_modifier: 7
     versions:
       182290:
-        expansion: "Vanguard"
-        rarity: "Special"
+        expansion: 'Vanguard'
+        rarity: 'Special'
     rulings: []
-    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=182290"
-    flavor_text: """"Chuck's Virtual Party" avatar (2003)"""
-    expansion: "Vanguard"
-    rarity: "Special"
+    gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=182290'
+    flavor_text: __ """
+      "Chuck's Virtual Party" avatar (2003)
+    """
+    expansion: 'Vanguard'
+    rarity: 'Special'
     number: 33
-    artist: "UDON"
+    artist: 'UDON'
 
 exports.deserter =
   response:
@@ -589,8 +591,8 @@ exports.deserter =
         You choose the target artifact when Werewolf Ransacker's first
         triggered ability goes on the stack. You choose whether or not to
         destroy the artifact when that ability resolves.
-      """ ]
-      [ '2011-01-22', __ """
+      """]
+      ['2011-01-22', __ """
         If the targeted artifact is indestructible or regenerates (or you
         choose not to destroy it), Werewolf Ransacker doesn't deal damage to
         that artifact's controller. Similarly, if the targeted artifact is
@@ -598,13 +600,13 @@ exports.deserter =
         instead of its owner's graveyard, Werewolf Ransacker doesn't deal
         damage to that artifact's controller.
       """]
-      [ '2011-01-22', __ """
+      ['2011-01-22', __ """
         An artifact token that's destroyed is put into its owner's graveyard
         before it ceases to exist. If a token is destroyed by Werewolf
         Ransacker ability, Werewolf Ransacker deals damage to that token's
         controller.
       """]
-      [ '2011-01-22', __ """
+      ['2011-01-22', __ """
         If something becomes a copy of Werewolf Ransacker, that doesn't count
         as "transforming into Werewolf Ransacker." The first triggered ability
         of the new Werewolf Ransacker doesn't trigger.
@@ -633,7 +635,6 @@ exports.ransacker =
       262698:
         expansion: 'Dark Ascension'
         rarity: 'Uncommon'
-    rulings: []
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=262698'
     expansion: 'Dark Ascension'
@@ -645,21 +646,24 @@ exports.ransacker =
         You choose the target artifact when Werewolf Ransacker's first
         triggered ability goes on the stack. You choose whether or not to
         destroy the artifact when that ability resolves.
-        """ ]
-      [ '2011-01-22', __ """
+      """]
+      ['2011-01-22', __ """
         If the targeted artifact is indestructible or regenerates (or you
         choose not to destroy it), Werewolf Ransacker doesn't deal damage to
         that artifact's controller. Similarly, if the targeted artifact is
         destroyed but a replacement effect moves it to a different zone
         instead of its owner's graveyard, Werewolf Ransacker doesn't deal
-        damage to that artifact's controller."""]
-      [ '2011-01-22', __ """
+        damage to that artifact's controller.
+      """]
+      ['2011-01-22', __ """
         An artifact token that's destroyed is put into its owner's graveyard
         before it ceases to exist. If a token is destroyed by Werewolf
         Ransacker ability, Werewolf Ransacker deals damage to that token's
-        controller."""]
-      [ '2011-01-22', __ """
+        controller.
+      """]
+      ['2011-01-22', __ """
         If something becomes a copy of Werewolf Ransacker, that doesn't count
         as "transforming into Werewolf Ransacker." The first triggered ability
-        of the new Werewolf Ransacker doesn't trigger."""]
+        of the new Werewolf Ransacker doesn't trigger.
+      """]
     ]

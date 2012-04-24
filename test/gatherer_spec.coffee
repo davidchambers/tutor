@@ -1,4 +1,4 @@
-should = require 'should'
+should   = require 'should'
 
 gatherer = require '../gatherer'
 cards    = require './fixtures/cards'
@@ -21,4 +21,4 @@ describe 'Gatherer API', ->
     describe 'when given a page parameter of zero', ->
       it 'gives a 404 error'
     describe 'when given a nonexistent page parameter', ->
-        it 'gives a 404 error'
+      it 'gives a 404 error'
