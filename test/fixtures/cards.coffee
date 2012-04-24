@@ -16,6 +16,7 @@ exports.recall =
     """
     expansion: 'Legends'
     rarity: 'Rare'
+    number: 46
     artist: 'Brian Snoddy'
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=1496'
