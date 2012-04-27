@@ -641,29 +641,4 @@ exports.ransacker =
     rarity: 'Uncommon'
     number: '81b'
     artist: 'David Palumbo'
-    rulings: [
-      ['2011-01-22', __ """
-        You choose the target artifact when Werewolf Ransacker's first
-        triggered ability goes on the stack. You choose whether or not to
-        destroy the artifact when that ability resolves.
-      """]
-      ['2011-01-22', __ """
-        If the targeted artifact is indestructible or regenerates (or you
-        choose not to destroy it), Werewolf Ransacker doesn't deal damage to
-        that artifact's controller. Similarly, if the targeted artifact is
-        destroyed but a replacement effect moves it to a different zone
-        instead of its owner's graveyard, Werewolf Ransacker doesn't deal
-        damage to that artifact's controller.
-      """]
-      ['2011-01-22', __ """
-        An artifact token that's destroyed is put into its owner's graveyard
-        before it ceases to exist. If a token is destroyed by Werewolf
-        Ransacker ability, Werewolf Ransacker deals damage to that token's
-        controller.
-      """]
-      ['2011-01-22', __ """
-        If something becomes a copy of Werewolf Ransacker, that doesn't count
-        as "transforming into Werewolf Ransacker." The first triggered ability
-        of the new Werewolf Ransacker doesn't trigger.
-      """]
-    ]
+    rulings: []

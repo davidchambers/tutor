@@ -200,7 +200,7 @@ exports.card = (body, callback) ->
       prefix = id = '#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent'
       title1 = jQuery(prefix + 'Header_subtitleDisplay')[0].text
       title2 = jQuery(prefix + '_ctl06_nameRow').children('.value')[0]?.text
-      id += if title1 is title2 then '_ctl05_rightCol' else '_cardComponent1'
+      id += if title1 is title2 then '_cardComponent0' else '_cardComponent1'
       jQuery(id).remove()
 
       $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
