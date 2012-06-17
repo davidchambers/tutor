@@ -40,7 +40,7 @@ exports.homelands_pg1 =
       subtypes: ['Human', 'Cleric']
       power: 1
       toughness: 3
-      text: '[W],[Tap]: Abbey Matron gets +0/+3 until end of turn.'
+      text: '[W], [Tap]: Abbey Matron gets +0/+3 until end of turn.'
       expansion: 'Homelands'
       rarity: 'Common'
       gatherer_url:
@@ -198,7 +198,7 @@ exports.homelands_pg1 =
       power: 2
       toughness: 2
       text: __ """
-        [R],[Tap]: Anaba Shaman deals 1 damage to target creature
+        [R], [Tap]: Anaba Shaman deals 1 damage to target creature
         or player.
       """
       expansion: 'Homelands'
@@ -290,9 +290,9 @@ exports.homelands_pg1 =
       text: __ """
         [Tap]: Add [1] to your mana pool.
 
-        [1],[Tap]: Add [G] to your mana pool.
+        [1], [Tap]: Add [G] to your mana pool.
 
-        [2],[Tap]: Add [R] or [W] to your mana pool.
+        [2], [Tap]: Add [R] or [W] to your mana pool.
       """
       expansion: 'Homelands'
       rarity: 'Uncommon'
@@ -333,7 +333,7 @@ exports.homelands_pg1 =
       types: ['Artifact']
       subtypes: []
       text: __ """
-        [2],[Tap], Sacrifice Apocalypse Chime: Destroy all
+        [2], [Tap], Sacrifice Apocalypse Chime: Destroy all
         nontoken permanents from the Homelands expansion.
         They can't be regenerated.
       """
@@ -379,9 +379,9 @@ exports.homelands_pg1 =
       text: __ """
         [Tap]: Add [1] to your mana pool.
 
-        [1],[Tap]: Add [W] to your mana pool.
+        [1], [Tap]: Add [W] to your mana pool.
 
-        [2],[Tap]: Add [G] or [U] to your mana pool.
+        [2], [Tap]: Add [G] or [U] to your mana pool.
       """
       expansion: 'Homelands'
       rarity: 'Uncommon'
