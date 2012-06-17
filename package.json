@@ -1,6 +1,6 @@
 {
   "name": "tutor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "An API for the Gatherer card database for the Magic the Gathering CCG",
   "repository": {
     "type": "git",
@@ -18,9 +18,10 @@
     }
   ],
   "dependencies": {
-    "coffee-script": "1.2.x",
+    "cheerio": "0.8.x",
+    "coffee-script": "1.3.x",
+    "entities": "0.1.x",
     "express": "2.5.x",
-    "jsdom": "0.2.x",
     "request": "2.9.x",
     "underscore": "1.3.x"
   },

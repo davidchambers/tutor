@@ -1,6 +1,7 @@
 request = require 'request'
 parser  = require './parser'
 
+
 gatherer_url = 'http://gatherer.wizards.com/Pages/'
 
 build_card_url = (params) ->

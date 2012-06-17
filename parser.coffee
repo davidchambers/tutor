@@ -1,5 +1,6 @@
-jsdom = require 'jsdom'
-fs    = require 'fs'
+cheerio   = require 'cheerio'
+entities  = require 'entities'
+
 
 gatherer_root = 'http://gatherer.wizards.com/Pages/'
 
@@ -14,59 +15,53 @@ symbols =
 
 to_symbol = (alt) ->
   match = /^(\S+) or (\S+)$/.exec alt
-  if match and [match, a, b] = match then "#{to_symbol a}/#{to_symbol b}"
+  if match and [a, b] = match[1..] then "#{to_symbol a}/#{to_symbol b}"
   else symbols[alt] or alt
 
-{HTMLElement} = jsdom.dom.level3.html
-Object.defineProperty HTMLElement.prototype, 'text', get: ->
-  return '[' + to_symbol(@alt) + ']' if @nodeName is 'IMG'
-  text = ''
-  for node in @childNodes
-    switch node.nodeType
-      when 1 then text += node.text
-      when 3 then text += node.nodeValue.trim()
-  # Due to our aggressive trimming, mana symbols can end up touching
-  # adjacent words: "[2/R]can be paid with any two mana or with[R]."
-  text.replace(/[\w.](?=[[(])/g, '$& ').replace(/\](?=[(\w])/g, '] ')
+text_content = (obj) ->
+  return unless obj
+  {$} = this
+  obj = if typeof obj is 'string' then @get(obj) else $(obj)
+  return unless obj
 
-get_name = (identifier) ->
-  ($) ->
-    name = $(identifier)[0]?.text
-    # Extract, for example, "Altar's Reap" from "Altar’s Reap (Altar's Reap)".
-    if (match = /^(.+)’(.+) [(](\1'\2)[)]$/.exec name) then match[3] else name
+  obj.find('img').each ->
+    $(this).replaceWith "[#{to_symbol $(this).attr('alt')}]"
+  obj.text().trim()
 
-get_mana_cost = (identifier) ->
-  ($) ->
-    images = $(identifier).children().get()
-    ('[' + to_symbol(alt) + ']' for {alt} in images).join('') if images.length
+get_name = (identifier) -> ->
+  return unless name = @text identifier
+  # Extract, for example, "Altar's Reap" from "Altar’s Reap (Altar's Reap)".
+  if match = /^(.+)’(.+) [(](\1'\2)[)]$/.exec name then match[3] else name
 
-get_converted_mana_cost = (identifier) ->
-  ($) -> +$(identifier)[0]?.text or 0
+get_mana_cost = (identifier) -> ->
+  text if text = @text identifier
 
-get_text = (identifier) ->
-  ($) ->
-    return unless (elements = $(identifier).children().get()).length
-    # Ignore empty paragraphs.
-    (el.text for el in elements).filter((paragraph) -> paragraph).join '\n\n'
+get_converted_mana_cost = (identifier) -> ->
+  +@text(identifier) or 0
 
-get_versions = ($el) ->
+get_text = (identifier) -> ->
+  paragraphs = (@text el for el in @get(identifier).children())
+  paragraphs = (p for p in paragraphs when p) # exclude empty paragraphs
+  paragraphs.join '\n\n' if paragraphs.length
+
+get_versions = (identifier) -> ->
   versions = {}
-  $el.find('img').each ->
-    [match, expansion, rarity] = /^(.*\S)\s+[(](.+)[)]$/.exec @alt
-    versions[/\d+$/.exec @parentNode.href] = {expansion, rarity}
+  {$} = this
+  @get(identifier)?.find('img').each ->
+    img = $(this)
+    [expansion, rarity] = /^(.*\S)\s+[(](.+)[)]$/.exec(img.attr('alt'))[1..]
+    expansion = entities.decode expansion
+    versions[/\d+$/.exec img.parent().attr('href')] = {expansion, rarity}
   versions
 
-split_types = (types, subtypes) ->
-  [types.split(/\s+/), if subtypes then subtypes.split(/\s+/) else []]
-
-vanguard_modifier = (pattern) ->
-  ($) ->
-    +match?[1] if match = pattern.exec $('Hand/Life')[0]?.text
+vanguard_modifier = (pattern) -> ->
+  +pattern.exec(@text 'Hand/Life')?[1]
 
 to_stat = (stat_as_string) ->
   stat_as_number = +stat_as_string
   # Use string representation if coercing to a number gives `NaN`.
   if stat_as_number is stat_as_number then stat_as_number else stat_as_string
+
 
 common_attrs =
 
@@ -76,80 +71,81 @@ common_attrs =
 
   converted_mana_cost: get_converted_mana_cost 'Converted Mana Cost'
 
-  types: ($, data) ->
-    return unless el = $('Types')[0]
-    [match, types, subtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec el.text
-    [data.types, data.subtypes] = split_types types, subtypes
-    return
+  types: (data) ->
+    return unless text = @text 'Types'
+    [types, subtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec(text)[1..]
+    data.subtypes = subtypes?.split(/\s+/) or []
+    types.split(/\s+/)
 
   text: get_text 'Card Text'
 
-  color_indicator: ($) ->
-    $('Color Indicator')[0]?.text
+  color_indicator: ->
+    @text 'Color Indicator'
 
-  watermark: ($) ->
-    $('Watermark')[0]?.text
+  watermark: ->
+    @text 'Watermark'
 
-  stats: ($, data) ->
-    return unless el = $('P/T')[0]
-    [match, power, toughness] = ///^([^/]+?)\s*/\s*([^/]+)$///.exec el.text
+  stats: (data) ->
+    return unless text = @text 'P/T'
+    [power, toughness] = ///^([^/]+?)\s*/\s*([^/]+)$///.exec(text)[1..]
     data.power = to_stat power
     data.toughness = to_stat toughness
     return
 
-  loyalty: ($) ->
-    +$('Loyalty')[0]?.text
+  loyalty: ->
+    +@text 'Loyalty'
 
-  versions: ($, {expansion, rarity}) ->
-    versions = get_versions $('All Sets')
+  versions: ->
+    versions = get_versions('All Sets').call this
     return versions unless Object.keys(versions).length is 0
 
-    if img = $('Expansion').find('img')[0]
+    if img = @get('Expansion').find('img')
       {expansion, rarity} = gid_specific_attrs
-      if (expansion = expansion $) and (rarity = rarity $)
-        versions[/\d+$/.exec img.parentNode.href] = {expansion, rarity}
+      if (expansion = expansion.call this) and (rarity = rarity.call this)
+        href = @$(img).parent().attr('href')
+        versions[/\d+$/.exec href] = {expansion, rarity}
     versions
 
-  rulings: ($, data, jQuery) ->
+  rulings: ->
     rulings = []
-    jQuery('.cardDetails').find('tr.post').each ->
-      return unless ($td = jQuery(this).children()).length is 2
-      [match, month, date, year] = /(\d+)\/(\d+)\/(\d+)/.exec $td.get(0).text
-      month = "0#{month}" if month.length is 1
-      date = "0#{date}" if date.length is 1
-      text = $td.get(1).textContent.trim().replace(/[{](.+?)[}]/g, '[$1]')
-      rulings.push ["#{year}-#{month}-#{date}", text.replace(/[ ]{2,}/g, ' ')]
+    for el in @$('.cardDetails').find('tr.post')
+      [date, ruling] = @$(el).children()
+      [m, d, y] = @text(date).split('/')
+      m = '0' + m if m.length is 1
+      d = '0' + d if d.length is 1
+      rulings.push [
+        "#{y}-#{m}-#{d}"
+        @text(ruling).replace(/[{](.+?)[}]/g, '[$1]').replace(/[ ]{2,}/g, ' ')
+      ]
     rulings
+
 
 gid_specific_attrs =
 
-  flavor_text: ($, data) ->
-    return unless ($flavor = $('Flavor Text')).length
-    $children = $flavor.children()
-    if match = /^\u2014(.+)$/.exec $children.get(-1).text
+  flavor_text: (data) ->
+    return unless flavor = @get('Flavor Text')
+    el = flavor.children().last()
+    if match = /^\u2014(.+)$/.exec @text el
       data.flavor_text_attribution = match[1]
-      $children.last().remove()
-    (/^"(.+)"$/.exec(text = $flavor[0].text) or [])[1] or text
+      el.remove()
+    /^"(.+)"$/.exec(text = @text flavor)?[1] or text
 
   hand_modifier: vanguard_modifier /Hand Modifier: ([+-]\d+)/
 
   life_modifier: vanguard_modifier /Life Modifier: ([+-]\d+)/
 
-  expansion: ($) ->
-    $('Expansion').find('a:last-child')[0]?.text
+  expansion: ->
+    @text @get('Expansion').find('a:last-child')
 
-  rarity: ($) ->
-    $('Rarity')[0]?.text
+  rarity: ->
+    @text 'Rarity'
 
-  number: ($) ->
-    to_stat $('Card #')[0]?.text
+  number: ->
+    to_stat @text 'Card #'
 
-  artist: ($) ->
-    $('Artist')[0]?.text
+  artist: ->
+    @text 'Artist'
 
-get_gatherer_id = ($) ->
-  match = /multiverseid=(\d+)/.exec $('.cardTitle').find('a').attr('href')
-  +match[1]
 
 list_view_attrs =
 
@@ -159,8 +155,8 @@ list_view_attrs =
 
   converted_mana_cost: get_converted_mana_cost '.convertedManaCost'
 
-  types: ($, data) ->
-    return unless el = $('.typeLine')[0]
+  types: (data) ->
+    return unless text = @text '.typeLine'
     regex = ///^
       ([^\u2014]+?)             # types
       (?:\s+\u2014\s+(.+?))?    # subtypes
@@ -170,99 +166,101 @@ list_view_attrs =
         (\d+)                   # loyalty
       )[)])?                    # ")"
     $///
-    [match, types, subtypes, power, toughness, loyalty] = regex.exec el.text
-    [data.types, data.subtypes] = split_types types, subtypes
+    [types, subtypes, power, toughness, loyalty] = regex.exec(text)[1..]
     data.power = to_stat power
     data.toughness = to_stat toughness
     data.loyalty = +loyalty
-    return
+    data.subtypes = subtypes?.split(/\s+/) or []
+    types.split(/\s+/)
 
   text: get_text '.rulesText'
 
-  expansion: ($) -> list_view_attrs.versions($)[get_gatherer_id($)].expansion
+  versions: get_versions '.setVersions'
 
-  rarity: ($) -> list_view_attrs.versions($)[get_gatherer_id($)].rarity
-
-  gatherer_url: ($) ->
-    id = get_gatherer_id($)
-    gatherer_root + 'Card/Details.aspx?multiverseid=' + id
-
-  versions: ($) -> get_versions $('.setVersions')
-
-jquery_172 = fs.readFileSync('./jquery-1.7.2.min.js').toString()
 
 exports.card = (body, callback) ->
-  jsdom.env
-    html: body
-    src: [jquery_172]
-    done: (errors, {jQuery}) ->
-      # check for transforming cards
-      prefix = id = '#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent'
-      title1 = jQuery(prefix + 'Header_subtitleDisplay')[0].text
-      title2 = jQuery(prefix + '_ctl06_nameRow').children('.value')[0]?.text
-      id += if title1 is title2 then '_cardComponent0' else '_cardComponent1'
-      jQuery(id).remove()
+  $ = cheerio.load body
+  ctx = $: $, text: text_content, get: (label) ->
+    for el in $('.label')
+      return $(el).next() if @text(el).replace(/:$/, '') is label
 
-      $ = (label) -> jQuery('.label').filter(-> @text is label + ':').next()
-      attach_attrs = (attrs, data) ->
-        for own key, fn of attrs
-          result = fn($, data, jQuery)
-          data[key] = result unless result is undefined
-        data
-      data = attach_attrs common_attrs, {}
-      data.gatherer_url = gatherer_root + 'Card/' + jQuery('#aspnetForm').attr('action')
+  # Accommodate transforming cards.
+  prefix = id = '#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent'
+  title1 = ctx.text $(prefix + 'Header_subtitleDisplay')
+  title2 = ctx.text $(prefix + '_ctl06_nameRow').children('.value')
+  id += if title1 is title2 then '_cardComponent0' else '_cardComponent1'
+  $(id).remove()
 
-      if /multiverseid/.test data.gatherer_url
-        data = attach_attrs gid_specific_attrs, data
+  data = {}
+  for own key, fn of common_attrs
+    data[key] = fn.call ctx, data
 
-      for own key, value of data
-        delete data[key] if value is undefined or value isnt value # NaN
-      process.nextTick ->
-        callback null, data
+  action = $('#aspnetForm').attr('action')
+  data.gatherer_url = "#{gatherer_root}Card/#{entities.decode action}"
+  if /multiverseid/.test data.gatherer_url
+    for own key, fn of gid_specific_attrs
+      data[key] = fn.call ctx, data
+
+  for own key, value of data
+    delete data[key] if value is undefined or value isnt value # NaN
+
+  process.nextTick ->
+    callback null, data
+
 
 exports.set = (body, callback) ->
-  jsdom.env
-    html: body
-    src: [jquery_172]
-    done: (errors, {jQuery}) ->
-      $ = (el) -> (selector) -> jQuery(el).find(selector)
-      pages = do ->
-        for {text} in jQuery('.paging').find('a').get().reverse()
-          return number if (number = +text) > 0
-        1
+  $ = cheerio.load body
+  ctx = {$, text: text_content}
 
-      # Gatherer returns the last page of results for a specified page
-      # parameter beyond the upper bound. This is undesirable behaviour;
-      # 404 is the appropriate response in such cases.
-      #
-      # Requests for nonexistent sets receive 404 responses, also.
-      $el = jQuery('#ctl00_ctl00_ctl00_MainContent_SubContent_topPagingControlsContainer')
-      page = +$el.children('a[style="text-decoration: underline;"]').text()
-      requested_page = +jQuery('#aspnetForm').attr('action').match(/page=(\d+)/)?[1]+1
-      if requested_page is page
-        cards = []
-        jQuery('.cardItem').each ->
-          card = {}
-          for own key, fn of list_view_attrs
-            result = fn $(this), card
-            card[key] = result unless result is undefined
-          for own key, value of card
-            delete card[key] if value is undefined or value isnt value # NaN
-          cards.push card
-        [error, data] = [null, {page, pages, cards}]
-      else
-        error = 'Not Found'
-        data = {error, status: 404}
-      process.nextTick ->
-        callback error, data
+  pages = do ->
+    for link in $('.paging').find('a').get().reverse()
+      return number if (number = +ctx.text link) > 0
+    1
+
+  id = '#ctl00_ctl00_ctl00_MainContent_SubContent_topPagingControlsContainer'
+  page = +ctx.text $(id).children('a[style="text-decoration:underline;"]')
+
+  if +$('#aspnetForm').attr('action').match(/page=(\d+)/)?[1] + 1 is page
+    cards = []
+    for el in $('.cardItem')
+      el = $(el)
+      card = {}
+      for own key, fn of list_view_attrs
+        ctx.get = (selector) -> el.find(selector)
+
+        href = el.find('.cardTitle').find('a').attr('href')
+        [param, id] = /multiverseid=(\d+)/.exec href
+        card.gatherer_url = "#{gatherer_root}Card/Details.aspx?#{param}"
+
+        {expansion, rarity} = get_versions('.setVersions').call(ctx)[id]
+        card.expansion = expansion
+        card.rarity = rarity
+
+        card[key] = fn.call ctx, card
+      for own key, value of card
+        delete card[key] if value is undefined or value isnt value # NaN
+      cards.push card
+    [error, data] = [null, {page, pages, cards}]
+  else
+    # Gatherer returns the last page of results for a specified page
+    # parameter beyond the upper bound. This is undesirable behaviour;
+    # 404 is the appropriate response in such cases.
+    error = 'Not Found'
+    data = {error, status: 404}
+
+  process.nextTick ->
+    callback error, data
+
 
 collect_options = (label) ->
   (body, callback) ->
-    jsdom.env html: body, src: [jquery_172], done: (errors, {jQuery}) ->
-      id = "#ctl00_ctl00_MainContent_Content_SearchControls_#{label}AddText"
-      $options = jQuery(id).children('option')
-      process.nextTick ->
-        callback null, (value for {value} in $options when value)
+    $ = cheerio.load body
+    id = "#ctl00_ctl00_MainContent_Content_SearchControls_#{label}AddText"
+    values = ($(o).attr('value') for o in $(id).children())
+    values = (entities.decode v for v in values when v)
+
+    process.nextTick ->
+      callback null, values
 
 exports.sets    = collect_options 'set'
 exports.formats = collect_options 'format'
