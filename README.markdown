@@ -18,7 +18,7 @@ To run the server:
 This starts a server listening on the port set as the environment variable PORT,
 or on port 3000 if PORT is undefined.
 
-## `GET /card/:id`
+## GET /card/:id
 
 Returns a JSON representation of the card specified (by Gatherer id) in the
 request path. The response includes version-specific metadata such as flavor
@@ -28,14 +28,14 @@ text and rarity.
 
 ![Flame Javelin][4]
 
-## `GET /card/:id/:part`
+## GET /card/:id/:part
 
 Returns a JSON representation of the specified part of the specified multipart
 card. For example, `GET /card/27166/Ice` returns the Ice half of Fire and Ice.
 
 ![Fire and Ice][5]
 
-## `GET /card/:name`
+## GET /card/:name
 
 Returns a JSON representation of the specified card. The response does *not*
 include version-specific metadata such as flavor text and rarity.
@@ -70,7 +70,7 @@ These attributes may be included in a response:
 Attributes not applicable to the card type (e.g. lands have no mana cost) or
 not present (e.g. certain creatures have no rules text) are omitted.
 
-## `GET /set/:name/:page?`
+## GET /set/:name/:page?
 
 Returns a page of cards (up to 25) from the specified set. The first page of
 results is returned if `page` is omitted. Responses contain `page`, `pages`,
