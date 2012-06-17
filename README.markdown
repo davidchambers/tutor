@@ -100,12 +100,6 @@ Each card in `cards` contains all applicable attributes among the following:
 
     $ npm test
 
-## Contributing
-
-The tests, due to their nature, break from time to time. Before making code
-changes, update any failing tests (as an isolated commit). Then, change the
-code and update the test suite as appropriate. Finally, make a pull request.
-
 
 [1]: http://gatherer.wizards.com/
 [2]: http://expressjs.com/
