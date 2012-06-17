@@ -24,49 +24,7 @@ Returns a JSON representation of the card specified (by Gatherer id) in the
 request path. The response includes version-specific metadata such as flavor
 text and rarity.
 
-    $ curl http://localhost:3000/card/146017 --silent | python -mjson.tool
-    {
-        "artist": "Trevor Hairsine", 
-        "converted_mana_cost": 6, 
-        "expansion": "Shadowmoor", 
-        "flavor_text": "Gyara Spearhurler would have been renowned for her deadly accuracy, if it weren't for her deadly accuracy.", 
-        "gatherer_url": "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=146017", 
-        "mana_cost": "[2/R][2/R][2/R]", 
-        "name": "Flame Javelin", 
-        "number": 92, 
-        "rarity": "Uncommon", 
-        "rulings": [
-            [
-                "2008-05-01", 
-                "If an effect reduces the cost to cast a spell by an amount of generic mana, it applies to a monocolored hybrid spell only if you've chosen a method of paying for it that includes generic mana."
-            ], 
-            [
-                "2008-05-01", 
-                "A card with a monocolored hybrid mana symbol in its mana cost is each of the colors that appears in its mana cost, regardless of what mana was spent to cast it. Thus, Flame Javelin is red even if you spend six green mana to cast it."
-            ], 
-            [
-                "2008-05-01", 
-                "A card with monocolored hybrid mana symbols in its mana cost has a converted mana cost equal to the highest possible cost it could be cast for. Its converted mana cost never changes. Thus, Flame Javelin has a converted mana cost of 6, even if you spend [R][R][R] to cast it."
-            ], 
-            [
-                "2008-05-01", 
-                "If a cost includes more than one monocolored hybrid mana symbol, you can choose a different way to pay for each symbol. For example, you can pay for Flame Javelin by spending [R][R][R], [2][R][R], [4][R], or [6]."
-            ]
-        ], 
-        "subtypes": [], 
-        "text": "([2/R] can be paid with any two mana or with [R]. This card's converted mana cost is 6.)\n\nFlame Javelin deals 4 damage to target creature or player.", 
-        "types": ["Instant"], 
-        "versions": {
-            "146017": {
-                "expansion": "Shadowmoor", 
-                "rarity": "Uncommon"
-            }, 
-            "189220": {
-                "expansion": "Duel Decks: Jace vs. Chandra", 
-                "rarity": "Uncommon"
-            }
-        }
-    }
+![JSON response](http://f.cl.ly/items/2M160s0G0n0I0U0R3C3A/json-response.png)
 
 ![Flame Javelin][4]
 
@@ -82,39 +40,7 @@ card. For example, `GET /card/27166/Ice` returns the Ice half of Fire and Ice.
 Returns a JSON representation of the specified card. The response does *not*
 include version-specific metadata such as flavor text and rarity.
 
-    $ curl http://localhost:3000/card/%C3%86ther%20Storm --silent | python -mjson.tool
-    {
-        "converted_mana_cost": 4, 
-        "mana_cost": "[3][U]", 
-        "name": "\u00c6ther Storm", 
-        "rulings": [
-            [
-                "2004-10-04", 
-                "This does not stop a creature card from being put directly onto the battlefield by a spell or ability."
-            ], 
-            [
-                "2008-08-01", 
-                "Affects any spell with the type creature, including those with other types such as artifact or enchantment. This includes older cards with \"summon\" on their type line."
-            ]
-        ], 
-        "subtypes": [], 
-        "text": "Creature spells can't be cast.\n\nPay 4 life: Destroy \u00c6ther Storm. It can't be regenerated. Any player may activate this ability.", 
-        "types": ["Enchantment"], 
-        "versions": {
-            "184722": {
-                "expansion": "Masters Edition II", 
-                "rarity": "Uncommon"
-            }, 
-            "2935": {
-                "expansion": "Homelands", 
-                "rarity": "Uncommon"
-            }, 
-            "3891": {
-                "expansion": "Fifth Edition", 
-                "rarity": "Uncommon"
-            }
-        }
-    }
+![JSON response](http://f.cl.ly/items/1P3i1m0H3E3H2F0u1U0V/json-response.png)
 
 ## Attributes
 
