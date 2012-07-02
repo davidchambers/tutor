@@ -642,3 +642,76 @@ exports.ransacker =
     number: '81b'
     artist: 'David Palumbo'
     rulings: []
+
+exports.ange =
+  params: [273000, null]
+  options: {printed: 'true'}
+  response:
+    name: "Ange du vol d'albâtre"
+    mana_cost: '[4][W]'
+    converted_mana_cost: 5
+    type: 'Créature : - ange'
+    text: __ """
+      Vol
+
+      Au début de votre entretien, renvoyez la carte d'esprit ciblée
+      depuis votre cimetière dans votre main.
+    """
+    flavor_text: __ """
+      Elle survit sans Avacyn mais secrètement, elle demande à chaque
+      âme qu'elle guide si elle l'a vue.
+    """
+    power: 4
+    toughness: 4
+    versions:
+      273000:
+        expansion: 'Innistrad'
+        rarity: 'Rare'
+    gatherer_url:
+      'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=273000'
+    expansion: 'Innistrad'
+    rarity: 'Rare'
+    number: 2
+    artist: 'Howard Lyon'
+    rulings: [
+      ['2011-09-22', __ """
+        The Spirit card must already be in your graveyard when the
+        ability triggers at the beginning of your upkeep. If there is
+        no Spirit card in your graveyard when your upkeep begins, the
+        ability will be removed from the stack with no effect.
+      """]
+    ]
+
+exports.tunnel =
+  params: [226, null]
+  options: {printed: 'true'}
+  response:
+    name: 'Tunnel'
+    mana_cost: '[R]'
+    converted_mana_cost: 1
+    type: 'Instant'
+    text: __ """
+      Destroys 1 wall. Target wall cannot be regenerated.
+    """
+    versions:
+      226:
+        expansion: 'Limited Edition Alpha'
+        rarity: 'Uncommon'
+      521:
+        expansion: 'Limited Edition Beta'
+        rarity: 'Uncommon'
+      823:
+        expansion: 'Unlimited Edition'
+        rarity: 'Uncommon'
+      1322:
+        expansion: 'Revised Edition'
+        rarity: 'Uncommon'
+      2310:
+        expansion: 'Fourth Edition'
+        rarity: 'Uncommon'
+    gatherer_url:
+      'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=226'
+    expansion: 'Limited Edition Alpha'
+    rarity: 'Uncommon'
+    artist: 'Dan Frazier'
+    rulings: []

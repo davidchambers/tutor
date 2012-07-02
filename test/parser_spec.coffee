@@ -15,6 +15,7 @@ parser_matches_fixture = (card_fixture) ->
     parser.card web_fixture(card_fixture.response.name), (err, obj) ->
       obj.should.eql card_fixture.response
       done()
+    , card_fixture.options
 
 parser_builds_index = (func, fixture) ->
   (done) ->
@@ -62,6 +63,9 @@ describe 'Parser', ->
       it 'can parse the second side of a transforming card', parser_matches_fixture cards.ransacker
       it 'can parse cards that have odd entities in their names'
       it 'can parse the BFM'
+    describe 'printed=true', ->
+      it "can provide a card's details in French", parser_matches_fixture cards.ange
+      it "can provide a card's original wording", parser_matches_fixture cards.tunnel
   describe '.set', ->
     describe 'old tests', ->
       it 'can parse the first page of homelands', (done) ->

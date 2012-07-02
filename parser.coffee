@@ -4,6 +4,8 @@ entities  = require 'entities'
 
 gatherer_root = 'http://gatherer.wizards.com/Pages/'
 
+prefix = '#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent'
+
 symbols =
   White: 'W', 'Phyrexian White':  'W/P'
   Blue:  'U', 'Phyrexian Blue':   'U/P'
@@ -99,11 +101,11 @@ common_attrs =
     versions = get_versions('All Sets').call this
     return versions unless Object.keys(versions).length is 0
 
-    if img = @get('Expansion').find('img')
-      {expansion, rarity} = gid_specific_attrs
-      if (expansion = expansion.call this) and (rarity = rarity.call this)
-        href = @$(img).parent().attr('href')
-        versions[/\d+$/.exec href] = {expansion, rarity}
+    {expansion, rarity} = gid_specific_attrs
+    if (expansion = expansion.call this) and (rarity = rarity.call this)
+      el = @$(prefix + 'Anchors_DetailsAnchors_Printings').find('a')
+      id = el.attr('href').match(/multiverseid=(\d+)/)[1]
+      versions[id] = {expansion, rarity}
     versions
 
   rulings: ->
@@ -178,18 +180,16 @@ list_view_attrs =
   versions: get_versions '.setVersions'
 
 
-exports.card = (body, callback) ->
+exports.card = (body, callback, options = {}) ->
   $ = cheerio.load body
   ctx = $: $, text: text_content, get: (label) ->
     for el in $('.label')
       return $(el).next() if @text(el).replace(/:$/, '') is label
 
   # Accommodate transforming cards.
-  prefix = id = '#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent'
   title1 = ctx.text $(prefix + 'Header_subtitleDisplay')
   title2 = ctx.text $(prefix + '_ctl06_nameRow').children('.value')
-  id += if title1 is title2 then '_cardComponent0' else '_cardComponent1'
-  $(id).remove()
+  $("#{prefix}_cardComponent#{+(title1 isnt title2)}").remove()
 
   data = {}
   for own key, fn of common_attrs
@@ -203,6 +203,11 @@ exports.card = (body, callback) ->
 
   for own key, value of data
     delete data[key] if value is undefined or value isnt value # NaN
+
+  if options.printed
+    data.type = data.types.join ' '
+    delete data.types
+    delete data.subtypes
 
   process.nextTick ->
     callback null, data
