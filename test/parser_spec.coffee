@@ -10,12 +10,18 @@ web_fixture = (filename) ->
   filename = filename.toLowerCase().replace(/[ ,-]/g, "")
   fs.readFileSync("#{__dirname}/fixtures/web/#{filename}.html").toString()
 
-parser_matches_fixture = (card_fixture) ->
+card_matches_fixture = (card_fixture) ->
   (done) ->
     parser.card web_fixture(card_fixture.response.name), (err, obj) ->
       obj.should.eql card_fixture.response
       done()
     , card_fixture.options
+
+lang_matches_fixture = (lang_fixture) ->
+  (done) ->
+    parser.lang web_fixture(lang_fixture.name), (err, obj) ->
+      obj.should.eql lang_fixture.response
+      done()
 
 parser_builds_index = (func, fixture) ->
   (done) ->
@@ -33,19 +39,19 @@ describe 'Parser', ->
       it 'should pass an array of types', parser_builds_index parser.types, indices.types
   describe '.card', ->
     describe 'old tests', ->
-      it 'can find Recall', parser_matches_fixture cards.recall
-      it 'can find Ancestral Vision', parser_matches_fixture cards.ancestral_vision # 0 converted mana cost
-      it 'can find An-Havva Constable', parser_matches_fixture cards.constable
-      it 'can find Diamond Faerie', parser_matches_fixture cards.diamond_faerie
-      it 'can find Flame Javelin', parser_matches_fixture cards.flame_javelin #hybrid mana cost
-      it 'can find Ajani Goldmane', parser_matches_fixture cards.ajani
-      it 'can find Darksteel Colossus', parser_matches_fixture cards.colossus
-      it 'can find Vault Skirge', parser_matches_fixture cards.skirge # phyrexian mana
-      it 'can find Fire', parser_matches_fixture cards.fire # multipart card
-      it 'can find Ice', parser_matches_fixture cards.ice # multipart card
-      it 'can find Æther Storm', parser_matches_fixture cards.storm
-      it 'can find Phantasmal Sphere', parser_matches_fixture cards.sphere
-      it 'can find Serrated Arrows', parser_matches_fixture cards.arrows
+      it 'can find Recall', card_matches_fixture cards.recall
+      it 'can find Ancestral Vision', card_matches_fixture cards.ancestral_vision # 0 converted mana cost
+      it 'can find An-Havva Constable', card_matches_fixture cards.constable
+      it 'can find Diamond Faerie', card_matches_fixture cards.diamond_faerie
+      it 'can find Flame Javelin', card_matches_fixture cards.flame_javelin #hybrid mana cost
+      it 'can find Ajani Goldmane', card_matches_fixture cards.ajani
+      it 'can find Darksteel Colossus', card_matches_fixture cards.colossus
+      it 'can find Vault Skirge', card_matches_fixture cards.skirge # phyrexian mana
+      it 'can find Fire', card_matches_fixture cards.fire # multipart card
+      it 'can find Ice', card_matches_fixture cards.ice # multipart card
+      it 'can find Æther Storm', card_matches_fixture cards.storm
+      it 'can find Phantasmal Sphere', card_matches_fixture cards.sphere
+      it 'can find Serrated Arrows', card_matches_fixture cards.arrows
     describe 'basic types', ->
       it 'can parse Artifacts'
       it 'can parse Creatures'
@@ -56,16 +62,18 @@ describe 'Parser', ->
       it 'can parse Sorceries'
       it 'can parse Tribals'
       it 'can parse Planes'
-      it 'can parse Vanguards', parser_matches_fixture cards.akroma
+      it 'can parse Vanguards', card_matches_fixture cards.akroma
       it 'can parse Schemes'
     describe 'special cases', ->
-      it 'can parse the first side of a transforming card', parser_matches_fixture cards.deserter
-      it 'can parse the second side of a transforming card', parser_matches_fixture cards.ransacker
+      it 'can parse the first side of a transforming card', card_matches_fixture cards.deserter
+      it 'can parse the second side of a transforming card', card_matches_fixture cards.ransacker
       it 'can parse cards that have odd entities in their names'
       it 'can parse the BFM'
     describe 'printed=true', ->
-      it "can provide a card's details in French", parser_matches_fixture cards.ange
-      it "can provide a card's original wording", parser_matches_fixture cards.tunnel
+      it "can provide a card's details in French", card_matches_fixture cards.ange
+      it "can provide a card's original wording", card_matches_fixture cards.tunnel
+  describe '.lang', ->
+    it 'can parse Birds of Paradise', lang_matches_fixture cards.birds_of_paradise
   describe '.set', ->
     describe 'old tests', ->
       it 'can parse the first page of homelands', (done) ->
