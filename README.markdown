@@ -70,6 +70,20 @@ These attributes may be included in a response:
 Attributes not applicable to the card type (e.g. lands have no mana cost) or
 not present (e.g. certain creatures have no rules text) are omitted.
 
+## GET /lang/:id or GET /lang/:name
+
+Return the JSON representation of the available translations of the specified
+card (by Gatherer id) or by name. The result is an array of objects with the
+following properties:
+
+  - `card_name`
+  - `language`
+  - `id`
+
+`card_name` is the translated name of the card, `language` is the english name
+of the language, and `id` is the Gatherer id of the translated card.
+
+
 ## GET /set/:name/:page?
 
 Returns a page of cards (up to 25) from the specified set. The first page of
