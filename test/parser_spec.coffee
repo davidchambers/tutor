@@ -17,10 +17,10 @@ card_matches_fixture = (card_fixture) ->
       done()
     , card_fixture.options
 
-lang_matches_fixture = (lang_fixture) ->
+language_matches_fixture = (language_fixture) ->
   (done) ->
-    parser.lang web_fixture(lang_fixture.name), (err, obj) ->
-      obj.should.eql lang_fixture.response
+    parser.language web_fixture(language_fixture.name), (err, obj) ->
+      obj.should.eql language_fixture.response
       done()
 
 parser_builds_index = (func, fixture) ->
@@ -72,8 +72,8 @@ describe 'Parser', ->
     describe 'printed=true', ->
       it "can provide a card's details in French", card_matches_fixture cards.ange
       it "can provide a card's original wording", card_matches_fixture cards.tunnel
-  describe '.lang', ->
-    it 'can parse Birds of Paradise', lang_matches_fixture cards.birds_of_paradise
+  describe '.language', ->
+    it 'can parse Birds of Paradise', language_matches_fixture cards.birds_of_paradise
   describe '.set', ->
     describe 'old tests', ->
       it 'can parse the first page of homelands', (done) ->

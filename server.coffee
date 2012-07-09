@@ -15,14 +15,14 @@ responder = (fn) ->
         res.json data
 
 app = express.createServer()
-app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///, responder api.fetch_card
-app.get '/card/:name',                      responder api.fetch_card
-app.get /// ^/lang/(\d+)(?:/(\w+))?/?$ ///, responder api.fetch_lang
-app.get '/lang/:name',                      responder api.fetch_lang
-app.get '/set/:name/:page?',                responder api.fetch_set
-app.get '/sets',                            responder api.sets
-app.get '/formats',                         responder api.formats
-app.get '/types',                           responder api.types
+app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///,     responder api.fetch_card
+app.get '/card/:name',                          responder api.fetch_card
+app.get /// ^/language/(\d+)(?:/(\w+))?/?$ ///, responder api.fetch_language
+app.get '/language/:name',                      responder api.fetch_language
+app.get '/set/:name/:page?',                    responder api.fetch_set
+app.get '/sets',                                responder api.sets
+app.get '/formats',                             responder api.formats
+app.get '/types',                               responder api.types
 
 port = process.env.PORT ? 3000
 app.listen port, -> console.log "Listening on #{port}"

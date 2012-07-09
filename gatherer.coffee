@@ -4,7 +4,7 @@ parser  = require './parser'
 
 gatherer_url = 'http://gatherer.wizards.com/Pages/'
 
-exports.fetch_lang = (callback) ->
+exports.fetch_language = (callback) ->
   url = gatherer_url + 'Card/Languages.aspx'
   if 'name' of @params
     url += '?name=' + encodeURIComponent @params.name

@@ -179,7 +179,7 @@ list_view_attrs =
 
   versions: get_versions '.setVersions'
 
-exports.lang = (body, callback) ->
+exports.language = (body, callback) ->
   $ = cheerio.load body
   data = []
 
