@@ -715,3 +715,19 @@ exports.tunnel =
     rarity: 'Uncommon'
     artist: 'Dan Frazier'
     rulings: []
+
+
+exports.birds_of_paradise =
+  params: {name: 'birds of paradise'}
+  name: 'birds of paradise'
+  response: [
+    {card_name: 'Oiseaux de paradis'  , language: 'French'             , id: 263540}
+    {card_name: 'Uccelli del Paradiso', language: 'Italian'            , id: 264038}
+    {card_name: '極楽鳥'              , language: 'Japanese'           , id: 264287}
+    {card_name: '天堂鳥'              , language: 'Chinese Traditional', id: 263291}
+    {card_name: 'Paradiesvögel'       , language: 'German'             , id: 263789}
+    {card_name: 'Aves del paraíso'    , language: 'Spanish'            , id: 265034}
+    {card_name: 'Райские Птицы'       , language: 'Russian'            , id: 264785}
+    {card_name: '天堂鸟'              , language: 'Chinese Simplified' , id: 263042}
+    {card_name: 'Aves do Paraíso'     , language: 'Portuguese (Brazil)', id: 264536}
+  ]

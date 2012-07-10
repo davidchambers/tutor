@@ -179,6 +179,20 @@ list_view_attrs =
 
   versions: get_versions '.setVersions'
 
+exports.language = (body, callback) ->
+  $ = cheerio.load body
+  data = []
+
+  $('tr.cardItem').each (index, element) ->
+    columns = $(this).children('td')
+
+    data.push
+      card_name: $(columns[0]).text().trim()
+      language: $(columns[1]).text().trim()
+      id: parseInt($(columns[0]).find('a').first().attr('href').match(/multiverseid=(\d+)/)[1])
+
+  process.nextTick ->
+    callback null, data
 
 exports.card = (body, callback, options = {}) ->
   $ = cheerio.load body
