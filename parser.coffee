@@ -182,14 +182,14 @@ list_view_attrs =
 exports.language = (body, callback) ->
   $ = cheerio.load body
   data = []
-
-  $('tr.cardItem').each (index, element) ->
-    columns = $(this).children('td')
-
+  $('tr.cardItem').each ->
+    [trans_card_name, language, trans_language] = $(this).children()
+    $name = $(trans_card_name)
+    $lang = $(language)
     data.push
-      card_name: $(columns[0]).text().trim()
-      language: $(columns[1]).text().trim()
-      id: parseInt($(columns[0]).find('a').first().attr('href').match(/multiverseid=(\d+)/)[1])
+      card_name: $name.text().trim()
+      language: $lang.text().trim()
+      id: +$name.find('a').attr('href').match(/multiverseid=(\d+)/)[1]
 
   process.nextTick ->
     callback null, data
