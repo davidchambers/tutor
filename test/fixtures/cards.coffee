@@ -725,28 +725,28 @@ exports.birds_of_paradise =
   params: {name: 'birds of paradise'}
   name: 'birds of paradise'
   response:
-    'de':    {id: 263789, card_name: 'Paradiesvögel'       }
-    'es':    {id: 265034, card_name: 'Aves del paraíso'    }
-    'fr':    {id: 263540, card_name: 'Oiseaux de paradis'  }
-    'it':    {id: 264038, card_name: 'Uccelli del Paradiso'}
-    'ja':    {id: 264287, card_name: '極楽鳥'              }
-    'ru':    {id: 264785, card_name: 'Райские Птицы'       }
-    'pt-BR': {id: 264536, card_name: 'Aves do Paraíso'     }
-    'zh-CN': {id: 263291, card_name: '天堂鳥'              }
-    'zh-TW': {id: 263042, card_name: '天堂鸟'              }
+    'de':    {id: 263789, name: 'Paradiesvögel'       }
+    'es':    {id: 265034, name: 'Aves del paraíso'    }
+    'fr':    {id: 263540, name: 'Oiseaux de paradis'  }
+    'it':    {id: 264038, name: 'Uccelli del Paradiso'}
+    'ja':    {id: 264287, name: '極楽鳥'              }
+    'ru':    {id: 264785, name: 'Райские Птицы'       }
+    'pt-BR': {id: 264536, name: 'Aves do Paraíso'     }
+    'zh-CN': {id: 263291, name: '天堂鳥'              }
+    'zh-TW': {id: 263042, name: '天堂鸟'              }
 
 exports.drowned_catacomb =
   params: {name: 'drowned catacomb'}
   name: 'drowned catacomb'
   response:
-    'de':    {id: 331992, card_name: 'Versunkene Katakomben'}
-    'es':    {id: 332241, card_name: 'Catacumba inundada'   }
-    'fr':    {id: 331494, card_name: 'Catacombes noyées'    }
-    'it':    {id: 332490, card_name: 'Catacombe Allagate'   }
-    'ja':    {id: 332739, card_name: '水没した地下墓地'     }
-    'kr':    {id: 330498, card_name: '수몰된 묘지'          }
-    'ru':    {id: 331743, card_name: 'Затопленная Катакомба'}
-    'pt-BR': {id: 331245, card_name: 'Catacumba Submersa'   }
-    'zh-CN': {id: 330747, card_name: '水沒墓穴'             }
-    'zh-TW': {id: 330249, card_name: '水没墓穴'             }
+    'de':    {id: 331992, name: 'Versunkene Katakomben'}
+    'es':    {id: 332241, name: 'Catacumba inundada'   }
+    'fr':    {id: 331494, name: 'Catacombes noyées'    }
+    'it':    {id: 332490, name: 'Catacombe Allagate'   }
+    'ja':    {id: 332739, name: '水没した地下墓地'     }
+    'kr':    {id: 330498, name: '수몰된 묘지'          }
+    'ru':    {id: 331743, name: 'Затопленная Катакомба'}
+    'pt-BR': {id: 331245, name: 'Catacumba Submersa'   }
+    'zh-CN': {id: 330747, name: '水沒墓穴'             }
+    'zh-TW': {id: 330249, name: '水没墓穴'             }
 

@@ -203,7 +203,7 @@ exports.language = (body, callback, options = {}) ->
     $lang = $(language)
     data[languages[$lang.text().trim()]] =
       id: +$name.find('a').attr('href').match(/multiverseid=(\d+)/)[1]
-      card_name: $name.text().trim()
+      name: $name.text().trim()
 
   process.nextTick ->
     callback null, data
