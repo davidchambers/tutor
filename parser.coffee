@@ -40,7 +40,7 @@ text_content = (obj) ->
   return unless obj
 
   obj.find('img').each ->
-    $(this).replaceWith "[#{to_symbol $(this).attr('alt')}]"
+    $(this).replaceWith "{#{to_symbol $(this).attr('alt')}}"
   obj.text().trim()
 
 get_name = (identifier) -> ->
@@ -57,7 +57,8 @@ get_converted_mana_cost = (identifier) -> ->
 get_text = (identifier) -> ->
   paragraphs = (@text el for el in @get(identifier).children())
   paragraphs = (p for p in paragraphs when p) # exclude empty paragraphs
-  paragraphs.join '\n\n' if paragraphs.length
+  paragraphs = paragraphs.join '\n\n' if paragraphs.length
+  paragraphs.replace(/\{Tap\}/g, '{T}')
 
 get_versions = (identifier) -> ->
   versions = {}
@@ -130,7 +131,7 @@ common_attrs =
       d = '0' + d if d.length is 1
       rulings.push [
         "#{y}-#{m}-#{d}"
-        @text(ruling).replace(/[{](.+?)[}]/g, '[$1]').replace(/[ ]{2,}/g, ' ')
+        @text(ruling).replace(/[ ]{2,}/g, ' ')
       ]
     rulings
 

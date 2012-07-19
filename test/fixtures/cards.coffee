@@ -6,7 +6,7 @@ exports.recall =
   params: ['1496', null]
   response:
     name: 'Recall'
-    mana_cost: '[X][X][U]'
+    mana_cost: '{X}{X}{U}'
     converted_mana_cost: 1
     types: ['Sorcery']
     subtypes: []
@@ -54,7 +54,7 @@ exports.constable =
   params: ['2960', null]
   response:
     name: 'An-Havva Constable'
-    mana_cost: '[1][G][G]'
+    mana_cost: '{1}{G}{G}'
     converted_mana_cost: 3
     types: ['Creature']
     subtypes: ['Human']
@@ -87,7 +87,7 @@ exports.ice =
   params:  ['27166', 'Ice']
   response:
     name: 'Ice'
-    mana_cost: '[1][U]'
+    mana_cost: '{1}{U}'
     converted_mana_cost: 2
     types: ['Instant']
     subtypes: []
@@ -118,7 +118,7 @@ exports.fire =
   params: ['27166', 'Fire']
   response:
     name: 'Fire'
-    mana_cost: '[1][R]'
+    mana_cost: '{1}{R}'
     converted_mana_cost: 2
     types: ['Instant']
     subtypes: []
@@ -151,8 +151,8 @@ exports.ancestral_vision =
     types: ['Sorcery']
     subtypes: []
     text: __ """
-      Suspend 4\u2014[U] (Rather than cast this card from your hand,
-      pay [U] and exile it with four time counters on it. At the
+      Suspend 4\u2014{U} (Rather than cast this card from your hand,
+      pay {U} and exile it with four time counters on it. At the
       beginning of your upkeep, remove a time counter. When the last
       is removed, cast it without paying its mana cost.)
 
@@ -189,15 +189,15 @@ exports.diamond_faerie =
   params: ['121138', null]
   response:
     name: 'Diamond Faerie'
-    mana_cost: '[2][G][W][U]'
+    mana_cost: '{2}{G}{W}{U}'
     converted_mana_cost: 5
     types: ['Snow', 'Creature']
     subtypes: ['Faerie']
     text: __ """
       Flying
 
-      [1][S]: Snow creatures you control get +1/+1 until end of turn.
-      ([S] can be paid with one mana from a snow permanent.)
+      {1}{S}: Snow creatures you control get +1/+1 until end of turn.
+      ({S} can be paid with one mana from a snow permanent.)
     """
     flavor_text: __ """
       That such delicate creatures could become so powerful in the
@@ -222,7 +222,7 @@ exports.ajani =
   params: ['140233', null]
   response:
     name: 'Ajani Goldmane'
-    mana_cost: '[2][W][W]'
+    mana_cost: '{2}{W}{W}'
     converted_mana_cost: 4
     types: ['Planeswalker']
     subtypes: ['Ajani']
@@ -269,12 +269,12 @@ exports.flame_javelin =
   params: ['146017', null]
   response:
     name: 'Flame Javelin'
-    mana_cost: '[2/R][2/R][2/R]'
+    mana_cost: '{2/R}{2/R}{2/R}'
     converted_mana_cost: 6
     types: ['Instant']
     subtypes: []
     text: __ """
-      ([2/R] can be paid with any two mana or with [R]. This card's
+      ({2/R} can be paid with any two mana or with {R}. This card's
       converted mana cost is 6.)
 
       Flame Javelin deals 4 damage to target creature or player.
@@ -314,13 +314,13 @@ exports.flame_javelin =
         mana cost has a converted mana cost equal to the highest
         possible cost it could be cast for. Its converted mana
         cost never changes. Thus, Flame Javelin has a converted
-        mana cost of 6, even if you spend [R][R][R] to cast it.
+        mana cost of 6, even if you spend {R}{R}{R} to cast it.
       """]
       ['2008-05-01', __ """
         If a cost includes more than one monocolored hybrid
         mana symbol, you can choose a different way to pay for
         each symbol. For example, you can pay for Flame Javelin
-        by spending [R][R][R], [2][R][R], [4][R], or [6].
+        by spending {R}{R}{R}, {2}{R}{R}, {4}{R}, or {6}.
       """]
     ]
 
@@ -328,7 +328,7 @@ exports.colossus =
   params: ['191312', null]
   response:
     name: 'Darksteel Colossus'
-    mana_cost: '[11]'
+    mana_cost: '{11}'
     converted_mana_cost: 11
     types: ['Artifact', 'Creature']
     subtypes: ['Golem']
@@ -373,12 +373,12 @@ exports.skirge =
   params: ['217984', null]
   response:
     name: 'Vault Skirge'
-    mana_cost: '[1][B/P]'
+    mana_cost: '{1}{B/P}'
     converted_mana_cost: 2
     types: ['Artifact', 'Creature']
     subtypes: ['Imp']
     text: __ """
-      ([B/P] can be paid with either [B] or 2 life.)
+      ({B/P} can be paid with either {B} or 2 life.)
 
       Flying
 
@@ -431,7 +431,7 @@ exports.storm =
   params: {name: 'Æther Storm'}
   response:
     name: 'Æther Storm'
-    mana_cost: '[3][U]'
+    mana_cost: '{3}{U}'
     converted_mana_cost: 4
     types: ['Enchantment']
     subtypes: []
@@ -468,7 +468,7 @@ exports.sphere =
   params: {name: 'Phantasmal Sphere'}
   response:
     name: 'Phantasmal Sphere'
-    mana_cost: '[1][U]'
+    mana_cost: '{1}{U}'
     converted_mana_cost: 2
     types: ['Creature']
     subtypes: ['Illusion']
@@ -477,7 +477,7 @@ exports.sphere =
 
       At the beginning of your upkeep, put a +1/+1 counter on
       Phantasmal Sphere, then sacrifice Phantasmal Sphere unless
-      you pay [1] for each +1/+1 counter on it.
+      you pay {1} for each +1/+1 counter on it.
 
       When Phantasmal Sphere leaves the battlefield, put a blue Orb
       creature token with flying onto the battlefield under target
@@ -497,7 +497,7 @@ exports.arrows =
   params: {name: 'Serrated Arrows'}
   response:
     name: 'Serrated Arrows'
-    mana_cost: '[4]'
+    mana_cost: '{4}'
     converted_mana_cost: 4
     types: ['Artifact']
     subtypes: []
@@ -508,7 +508,7 @@ exports.arrows =
       At the beginning of your upkeep, if there are no arrowhead
       counters on Serrated Arrows, sacrifice it.
 
-      [Tap], Remove an arrowhead counter from Serrated Arrows:
+      {T}, Remove an arrowhead counter from Serrated Arrows:
       Put a -1/-1 counter on target creature.
     """
     gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Serrated+Arrows'
@@ -562,7 +562,7 @@ exports.akroma =
 exports.deserter =
   response:
     name: 'Afflicted Deserter'
-    mana_cost: '[3][R]'
+    mana_cost: '{3}{R}'
     converted_mana_cost: 4
     types: ['Creature']
     subtypes: ['Human', 'Werewolf']
@@ -648,7 +648,7 @@ exports.ange =
   options: {printed: 'true'}
   response:
     name: "Ange du vol d'albâtre"
-    mana_cost: '[4][W]'
+    mana_cost: '{4}{W}'
     converted_mana_cost: 5
     type: 'Créature : - ange'
     text: __ """
@@ -687,7 +687,7 @@ exports.tunnel =
   options: {printed: 'true'}
   response:
     name: 'Tunnel'
-    mana_cost: '[R]'
+    mana_cost: '{R}'
     converted_mana_cost: 1
     type: 'Instant'
     text: __ """
