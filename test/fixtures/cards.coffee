@@ -716,18 +716,37 @@ exports.tunnel =
     artist: 'Dan Frazier'
     rulings: []
 
+exports.black_lotus =
+  params: ['600']
+  name: 'black lotus'
+  response: {}
 
 exports.birds_of_paradise =
   params: {name: 'birds of paradise'}
   name: 'birds of paradise'
-  response: [
-    {card_name: 'Oiseaux de paradis'  , language: 'French'             , id: 263540}
-    {card_name: 'Uccelli del Paradiso', language: 'Italian'            , id: 264038}
-    {card_name: '極楽鳥'              , language: 'Japanese'           , id: 264287}
-    {card_name: '天堂鳥'              , language: 'Chinese Traditional', id: 263291}
-    {card_name: 'Paradiesvögel'       , language: 'German'             , id: 263789}
-    {card_name: 'Aves del paraíso'    , language: 'Spanish'            , id: 265034}
-    {card_name: 'Райские Птицы'       , language: 'Russian'            , id: 264785}
-    {card_name: '天堂鸟'              , language: 'Chinese Simplified' , id: 263042}
-    {card_name: 'Aves do Paraíso'     , language: 'Portuguese (Brazil)', id: 264536}
-  ]
+  response:
+    'de':    {id: 263789, card_name: 'Paradiesvögel'       }
+    'es':    {id: 265034, card_name: 'Aves del paraíso'    }
+    'fr':    {id: 263540, card_name: 'Oiseaux de paradis'  }
+    'it':    {id: 264038, card_name: 'Uccelli del Paradiso'}
+    'ja':    {id: 264287, card_name: '極楽鳥'              }
+    'ru':    {id: 264785, card_name: 'Райские Птицы'       }
+    'pt-BR': {id: 264536, card_name: 'Aves do Paraíso'     }
+    'zh-CN': {id: 263291, card_name: '天堂鳥'              }
+    'zh-TW': {id: 263042, card_name: '天堂鸟'              }
+
+exports.drowned_catacomb =
+  params: {name: 'drowned catacomb'}
+  name: 'drowned catacomb'
+  response:
+    'de':    {id: 331992, card_name: 'Versunkene Katakomben'}
+    'es':    {id: 332241, card_name: 'Catacumba inundada'   }
+    'fr':    {id: 331494, card_name: 'Catacombes noyées'    }
+    'it':    {id: 332490, card_name: 'Catacombe Allagate'   }
+    'ja':    {id: 332739, card_name: '水没した地下墓地'     }
+    'kr':    {id: 330498, card_name: '수몰된 묘지'          }
+    'ru':    {id: 331743, card_name: 'Затопленная Катакомба'}
+    'pt-BR': {id: 331245, card_name: 'Catacumba Submersa'   }
+    'zh-CN': {id: 330747, card_name: '水沒墓穴'             }
+    'zh-TW': {id: 330249, card_name: '水没墓穴'             }
+

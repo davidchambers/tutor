@@ -15,6 +15,19 @@ symbols =
   Two:   '2', 'Variable Colorless': 'X'
   Snow:  'S'
 
+languages =
+  'Chinese Simplified':  'zh-TW',
+  'Chinese Traditional': 'zh-CN',
+  'German':              'de',
+  'English':             'en',
+  'French':              'fr',
+  'Italian':             'it',
+  'Japanese':            'ja',
+  'Korean':              'kr',
+  'Portuguese (Brazil)': 'pt-BR',
+  'Russian':             'ru',
+  'Spanish':             'es',
+
 to_symbol = (alt) ->
   match = /^(\S+) or (\S+)$/.exec alt
   if match and [a, b] = match[1..] then "#{to_symbol a}/#{to_symbol b}"
@@ -179,17 +192,17 @@ list_view_attrs =
 
   versions: get_versions '.setVersions'
 
-exports.language = (body, callback) ->
+exports.language = (body, callback, options = {}) ->
   $ = cheerio.load body
-  data = []
+
+  data = {}
   $('tr.cardItem').each ->
     [trans_card_name, language, trans_language] = $(this).children()
     $name = $(trans_card_name)
     $lang = $(language)
-    data.push
-      card_name: $name.text().trim()
-      language: $lang.text().trim()
+    data[languages[$lang.text().trim()]] =
       id: +$name.find('a').attr('href').match(/multiverseid=(\d+)/)[1]
+      card_name: $name.text().trim()
 
   process.nextTick ->
     callback null, data

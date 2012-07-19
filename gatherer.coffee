@@ -6,6 +6,7 @@ gatherer_url = 'http://gatherer.wizards.com/Pages/'
 
 exports.fetch_language = (callback) ->
   url = gatherer_url + 'Card/Languages.aspx'
+
   if 'name' of @params
     url += '?name=' + encodeURIComponent @params.name
   else
@@ -15,11 +16,11 @@ exports.fetch_language = (callback) ->
 
   request {url, followRedirect: no}, (error, response, body) ->
     if error or (status = response.statusCode) isnt 200
-      # Gatherer does a 302 redirect if the requested id does not exist.
-      # In such cases, we respond with the more appropriate status code.
       callback error, {error, status}
       return
-    parser.lang body, callback
+
+    parser.language body, callback
+
 
 exports.fetch_card = (callback) ->
   printed = @query.printed is 'true'
