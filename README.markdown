@@ -83,11 +83,11 @@ with the following properties:
 Example:
 
     {
-        'es': {
-            'name': 'Ave del paraiso',
-            'id': 265034,
-        },
-    },
+      "es": {
+        "name": "Ave del paraiso",
+        "id": 265034
+      }
+    }
 
 
 ## GET /set/:name/:page?

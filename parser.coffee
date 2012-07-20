@@ -13,22 +13,22 @@ symbols =
   Red:   'R', 'Phyrexian Red':      'R/P'
   Green: 'G', 'Phyrexian Green':    'G/P'
   Two:   '2', 'Variable Colorless': 'X'
-  Snow:  'S',
-  Tap:   'T',
+  Snow:  'S'
+  Tap:   'T'
   Untap: 'Q'
 
 languages =
-  'Chinese Simplified':  'zh-TW',
-  'Chinese Traditional': 'zh-CN',
-  'German':              'de',
-  'English':             'en',
-  'French':              'fr',
-  'Italian':             'it',
-  'Japanese':            'ja',
-  'Korean':              'kr',
-  'Portuguese (Brazil)': 'pt-BR',
-  'Russian':             'ru',
-  'Spanish':             'es',
+  'Chinese Simplified':  'zh-TW'
+  'Chinese Traditional': 'zh-CN'
+  'German':              'de'
+  'English':             'en'
+  'French':              'fr'
+  'Italian':             'it'
+  'Japanese':            'ja'
+  'Korean':              'kr'
+  'Portuguese (Brazil)': 'pt-BR'
+  'Russian':             'ru'
+  'Spanish':             'es'
 
 to_symbol = (alt) ->
   match = /^(\S+) or (\S+)$/.exec alt
