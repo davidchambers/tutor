@@ -142,7 +142,7 @@ gid_specific_attrs =
   flavor_text: (data) ->
     return unless flavor = @get('Flavor Text')
     el = flavor.children().last()
-    if match = /^(—|――|～)(.+)$/.exec @text el
+    if match = /^(\u2014|\u2015\u2015|\uFF5E)(.+)$/.exec @text el
       data.flavor_text_attribution = match[2]
       el.remove()
     /^"(.+)"$/.exec(text = @text flavor)?[1] or text
