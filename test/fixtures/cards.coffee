@@ -721,202 +721,202 @@ exports.birds_of_paradise_ja =
   options: {printed: true}
   name: 'birdsofparadise_ja'
   response:
-    name: "極楽鳥"
-    mana_cost: "{G}"
+    name: '極楽鳥'
+    mana_cost: '{G}'
     converted_mana_cost: 1
-    text: "飛行\n\n{T}：あなたのマナ・プールに、好きな色１色のマナ１点を加える。"
+    text: '飛行\n\n{T}：あなたのマナ・プールに、好きな色１色のマナ１点を加える。'
     power: 0
     toughness: 1
     versions:
       142:
-        expansion: "Limited Edition Alpha"
-        rarity: "Rare"
+        expansion: 'Limited Edition Alpha'
+        rarity: 'Rare'
       437:
-        expansion: "Limited Edition Beta"
-        rarity: "Rare"
+        expansion: 'Limited Edition Beta'
+        rarity: 'Rare'
       739:
-        expansion: "Unlimited Edition"
-        rarity: "Rare"
+        expansion: 'Unlimited Edition'
+        rarity: 'Rare'
       1236:
-        expansion: "Revised Edition"
-        rarity: "Rare"
+        expansion: 'Revised Edition'
+        rarity: 'Rare'
       2201:
-        expansion: "Fourth Edition"
-        rarity: "Rare"
+        expansion: 'Fourth Edition'
+        rarity: 'Rare'
       3963:
-        expansion: "Fifth Edition"
-        rarity: "Rare"
+        expansion: 'Fifth Edition'
+        rarity: 'Rare'
       11173:
-        expansion: "Seventh Edition"
-        rarity: "Rare"
+        expansion: 'Seventh Edition'
+        rarity: 'Rare'
       14719:
-        expansion: "Classic Sixth Edition"
-        rarity: "Rare"
+        expansion: 'Classic Sixth Edition'
+        rarity: 'Rare'
       45439:
-        expansion: "Eighth Edition"
-        rarity: "Rare"
+        expansion: 'Eighth Edition'
+        rarity: 'Rare'
       83688:
-        expansion: "Ravnica: City of Guilds"
-        rarity: "Rare"
+        expansion: 'Ravnica: City of Guilds'
+        rarity: 'Rare'
       129906:
-        expansion: "Tenth Edition"
-        rarity: "Rare"
+        expansion: 'Tenth Edition'
+        rarity: 'Rare'
       191080:
-        expansion: "Magic 2010"
-        rarity: "Rare"
+        expansion: 'Magic 2010'
+        rarity: 'Rare'
       207334:
-        expansion: "Magic 2011"
-        rarity: "Rare"
+        expansion: 'Magic 2011'
+        rarity: 'Rare'
       221896:
-        expansion: "Magic 2012"
-        rarity: "Rare"
+        expansion: 'Magic 2012'
+        rarity: 'Rare'
     rulings: []
-    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=264287"
-    flavor_text: "「神様はその鳥の羽根で、世界中の色を塗り上げたのです。」"
-    flavor_text_attribution: "グラマー森の保護者、イェイラ＝ティヴァ"
-    expansion: "Magic 2012"
-    rarity: "Rare"
+    gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=264287'
+    flavor_text: '「神様はその鳥の羽根で、世界中の色を塗り上げたのです。」'
+    flavor_text_attribution: 'グラマー森の保護者、イェイラ＝ティヴァ'
+    expansion: 'Magic 2012'
+    rarity: 'Rare'
     number: 165
-    artist: "Marcelo Vignali"
-    type: "クリーチャー ― - 鳥"
+    artist: 'Marcelo Vignali'
+    type: 'クリーチャー ― - 鳥'
 
 exports.birds_of_paradise_zh_cn =
   params: [263291]
   options: {printed: true}
   name: 'birdsofparadise_zh_cn'
   response:
-    name: "天堂鳥"
-    mana_cost: "{G}"
+    name: '天堂鳥'
+    mana_cost: '{G}'
     converted_mana_cost: 1
-    text: "飛行\n\n{T}：加一點任意顏色的魔法力到你的魔法力池中。"
+    text: '飛行\n\n{T}：加一點任意顏色的魔法力到你的魔法力池中。'
     power: 0
     toughness: 1
     versions:
       142:
-        expansion: "Limited Edition Alpha"
-        rarity: "Rare"
+        expansion: 'Limited Edition Alpha'
+        rarity: 'Rare'
       437:
-        expansion: "Limited Edition Beta"
-        rarity: "Rare"
+        expansion: 'Limited Edition Beta'
+        rarity: 'Rare'
       739:
-        expansion: "Unlimited Edition"
-        rarity: "Rare"
+        expansion: 'Unlimited Edition'
+        rarity: 'Rare'
       1236:
-        expansion: "Revised Edition"
-        rarity: "Rare"
+        expansion: 'Revised Edition'
+        rarity: 'Rare'
       2201:
-        expansion: "Fourth Edition"
-        rarity: "Rare"
+        expansion: 'Fourth Edition'
+        rarity: 'Rare'
       3963:
-        expansion: "Fifth Edition"
-        rarity: "Rare"
+        expansion: 'Fifth Edition'
+        rarity: 'Rare'
       11173:
-        expansion: "Seventh Edition"
-        rarity: "Rare"
+        expansion: 'Seventh Edition'
+        rarity: 'Rare'
       14719:
-        expansion: "Classic Sixth Edition"
-        rarity: "Rare"
+        expansion: 'Classic Sixth Edition'
+        rarity: 'Rare'
       45439:
-        expansion: "Eighth Edition"
-        rarity: "Rare"
+        expansion: 'Eighth Edition'
+        rarity: 'Rare'
       83688:
-        expansion: "Ravnica: City of Guilds"
-        rarity: "Rare"
+        expansion: 'Ravnica: City of Guilds'
+        rarity: 'Rare'
       129906:
-        expansion: "Tenth Edition"
-        rarity: "Rare"
+        expansion: 'Tenth Edition'
+        rarity: 'Rare'
       191080:
-        expansion: "Magic 2010"
-        rarity: "Rare"
+        expansion: 'Magic 2010'
+        rarity: 'Rare'
       207334:
-        expansion: "Magic 2011"
-        rarity: "Rare"
+        expansion: 'Magic 2011'
+        rarity: 'Rare'
       221896:
-        expansion: "Magic 2012"
-        rarity: "Rare"
+        expansion: 'Magic 2012'
+        rarity: 'Rare'
     rulings: []
-    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263291"
-    flavor_text: "「神明用牠們的羽毛來為世界著色。」"
-    flavor_text_attribution: "格拉莫樹林守衛葉提娃"
-    expansion: "Magic 2012"
-    rarity: "Rare"
+    gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263291'
+    flavor_text: '「神明用牠們的羽毛來為世界著色。」'
+    flavor_text_attribution: '格拉莫樹林守衛葉提娃'
+    expansion: 'Magic 2012'
+    rarity: 'Rare'
     number: 165
-    artist: "Marcelo Vignali"
-    type: "生物～ - 鳥"
+    artist: 'Marcelo Vignali'
+    type: '生物～ - 鳥'
 
 exports.birds_of_paradise_zh_tw =
   params: [263042]
   options: {printed: true}
   name: 'birdsofparadise_zh_tw'
   response:
-    name: "天堂鸟"
-    mana_cost: "{G}"
+    name: '天堂鸟'
+    mana_cost: '{G}'
     converted_mana_cost: 1
-    text: "飞行\n\n{T}：加一点任意颜色的法术力到你的法术力池中。"
+    text: '飞行\n\n{T}：加一点任意颜色的法术力到你的法术力池中。'
     power: 0
     toughness: 1
     versions:
       142:
-        expansion: "Limited Edition Alpha"
-        rarity: "Rare"
+        expansion: 'Limited Edition Alpha'
+        rarity: 'Rare'
       437:
-        expansion: "Limited Edition Beta"
-        rarity: "Rare"
+        expansion: 'Limited Edition Beta'
+        rarity: 'Rare'
       739:
-        expansion: "Unlimited Edition"
-        rarity: "Rare"
+        expansion: 'Unlimited Edition'
+        rarity: 'Rare'
       1236:
-        expansion: "Revised Edition"
-        rarity: "Rare"
+        expansion: 'Revised Edition'
+        rarity: 'Rare'
       2201:
-        expansion: "Fourth Edition"
-        rarity: "Rare"
+        expansion: 'Fourth Edition'
+        rarity: 'Rare'
       3963:
-        expansion: "Fifth Edition"
-        rarity: "Rare"
+        expansion: 'Fifth Edition'
+        rarity: 'Rare'
       11173:
-        expansion: "Seventh Edition"
-        rarity: "Rare"
+        expansion: 'Seventh Edition'
+        rarity: 'Rare'
       14719:
-        expansion: "Classic Sixth Edition"
-        rarity: "Rare"
+        expansion: 'Classic Sixth Edition'
+        rarity: 'Rare'
       45439:
-        expansion: "Eighth Edition"
-        rarity: "Rare"
+        expansion: 'Eighth Edition'
+        rarity: 'Rare'
       83688:
-        expansion: "Ravnica: City of Guilds"
-        rarity: "Rare"
+        expansion: 'Ravnica: City of Guilds'
+        rarity: 'Rare'
       129906:
-        expansion: "Tenth Edition"
-        rarity: "Rare"
+        expansion: 'Tenth Edition'
+        rarity: 'Rare'
       191080:
-        expansion: "Magic 2010"
-        rarity: "Rare"
+        expansion: 'Magic 2010'
+        rarity: 'Rare'
       207334:
-        expansion: "Magic 2011"
-        rarity: "Rare"
+        expansion: 'Magic 2011'
+        rarity: 'Rare'
       221896:
-        expansion: "Magic 2012"
-        rarity: "Rare"
+        expansion: 'Magic 2012'
+        rarity: 'Rare'
     rulings: []
-    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263042"
-    flavor_text: "「神明用他们的羽毛来为世界着色。」"
-    flavor_text_attribution: "格拉莫树林守卫叶提娃"
-    expansion: "Magic 2012"
-    rarity: "Rare"
+    gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263042'
+    flavor_text: '「神明用他们的羽毛来为世界着色。」'
+    flavor_text_attribution: '格拉莫树林守卫叶提娃'
+    expansion: 'Magic 2012'
+    rarity: 'Rare'
     number: 165
-    artist: "Marcelo Vignali"
-    type: "生物～ - 鸟"
+    artist: 'Marcelo Vignali'
+    type: '生物～ - 鸟'
 
 exports.crackleburr =
   params: ['157420']
   name: 'crackleburr'
   response:
-    name: "Crackleburr"
-    mana_cost: "{1}{U/R}{U/R}"
+    name: 'Crackleburr'
+    mana_cost: '{1}{U/R}{U/R}'
     converted_mana_cost: 3
-    subtypes: ["Elemental"]
-    types: ["Creature"]
+    subtypes: ['Elemental']
+    types: ['Creature']
     text: __ """
       {U/R}{U/R}, {T}, Tap two untapped red creatures you control:
       Crackleburr deals 3 damage to target creature or player.
@@ -929,35 +929,35 @@ exports.crackleburr =
     toughness: 2
     versions:
       157420:
-        expansion: "Eventide"
-        rarity: "Rare"
+        expansion: 'Eventide'
+        rarity: 'Rare'
     rulings: [
-      ["2008-08-01", __ """
+      ['2008-08-01', __ """
         If the permanent is already untapped, you can't activate its {Q} ability.
         That's because you can't pay the "Untap this permanent" cost.
       """]
-      ["2008-08-01", __ """
+      ['2008-08-01', __ """
         The "summoning sickness" rule applies to {Q}. If a creature with an {Q}
         ability hasn't been under your control since your most recent turn began,
         you can't activate that ability. Ignore this rule if the creature also
         has haste.
       """]
-      ["2008-08-01", __ """
+      ['2008-08-01', __ """
         When you activate an {Q} ability, you untap the creature with that
         ability as a cost. The untap can't be responded to. (The actual ability
         can be responded to, of course.)
       """]
-      ["2008-08-01", __ """
+      ['2008-08-01', __ """
         To activate either ability, you'll need Crackleburr plus two other creatures.
         Crackleburr must have been under your control since your most recent turn
         began (or have haste), but the other two creatures don't.
       """]
     ]
-    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=157420"
-    expansion: "Eventide"
-    rarity: "Rare"
+    gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=157420'
+    expansion: 'Eventide'
+    rarity: 'Rare'
     number: 100
-    artist: "Mike Dringenberg"
+    artist: 'Mike Dringenberg'
 
 exports.black_lotus =
   params: ['600']
