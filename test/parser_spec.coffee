@@ -12,7 +12,7 @@ web_fixture = (filename) ->
 
 card_matches_fixture = (card_fixture) ->
   (done) ->
-    parser.card web_fixture(card_fixture.response.name), (err, obj) ->
+    parser.card web_fixture(card_fixture.name || card_fixture.response.name), (err, obj) ->
       obj.should.eql card_fixture.response
       done()
     , card_fixture.options
@@ -52,6 +52,7 @@ describe 'Parser', ->
       it 'can find Æther Storm', card_matches_fixture cards.storm
       it 'can find Phantasmal Sphere', card_matches_fixture cards.sphere
       it 'can find Serrated Arrows', card_matches_fixture cards.arrows
+      it 'can find Crackleburr', card_matches_fixture cards.crackleburr # tap/untap symbols
     describe 'basic types', ->
       it 'can parse Artifacts'
       it 'can parse Creatures'
@@ -70,8 +71,11 @@ describe 'Parser', ->
       it 'can parse cards that have odd entities in their names'
       it 'can parse the BFM'
     describe 'printed=true', ->
-      it "can provide a card's details in French", card_matches_fixture cards.ange
       it "can provide a card's original wording", card_matches_fixture cards.tunnel
+      it "can provide a card's details in French", card_matches_fixture cards.ange
+      it "can provide a card's details in Japanse", card_matches_fixture cards.birds_of_paradise_ja
+      it "can provide a card's details in Chinese Traditional", card_matches_fixture cards.birds_of_paradise_zh_cn
+      it "can provide a card's details in Chinese Simplified", card_matches_fixture cards.birds_of_paradise_zh_tw
   describe '.language', ->
     it 'can parse Birds of Paradise', language_matches_fixture cards.birds_of_paradise
   describe '.set', ->

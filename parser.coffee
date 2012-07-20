@@ -7,13 +7,28 @@ gatherer_root = 'http://gatherer.wizards.com/Pages/'
 prefix = '#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent'
 
 symbols =
-  White: 'W', 'Phyrexian White':  'W/P'
-  Blue:  'U', 'Phyrexian Blue':   'U/P'
-  Black: 'B', 'Phyrexian Black':  'B/P'
-  Red:   'R', 'Phyrexian Red':    'R/P'
-  Green: 'G', 'Phyrexian Green':  'G/P'
+  White: 'W', 'Phyrexian White':    'W/P'
+  Blue:  'U', 'Phyrexian Blue':     'U/P'
+  Black: 'B', 'Phyrexian Black':    'B/P'
+  Red:   'R', 'Phyrexian Red':      'R/P'
+  Green: 'G', 'Phyrexian Green':    'G/P'
   Two:   '2', 'Variable Colorless': 'X'
-  Snow:  'S'
+  Snow:  'S',
+  Tap:   'T',
+  Untap: 'Q'
+
+languages =
+  'Chinese Simplified':  'zh-TW',
+  'Chinese Traditional': 'zh-CN',
+  'German':              'de',
+  'English':             'en',
+  'French':              'fr',
+  'Italian':             'it',
+  'Japanese':            'ja',
+  'Korean':              'kr',
+  'Portuguese (Brazil)': 'pt-BR',
+  'Russian':             'ru',
+  'Spanish':             'es',
 
 to_symbol = (alt) ->
   match = /^(\S+) or (\S+)$/.exec alt
@@ -27,7 +42,7 @@ text_content = (obj) ->
   return unless obj
 
   obj.find('img').each ->
-    $(this).replaceWith "[#{to_symbol $(this).attr('alt')}]"
+    $(this).replaceWith "{#{to_symbol $(this).attr('alt')}}"
   obj.text().trim()
 
 get_name = (identifier) -> ->
@@ -117,7 +132,7 @@ common_attrs =
       d = '0' + d if d.length is 1
       rulings.push [
         "#{y}-#{m}-#{d}"
-        @text(ruling).replace(/[{](.+?)[}]/g, '[$1]').replace(/[ ]{2,}/g, ' ')
+        @text(ruling).replace(/[ ]{2,}/g, ' ')
       ]
     rulings
 
@@ -127,8 +142,8 @@ gid_specific_attrs =
   flavor_text: (data) ->
     return unless flavor = @get('Flavor Text')
     el = flavor.children().last()
-    if match = /^\u2014(.+)$/.exec @text el
-      data.flavor_text_attribution = match[1]
+    if match = /^(—|――|～)(.+)$/.exec @text el
+      data.flavor_text_attribution = match[2]
       el.remove()
     /^"(.+)"$/.exec(text = @text flavor)?[1] or text
 
@@ -179,17 +194,17 @@ list_view_attrs =
 
   versions: get_versions '.setVersions'
 
-exports.language = (body, callback) ->
+exports.language = (body, callback, options = {}) ->
   $ = cheerio.load body
-  data = []
+
+  data = {}
   $('tr.cardItem').each ->
     [trans_card_name, language, trans_language] = $(this).children()
     $name = $(trans_card_name)
     $lang = $(language)
-    data.push
-      card_name: $name.text().trim()
-      language: $lang.text().trim()
+    data[languages[$lang.text().trim()]] =
       id: +$name.find('a').attr('href').match(/multiverseid=(\d+)/)[1]
+      name: $name.text().trim()
 
   process.nextTick ->
     callback null, data
