@@ -724,7 +724,11 @@ exports.birds_of_paradise_ja =
     name: '極楽鳥'
     mana_cost: '{G}'
     converted_mana_cost: 1
-    text: '飛行\n\n{T}：あなたのマナ・プールに、好きな色１色のマナ１点を加える。'
+    text: __ """
+      飛行
+
+      {T}：あなたのマナ・プールに、好きな色１色のマナ１点を加える。
+    """
     power: 0
     toughness: 1
     versions:
@@ -788,7 +792,11 @@ exports.birds_of_paradise_zh_cn =
     name: '天堂鳥'
     mana_cost: '{G}'
     converted_mana_cost: 1
-    text: '飛行\n\n{T}：加一點任意顏色的魔法力到你的魔法力池中。'
+    text: __ """
+      飛行
+
+      {T}：加一點任意顏色的魔法力到你的魔法力池中。
+    """
     power: 0
     toughness: 1
     versions:
@@ -852,7 +860,11 @@ exports.birds_of_paradise_zh_tw =
     name: '天堂鸟'
     mana_cost: '{G}'
     converted_mana_cost: 1
-    text: '飞行\n\n{T}：加一点任意颜色的法术力到你的法术力池中。'
+    text: __ """
+      飞行
+
+      {T}：加一点任意颜色的法术力到你的法术力池中。
+    """
     power: 0
     toughness: 1
     versions:
