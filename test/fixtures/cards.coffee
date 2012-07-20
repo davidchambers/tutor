@@ -915,8 +915,8 @@ exports.crackleburr =
     name: "Crackleburr"
     mana_cost: "{1}{U/R}{U/R}"
     converted_mana_cost: 3
-    subtypes: [ "Elemental" ]
-    types: [ "Creature" ]
+    subtypes: ["Elemental"]
+    types: ["Creature"]
     text: __ """
       {U/R}{U/R}, {T}, Tap two untapped red creatures you control:
       Crackleburr deals 3 damage to target creature or player.
@@ -932,22 +932,22 @@ exports.crackleburr =
         expansion: "Eventide"
         rarity: "Rare"
     rulings: [
-      [ "2008-08-01", __ """
+      ["2008-08-01", __ """
         If the permanent is already untapped, you can't activate its {Q} ability.
         That's because you can't pay the "Untap this permanent" cost.
       """]
-      [ "2008-08-01", __ """
+      ["2008-08-01", __ """
         The "summoning sickness" rule applies to {Q}. If a creature with an {Q}
         ability hasn't been under your control since your most recent turn began,
         you can't activate that ability. Ignore this rule if the creature also
         has haste.
       """]
-      [ "2008-08-01", __ """
+      ["2008-08-01", __ """
         When you activate an {Q} ability, you untap the creature with that
         ability as a cost. The untap can't be responded to. (The actual ability
         can be responded to, of course.)
       """]
-      [ "2008-08-01", __ """
+      ["2008-08-01", __ """
         To activate either ability, you'll need Crackleburr plus two other creatures.
         Crackleburr must have been under your control since your most recent turn
         began (or have haste), but the other two creatures don't.
