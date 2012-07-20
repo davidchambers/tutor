@@ -11,7 +11,7 @@ exports.homelands_pg1 =
     pages: 5
     cards: [
       name: 'Abbey Gargoyles'
-      mana_cost: '[2][W][W][W]'
+      mana_cost: '{2}{W}{W}{W}'
       converted_mana_cost: 5
       types: ['Creature']
       subtypes: ['Gargoyle']
@@ -34,13 +34,13 @@ exports.homelands_pg1 =
           rarity: 'Uncommon'
     ,
       name: 'Abbey Matron'
-      mana_cost: '[2][W]'
+      mana_cost: '{2}{W}'
       converted_mana_cost: 3
       types: ['Creature']
       subtypes: ['Human', 'Cleric']
       power: 1
       toughness: 3
-      text: '[W], [Tap]: Abbey Matron gets +0/+3 until end of turn.'
+      text: '{W}, {T}: Abbey Matron gets +0/+3 until end of turn.'
       expansion: 'Homelands'
       rarity: 'Common'
       gatherer_url:
@@ -54,7 +54,7 @@ exports.homelands_pg1 =
           rarity: 'Common'
     ,
       name: 'Æther Storm'
-      mana_cost: '[3][U]'
+      mana_cost: '{3}{U}'
       converted_mana_cost: 4
       types: ['Enchantment']
       subtypes: []
@@ -80,7 +80,7 @@ exports.homelands_pg1 =
           rarity: 'Uncommon'
     ,
       name: "Aliban's Tower"
-      mana_cost: '[1][R]'
+      mana_cost: '{1}{R}'
       converted_mana_cost: 2
       types: ['Instant']
       subtypes: []
@@ -98,7 +98,7 @@ exports.homelands_pg1 =
           rarity: 'Common'
     ,
       name: 'Ambush'
-      mana_cost: '[3][R]'
+      mana_cost: '{3}{R}'
       converted_mana_cost: 4
       types: ['Instant']
       subtypes: []
@@ -113,7 +113,7 @@ exports.homelands_pg1 =
           rarity: 'Common'
     ,
       name: 'Ambush Party'
-      mana_cost: '[4][R]'
+      mana_cost: '{4}{R}'
       converted_mana_cost: 5
       types: ['Creature']
       subtypes: ['Human', 'Rogue']
@@ -139,14 +139,14 @@ exports.homelands_pg1 =
           rarity: 'Common'
     ,
       name: 'Anaba Ancestor'
-      mana_cost: '[1][R]'
+      mana_cost: '{1}{R}'
       converted_mana_cost: 2
       types: ['Creature']
       subtypes: ['Minotaur', 'Spirit']
       power: 1
       toughness: 1
       text: __ """
-        [Tap]: Another target Minotaur creature gets +1/+1 until
+        {T}: Another target Minotaur creature gets +1/+1 until
         end of turn.
       """
       expansion: 'Homelands'
@@ -162,7 +162,7 @@ exports.homelands_pg1 =
           rarity: 'Common'
     ,
       name: 'Anaba Bodyguard'
-      mana_cost: '[3][R]'
+      mana_cost: '{3}{R}'
       converted_mana_cost: 4
       types: ['Creature']
       subtypes: ['Minotaur']
@@ -191,14 +191,14 @@ exports.homelands_pg1 =
           rarity: 'Common'
     ,
       name: 'Anaba Shaman'
-      mana_cost: '[3][R]'
+      mana_cost: '{3}{R}'
       converted_mana_cost: 4
       types: ['Creature']
       subtypes: ['Minotaur', 'Shaman']
       power: 2
       toughness: 2
       text: __ """
-        [R], [Tap]: Anaba Shaman deals 1 damage to target creature
+        {R}, {T}: Anaba Shaman deals 1 damage to target creature
         or player.
       """
       expansion: 'Homelands'
@@ -223,7 +223,7 @@ exports.homelands_pg1 =
           rarity: 'Common'
     ,
       name: 'Anaba Spirit Crafter'
-      mana_cost: '[2][R][R]'
+      mana_cost: '{2}{R}{R}'
       converted_mana_cost: 4
       types: ['Creature']
       subtypes: ['Minotaur', 'Shaman']
@@ -243,7 +243,7 @@ exports.homelands_pg1 =
           rarity: 'Common'
     ,
       name: 'An-Havva Constable'
-      mana_cost: '[1][G][G]'
+      mana_cost: '{1}{G}{G}'
       converted_mana_cost: 3
       types: ['Creature']
       subtypes: ['Human']
@@ -266,7 +266,7 @@ exports.homelands_pg1 =
           rarity: 'Rare'
     ,
       name: 'An-Havva Inn'
-      mana_cost: '[1][G][G]'
+      mana_cost: '{1}{G}{G}'
       converted_mana_cost: 3
       types: ['Sorcery']
       subtypes: []
@@ -288,11 +288,11 @@ exports.homelands_pg1 =
       types: ['Land']
       subtypes: []
       text: __ """
-        [Tap]: Add [1] to your mana pool.
+        {T}: Add {1} to your mana pool.
 
-        [1], [Tap]: Add [G] to your mana pool.
+        {1}, {T}: Add {G} to your mana pool.
 
-        [2], [Tap]: Add [R] or [W] to your mana pool.
+        {2}, {T}: Add {R} or {W} to your mana pool.
       """
       expansion: 'Homelands'
       rarity: 'Uncommon'
@@ -304,7 +304,7 @@ exports.homelands_pg1 =
           rarity: 'Uncommon'
     ,
       name: 'An-Zerrin Ruins'
-      mana_cost: '[2][R][R]'
+      mana_cost: '{2}{R}{R}'
       converted_mana_cost: 4
       types: ['Enchantment']
       subtypes: []
@@ -328,12 +328,12 @@ exports.homelands_pg1 =
           rarity: 'Rare'
     ,
       name: 'Apocalypse Chime'
-      mana_cost: '[2]'
+      mana_cost: '{2}'
       converted_mana_cost: 2
       types: ['Artifact']
       subtypes: []
       text: __ """
-        [2], [Tap], Sacrifice Apocalypse Chime: Destroy all
+        {2}, {T}, Sacrifice Apocalypse Chime: Destroy all
         nontoken permanents from the Homelands expansion.
         They can't be regenerated.
       """
@@ -347,7 +347,7 @@ exports.homelands_pg1 =
           rarity: 'Rare'
     ,
       name: 'Autumn Willow'
-      mana_cost: '[4][G][G]'
+      mana_cost: '{4}{G}{G}'
       converted_mana_cost: 6
       types: ['Legendary', 'Creature']
       subtypes: ['Avatar']
@@ -356,7 +356,7 @@ exports.homelands_pg1 =
       text: __ """
         Shroud
 
-        [G]: Until end of turn, Autumn Willow can be the target
+        {G}: Until end of turn, Autumn Willow can be the target
         of spells and abilities controlled by target player as
         though it didn't have shroud.
       """
@@ -377,11 +377,11 @@ exports.homelands_pg1 =
       types: ['Land']
       subtypes: []
       text: __ """
-        [Tap]: Add [1] to your mana pool.
+        {T}: Add {1} to your mana pool.
 
-        [1], [Tap]: Add [W] to your mana pool.
+        {1}, {T}: Add {W} to your mana pool.
 
-        [2], [Tap]: Add [G] or [U] to your mana pool.
+        {2}, {T}: Add {G} or {U} to your mana pool.
       """
       expansion: 'Homelands'
       rarity: 'Uncommon'
@@ -393,13 +393,13 @@ exports.homelands_pg1 =
           rarity: 'Uncommon'
     ,
       name: 'Aysen Bureaucrats'
-      mana_cost: '[1][W]'
+      mana_cost: '{1}{W}'
       converted_mana_cost: 2
       types: ['Creature']
       subtypes: ['Human', 'Advisor']
       power: 1
       toughness: 1
-      text: '[Tap]: Tap target creature with power 2 or less.'
+      text: '{T}: Tap target creature with power 2 or less.'
       expansion: 'Homelands'
       rarity: 'Common'
       gatherer_url:
@@ -419,7 +419,7 @@ exports.homelands_pg1 =
           rarity: 'Common'
     ,
       name: 'Aysen Crusader'
-      mana_cost: '[2][W][W]'
+      mana_cost: '{2}{W}{W}'
       converted_mana_cost: 4
       types: ['Creature']
       subtypes: ['Human', 'Knight']
@@ -442,7 +442,7 @@ exports.homelands_pg1 =
           rarity: 'Uncommon'
     ,
       name: 'Aysen Highway'
-      mana_cost: '[3][W][W][W]'
+      mana_cost: '{3}{W}{W}{W}'
       converted_mana_cost: 6
       types: ['Enchantment']
       subtypes: []
@@ -457,7 +457,7 @@ exports.homelands_pg1 =
           rarity: 'Rare'
     ,
       name: "Baki's Curse"
-      mana_cost: '[2][U][U]'
+      mana_cost: '{2}{U}{U}'
       converted_mana_cost: 4
       types: ['Sorcery']
       subtypes: []
@@ -475,7 +475,7 @@ exports.homelands_pg1 =
           rarity: 'Rare'
     ,
       name: 'Baron Sengir'
-      mana_cost: '[5][B][B][B]'
+      mana_cost: '{5}{B}{B}{B}'
       converted_mana_cost: 8
       types: ['Legendary', 'Creature']
       subtypes: ['Vampire']
@@ -487,7 +487,7 @@ exports.homelands_pg1 =
         Whenever a creature dealt damage by Baron Sengir this
         turn dies, put a +2/+2 counter on Baron Sengir.
 
-        [Tap]: Regenerate another target Vampire.
+        {T}: Regenerate another target Vampire.
       """
       expansion: 'Homelands'
       rarity: 'Rare'
@@ -502,14 +502,14 @@ exports.homelands_pg1 =
           rarity: 'Rare'
     ,
       name: 'Beast Walkers'
-      mana_cost: '[1][W][W]'
+      mana_cost: '{1}{W}{W}'
       converted_mana_cost: 3
       types: ['Creature']
       subtypes: ['Human', 'Beast', 'Soldier']
       power: 2
       toughness: 2
       text: __ """
-        [G]: Beast Walkers gains banding until end of turn.
+        {G}: Beast Walkers gains banding until end of turn.
         (Any creatures with banding, and up to one without,
         can attack in a band. Bands are blocked as a group.
         If any creatures with banding you control are
@@ -528,7 +528,7 @@ exports.homelands_pg1 =
           rarity: 'Rare'
     ,
       name: 'Black Carriage'
-      mana_cost: '[3][B][B]'
+      mana_cost: '{3}{B}{B}'
       converted_mana_cost: 5
       types: ['Creature']
       subtypes: ['Horse']
@@ -552,7 +552,7 @@ exports.homelands_pg1 =
           rarity: 'Rare'
     ,
       name: 'Broken Visage'
-      mana_cost: '[4][B]'
+      mana_cost: '{4}{B}'
       converted_mana_cost: 5
       types: ['Instant']
       subtypes: []

@@ -70,18 +70,24 @@ These attributes may be included in a response:
 Attributes not applicable to the card type (e.g. lands have no mana cost) or
 not present (e.g. certain creatures have no rules text) are omitted.
 
-## GET /lang/:id or GET /lang/:name
+## GET /language/:id or GET /language/:name
 
 Return the JSON representation of the available translations of the specified
-card (by Gatherer id) or by name. The result is an array of objects with the
-following properties:
+card (by Gatherer id) or by name. The result is an objects with where the keys
+are a language code (or culture code when needed), and values are also objects
+with the following properties:
 
-  - `card_name`
-  - `language`
-  - `id`
+  - `name` - translated name of the card
+  - `id` - multiverse id of the translated card
 
-`card_name` is the translated name of the card, `language` is the english name
-of the language, and `id` is the Gatherer id of the translated card.
+Example:
+
+    {
+        'es': {
+            'name': 'Ave del paraiso',
+            'id': 265034,
+        },
+    },
 
 
 ## GET /set/:name/:page?

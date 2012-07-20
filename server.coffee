@@ -12,6 +12,7 @@ responder = (fn) ->
         text = "#{callback}(#{JSON.stringify data})"
         res.send text, 'Content-Type': 'text/plain'
       else
+        res.setHeader('Cache-Control', 'public, max-age=86400');
         res.json data
 
 app = express.createServer()

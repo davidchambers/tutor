@@ -6,7 +6,7 @@ exports.recall =
   params: ['1496', null]
   response:
     name: 'Recall'
-    mana_cost: '[X][X][U]'
+    mana_cost: '{X}{X}{U}'
     converted_mana_cost: 1
     types: ['Sorcery']
     subtypes: []
@@ -54,7 +54,7 @@ exports.constable =
   params: ['2960', null]
   response:
     name: 'An-Havva Constable'
-    mana_cost: '[1][G][G]'
+    mana_cost: '{1}{G}{G}'
     converted_mana_cost: 3
     types: ['Creature']
     subtypes: ['Human']
@@ -87,7 +87,7 @@ exports.ice =
   params:  ['27166', 'Ice']
   response:
     name: 'Ice'
-    mana_cost: '[1][U]'
+    mana_cost: '{1}{U}'
     converted_mana_cost: 2
     types: ['Instant']
     subtypes: []
@@ -118,7 +118,7 @@ exports.fire =
   params: ['27166', 'Fire']
   response:
     name: 'Fire'
-    mana_cost: '[1][R]'
+    mana_cost: '{1}{R}'
     converted_mana_cost: 2
     types: ['Instant']
     subtypes: []
@@ -151,8 +151,8 @@ exports.ancestral_vision =
     types: ['Sorcery']
     subtypes: []
     text: __ """
-      Suspend 4\u2014[U] (Rather than cast this card from your hand,
-      pay [U] and exile it with four time counters on it. At the
+      Suspend 4\u2014{U} (Rather than cast this card from your hand,
+      pay {U} and exile it with four time counters on it. At the
       beginning of your upkeep, remove a time counter. When the last
       is removed, cast it without paying its mana cost.)
 
@@ -189,15 +189,15 @@ exports.diamond_faerie =
   params: ['121138', null]
   response:
     name: 'Diamond Faerie'
-    mana_cost: '[2][G][W][U]'
+    mana_cost: '{2}{G}{W}{U}'
     converted_mana_cost: 5
     types: ['Snow', 'Creature']
     subtypes: ['Faerie']
     text: __ """
       Flying
 
-      [1][S]: Snow creatures you control get +1/+1 until end of turn.
-      ([S] can be paid with one mana from a snow permanent.)
+      {1}{S}: Snow creatures you control get +1/+1 until end of turn.
+      ({S} can be paid with one mana from a snow permanent.)
     """
     flavor_text: __ """
       That such delicate creatures could become so powerful in the
@@ -222,7 +222,7 @@ exports.ajani =
   params: ['140233', null]
   response:
     name: 'Ajani Goldmane'
-    mana_cost: '[2][W][W]'
+    mana_cost: '{2}{W}{W}'
     converted_mana_cost: 4
     types: ['Planeswalker']
     subtypes: ['Ajani']
@@ -269,12 +269,12 @@ exports.flame_javelin =
   params: ['146017', null]
   response:
     name: 'Flame Javelin'
-    mana_cost: '[2/R][2/R][2/R]'
+    mana_cost: '{2/R}{2/R}{2/R}'
     converted_mana_cost: 6
     types: ['Instant']
     subtypes: []
     text: __ """
-      ([2/R] can be paid with any two mana or with [R]. This card's
+      ({2/R} can be paid with any two mana or with {R}. This card's
       converted mana cost is 6.)
 
       Flame Javelin deals 4 damage to target creature or player.
@@ -314,13 +314,13 @@ exports.flame_javelin =
         mana cost has a converted mana cost equal to the highest
         possible cost it could be cast for. Its converted mana
         cost never changes. Thus, Flame Javelin has a converted
-        mana cost of 6, even if you spend [R][R][R] to cast it.
+        mana cost of 6, even if you spend {R}{R}{R} to cast it.
       """]
       ['2008-05-01', __ """
         If a cost includes more than one monocolored hybrid
         mana symbol, you can choose a different way to pay for
         each symbol. For example, you can pay for Flame Javelin
-        by spending [R][R][R], [2][R][R], [4][R], or [6].
+        by spending {R}{R}{R}, {2}{R}{R}, {4}{R}, or {6}.
       """]
     ]
 
@@ -328,7 +328,7 @@ exports.colossus =
   params: ['191312', null]
   response:
     name: 'Darksteel Colossus'
-    mana_cost: '[11]'
+    mana_cost: '{11}'
     converted_mana_cost: 11
     types: ['Artifact', 'Creature']
     subtypes: ['Golem']
@@ -373,12 +373,12 @@ exports.skirge =
   params: ['217984', null]
   response:
     name: 'Vault Skirge'
-    mana_cost: '[1][B/P]'
+    mana_cost: '{1}{B/P}'
     converted_mana_cost: 2
     types: ['Artifact', 'Creature']
     subtypes: ['Imp']
     text: __ """
-      ([B/P] can be paid with either [B] or 2 life.)
+      ({B/P} can be paid with either {B} or 2 life.)
 
       Flying
 
@@ -431,7 +431,7 @@ exports.storm =
   params: {name: 'Æther Storm'}
   response:
     name: 'Æther Storm'
-    mana_cost: '[3][U]'
+    mana_cost: '{3}{U}'
     converted_mana_cost: 4
     types: ['Enchantment']
     subtypes: []
@@ -468,7 +468,7 @@ exports.sphere =
   params: {name: 'Phantasmal Sphere'}
   response:
     name: 'Phantasmal Sphere'
-    mana_cost: '[1][U]'
+    mana_cost: '{1}{U}'
     converted_mana_cost: 2
     types: ['Creature']
     subtypes: ['Illusion']
@@ -477,7 +477,7 @@ exports.sphere =
 
       At the beginning of your upkeep, put a +1/+1 counter on
       Phantasmal Sphere, then sacrifice Phantasmal Sphere unless
-      you pay [1] for each +1/+1 counter on it.
+      you pay {1} for each +1/+1 counter on it.
 
       When Phantasmal Sphere leaves the battlefield, put a blue Orb
       creature token with flying onto the battlefield under target
@@ -497,7 +497,7 @@ exports.arrows =
   params: {name: 'Serrated Arrows'}
   response:
     name: 'Serrated Arrows'
-    mana_cost: '[4]'
+    mana_cost: '{4}'
     converted_mana_cost: 4
     types: ['Artifact']
     subtypes: []
@@ -508,7 +508,7 @@ exports.arrows =
       At the beginning of your upkeep, if there are no arrowhead
       counters on Serrated Arrows, sacrifice it.
 
-      [Tap], Remove an arrowhead counter from Serrated Arrows:
+      {T}, Remove an arrowhead counter from Serrated Arrows:
       Put a -1/-1 counter on target creature.
     """
     gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Serrated+Arrows'
@@ -562,7 +562,7 @@ exports.akroma =
 exports.deserter =
   response:
     name: 'Afflicted Deserter'
-    mana_cost: '[3][R]'
+    mana_cost: '{3}{R}'
     converted_mana_cost: 4
     types: ['Creature']
     subtypes: ['Human', 'Werewolf']
@@ -648,7 +648,7 @@ exports.ange =
   options: {printed: 'true'}
   response:
     name: "Ange du vol d'albâtre"
-    mana_cost: '[4][W]'
+    mana_cost: '{4}{W}'
     converted_mana_cost: 5
     type: 'Créature : - ange'
     text: __ """
@@ -687,7 +687,7 @@ exports.tunnel =
   options: {printed: 'true'}
   response:
     name: 'Tunnel'
-    mana_cost: '[R]'
+    mana_cost: '{R}'
     converted_mana_cost: 1
     type: 'Instant'
     text: __ """
@@ -716,18 +716,280 @@ exports.tunnel =
     artist: 'Dan Frazier'
     rulings: []
 
+exports.birds_of_paradise_ja =
+  params: [264287]
+  options: {printed: true}
+  name: 'birdsofparadise_ja'
+  response:
+    name: "極楽鳥"
+    mana_cost: "{G}"
+    converted_mana_cost: 1
+    text: "飛行\n\n{T}：あなたのマナ・プールに、好きな色１色のマナ１点を加える。"
+    power: 0
+    toughness: 1
+    versions:
+      142:
+        expansion: "Limited Edition Alpha"
+        rarity: "Rare"
+      437:
+        expansion: "Limited Edition Beta"
+        rarity: "Rare"
+      739:
+        expansion: "Unlimited Edition"
+        rarity: "Rare"
+      1236:
+        expansion: "Revised Edition"
+        rarity: "Rare"
+      2201:
+        expansion: "Fourth Edition"
+        rarity: "Rare"
+      3963:
+        expansion: "Fifth Edition"
+        rarity: "Rare"
+      11173:
+        expansion: "Seventh Edition"
+        rarity: "Rare"
+      14719:
+        expansion: "Classic Sixth Edition"
+        rarity: "Rare"
+      45439:
+        expansion: "Eighth Edition"
+        rarity: "Rare"
+      83688:
+        expansion: "Ravnica: City of Guilds"
+        rarity: "Rare"
+      129906:
+        expansion: "Tenth Edition"
+        rarity: "Rare"
+      191080:
+        expansion: "Magic 2010"
+        rarity: "Rare"
+      207334:
+        expansion: "Magic 2011"
+        rarity: "Rare"
+      221896:
+        expansion: "Magic 2012"
+        rarity: "Rare"
+    rulings: []
+    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=264287"
+    flavor_text: "「神様はその鳥の羽根で、世界中の色を塗り上げたのです。」"
+    flavor_text_attribution: "グラマー森の保護者、イェイラ＝ティヴァ"
+    expansion: "Magic 2012"
+    rarity: "Rare"
+    number: 165
+    artist: "Marcelo Vignali"
+    type: "クリーチャー ― - 鳥"
+
+exports.birds_of_paradise_zh_cn =
+  params: [263291]
+  options: {printed: true}
+  name: 'birdsofparadise_zh_cn'
+  response:
+    name: "天堂鳥"
+    mana_cost: "{G}"
+    converted_mana_cost: 1
+    text: "飛行\n\n{T}：加一點任意顏色的魔法力到你的魔法力池中。"
+    power: 0
+    toughness: 1
+    versions:
+      142:
+        expansion: "Limited Edition Alpha"
+        rarity: "Rare"
+      437:
+        expansion: "Limited Edition Beta"
+        rarity: "Rare"
+      739:
+        expansion: "Unlimited Edition"
+        rarity: "Rare"
+      1236:
+        expansion: "Revised Edition"
+        rarity: "Rare"
+      2201:
+        expansion: "Fourth Edition"
+        rarity: "Rare"
+      3963:
+        expansion: "Fifth Edition"
+        rarity: "Rare"
+      11173:
+        expansion: "Seventh Edition"
+        rarity: "Rare"
+      14719:
+        expansion: "Classic Sixth Edition"
+        rarity: "Rare"
+      45439:
+        expansion: "Eighth Edition"
+        rarity: "Rare"
+      83688:
+        expansion: "Ravnica: City of Guilds"
+        rarity: "Rare"
+      129906:
+        expansion: "Tenth Edition"
+        rarity: "Rare"
+      191080:
+        expansion: "Magic 2010"
+        rarity: "Rare"
+      207334:
+        expansion: "Magic 2011"
+        rarity: "Rare"
+      221896:
+        expansion: "Magic 2012"
+        rarity: "Rare"
+    rulings: []
+    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263291"
+    flavor_text: "「神明用牠們的羽毛來為世界著色。」"
+    flavor_text_attribution: "格拉莫樹林守衛葉提娃"
+    expansion: "Magic 2012"
+    rarity: "Rare"
+    number: 165
+    artist: "Marcelo Vignali"
+    type: "生物～ - 鳥"
+
+exports.birds_of_paradise_zh_tw =
+  params: [263042]
+  options: {printed: true}
+  name: 'birdsofparadise_zh_tw'
+  response:
+    name: "天堂鸟"
+    mana_cost: "{G}"
+    converted_mana_cost: 1
+    text: "飞行\n\n{T}：加一点任意颜色的法术力到你的法术力池中。"
+    power: 0
+    toughness: 1
+    versions:
+      142:
+        expansion: "Limited Edition Alpha"
+        rarity: "Rare"
+      437:
+        expansion: "Limited Edition Beta"
+        rarity: "Rare"
+      739:
+        expansion: "Unlimited Edition"
+        rarity: "Rare"
+      1236:
+        expansion: "Revised Edition"
+        rarity: "Rare"
+      2201:
+        expansion: "Fourth Edition"
+        rarity: "Rare"
+      3963:
+        expansion: "Fifth Edition"
+        rarity: "Rare"
+      11173:
+        expansion: "Seventh Edition"
+        rarity: "Rare"
+      14719:
+        expansion: "Classic Sixth Edition"
+        rarity: "Rare"
+      45439:
+        expansion: "Eighth Edition"
+        rarity: "Rare"
+      83688:
+        expansion: "Ravnica: City of Guilds"
+        rarity: "Rare"
+      129906:
+        expansion: "Tenth Edition"
+        rarity: "Rare"
+      191080:
+        expansion: "Magic 2010"
+        rarity: "Rare"
+      207334:
+        expansion: "Magic 2011"
+        rarity: "Rare"
+      221896:
+        expansion: "Magic 2012"
+        rarity: "Rare"
+    rulings: []
+    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263042"
+    flavor_text: "「神明用他们的羽毛来为世界着色。」"
+    flavor_text_attribution: "格拉莫树林守卫叶提娃"
+    expansion: "Magic 2012"
+    rarity: "Rare"
+    number: 165
+    artist: "Marcelo Vignali"
+    type: "生物～ - 鸟"
+
+exports.crackleburr =
+  params: ['157420']
+  name: 'crackleburr'
+  response:
+    name: "Crackleburr"
+    mana_cost: "{1}{U/R}{U/R}"
+    converted_mana_cost: 3
+    subtypes: [ "Elemental" ]
+    types: [ "Creature" ]
+    text: __ """
+      {U/R}{U/R}, {T}, Tap two untapped red creatures you control:
+      Crackleburr deals 3 damage to target creature or player.
+
+      {U/R}{U/R}, {Q}, Untap two tapped blue creatures you control:
+      Return target creature to its owner's hand.
+      ({Q} is the untap symbol.)
+    """
+    power: 2
+    toughness: 2
+    versions:
+      157420:
+        expansion: "Eventide"
+        rarity: "Rare"
+    rulings: [
+      [ "2008-08-01", __ """
+        If the permanent is already untapped, you can't activate its {Q} ability.
+        That's because you can't pay the "Untap this permanent" cost.
+      """],
+      [ "2008-08-01", __ """
+        The "summoning sickness" rule applies to {Q}. If a creature with an {Q}
+        ability hasn't been under your control since your most recent turn began,
+        you can't activate that ability. Ignore this rule if the creature also
+        has haste.
+      """],
+      [ "2008-08-01", __ """
+        When you activate an {Q} ability, you untap the creature with that
+        ability as a cost. The untap can't be responded to. (The actual ability
+        can be responded to, of course.)
+      """],
+      [ "2008-08-01", __ """
+        To activate either ability, you'll need Crackleburr plus two other creatures.
+        Crackleburr must have been under your control since your most recent turn
+        began (or have haste), but the other two creatures don't.
+      """]
+    ]
+    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=157420"
+    expansion: "Eventide"
+    rarity: "Rare"
+    number: 100
+    artist: "Mike Dringenberg"
+
+exports.black_lotus =
+  params: ['600']
+  name: 'black lotus'
+  response: {}
 
 exports.birds_of_paradise =
   params: {name: 'birds of paradise'}
   name: 'birds of paradise'
-  response: [
-    {card_name: 'Oiseaux de paradis'  , language: 'French'             , id: 263540}
-    {card_name: 'Uccelli del Paradiso', language: 'Italian'            , id: 264038}
-    {card_name: '極楽鳥'              , language: 'Japanese'           , id: 264287}
-    {card_name: '天堂鳥'              , language: 'Chinese Traditional', id: 263291}
-    {card_name: 'Paradiesvögel'       , language: 'German'             , id: 263789}
-    {card_name: 'Aves del paraíso'    , language: 'Spanish'            , id: 265034}
-    {card_name: 'Райские Птицы'       , language: 'Russian'            , id: 264785}
-    {card_name: '天堂鸟'              , language: 'Chinese Simplified' , id: 263042}
-    {card_name: 'Aves do Paraíso'     , language: 'Portuguese (Brazil)', id: 264536}
-  ]
+  response:
+    'de':    {id: 263789, name: 'Paradiesvögel'       }
+    'es':    {id: 265034, name: 'Aves del paraíso'    }
+    'fr':    {id: 263540, name: 'Oiseaux de paradis'  }
+    'it':    {id: 264038, name: 'Uccelli del Paradiso'}
+    'ja':    {id: 264287, name: '極楽鳥'              }
+    'ru':    {id: 264785, name: 'Райские Птицы'       }
+    'pt-BR': {id: 264536, name: 'Aves do Paraíso'     }
+    'zh-CN': {id: 263291, name: '天堂鳥'              }
+    'zh-TW': {id: 263042, name: '天堂鸟'              }
+
+exports.drowned_catacomb =
+  params: {name: 'drowned catacomb'}
+  name: 'drowned catacomb'
+  response:
+    'de':    {id: 331992, name: 'Versunkene Katakomben'}
+    'es':    {id: 332241, name: 'Catacumba inundada'   }
+    'fr':    {id: 331494, name: 'Catacombes noyées'    }
+    'it':    {id: 332490, name: 'Catacombe Allagate'   }
+    'ja':    {id: 332739, name: '水没した地下墓地'     }
+    'kr':    {id: 330498, name: '수몰된 묘지'          }
+    'ru':    {id: 331743, name: 'Затопленная Катакомба'}
+    'pt-BR': {id: 331245, name: 'Catacumba Submersa'   }
+    'zh-CN': {id: 330747, name: '水沒墓穴'             }
+    'zh-TW': {id: 330249, name: '水没墓穴'             }
+
