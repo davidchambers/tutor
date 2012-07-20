@@ -7,13 +7,15 @@ gatherer_root = 'http://gatherer.wizards.com/Pages/'
 prefix = '#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent'
 
 symbols =
-  White: 'W', 'Phyrexian White':  'W/P'
-  Blue:  'U', 'Phyrexian Blue':   'U/P'
-  Black: 'B', 'Phyrexian Black':  'B/P'
-  Red:   'R', 'Phyrexian Red':    'R/P'
-  Green: 'G', 'Phyrexian Green':  'G/P'
+  White: 'W', 'Phyrexian White':    'W/P'
+  Blue:  'U', 'Phyrexian Blue':     'U/P'
+  Black: 'B', 'Phyrexian Black':    'B/P'
+  Red:   'R', 'Phyrexian Red':      'R/P'
+  Green: 'G', 'Phyrexian Green':    'G/P'
   Two:   '2', 'Variable Colorless': 'X'
-  Snow:  'S'
+  Snow:  'S',
+  Tap:   'T',
+  Untap: 'Q'
 
 languages =
   'Chinese Simplified':  'zh-TW',
@@ -57,8 +59,7 @@ get_converted_mana_cost = (identifier) -> ->
 get_text = (identifier) -> ->
   paragraphs = (@text el for el in @get(identifier).children())
   paragraphs = (p for p in paragraphs when p) # exclude empty paragraphs
-  paragraphs = paragraphs.join '\n\n' if paragraphs.length
-  paragraphs.replace(/\{Tap\}/g, '{T}')
+  paragraphs.join '\n\n' if paragraphs.length
 
 get_versions = (identifier) -> ->
   versions = {}
