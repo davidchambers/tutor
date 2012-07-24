@@ -26,6 +26,7 @@ languages =
   'Italian':             'it',
   'Japanese':            'ja',
   'Korean':              'kr',
+  'Portuguese':          'pt-BR', # there is a typo in older cards
   'Portuguese (Brazil)': 'pt-BR',
   'Russian':             'ru',
   'Spanish':             'es',

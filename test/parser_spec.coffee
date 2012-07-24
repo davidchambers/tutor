@@ -77,7 +77,8 @@ describe 'Parser', ->
       it "can provide a card's details in Chinese Traditional", card_matches_fixture cards.birds_of_paradise_zh_cn
       it "can provide a card's details in Chinese Simplified", card_matches_fixture cards.birds_of_paradise_zh_tw
   describe '.language', ->
-    it 'can parse Birds of Paradise', language_matches_fixture cards.birds_of_paradise
+    it "can provide a card's language details", language_matches_fixture cards.birds_of_paradise
+    it "can workaround portugese language bug", language_matches_fixture cards.inquisition_of_kozilek
   describe '.set', ->
     describe 'old tests', ->
       it 'can parse the first page of homelands', (done) ->

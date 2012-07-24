@@ -993,3 +993,15 @@ exports.drowned_catacomb =
     'zh-CN': {id: 330747, name: '水沒墓穴'             }
     'zh-TW': {id: 330249, name: '水没墓穴'             }
 
+exports.inquisition_of_kozilek =
+  params: {name: 'inquisition of kozilek'}
+  name: 'inquisition of kozilek'
+  response:
+    'de':    {id: 217306, name: 'Kozileks Inquisition'  }
+    'es':    {id: 217058, name: 'Inquisición de Kozilek'}
+    'fr':    {id: 215570, name: 'Inquisition de Kozilek'}
+    'it':    {id: 216314, name: 'Indagini di Kozilek'   }
+    'ja':    {id: 216562, name: 'コジレックの審問'      }
+    'ru':    {id: 215818, name: 'Инквизиция Козилека'   }
+    'pt-BR': {id: 216810, name: 'Inquisição de Kozilek' }
+    'zh-TW': {id: 216066, name: '寇基雷的审讯'          }
