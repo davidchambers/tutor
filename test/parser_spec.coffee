@@ -53,6 +53,7 @@ describe 'Parser', ->
       it 'can find Phantasmal Sphere', card_matches_fixture cards.sphere
       it 'can find Serrated Arrows', card_matches_fixture cards.arrows
       it 'can find Crackleburr', card_matches_fixture cards.crackleburr # tap/untap symbols
+      it 'can find Hill Giant', card_matches_fixture cards.hill_giant # it crashes the server
     describe 'basic types', ->
       it 'can parse Artifacts'
       it 'can parse Creatures'

@@ -58,9 +58,13 @@ get_converted_mana_cost = (identifier) -> ->
   +@text(identifier) or 0
 
 get_text = (identifier) -> ->
-  paragraphs = (@text el for el in @get(identifier).children())
-  paragraphs = (p for p in paragraphs when p) # exclude empty paragraphs
-  paragraphs.join '\n\n' if paragraphs.length
+  container = @get(identifier)
+  if container
+    paragraphs = (@text el for el in @get(identifier).children())
+    paragraphs = (p for p in paragraphs when p) # exclude empty paragraphs
+    paragraphs.join '\n\n' if paragraphs.length
+  else
+    ""
 
 get_versions = (identifier) -> ->
   versions = {}
