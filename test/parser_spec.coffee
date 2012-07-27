@@ -53,6 +53,7 @@ describe 'Parser', ->
       it 'can find Phantasmal Sphere', card_matches_fixture cards.sphere
       it 'can find Serrated Arrows', card_matches_fixture cards.arrows
       it 'can find Crackleburr', card_matches_fixture cards.crackleburr # tap/untap symbols
+      it 'can find Hill Giant', card_matches_fixture cards.hill_giant # it crashes the server
     describe 'basic types', ->
       it 'can parse Artifacts'
       it 'can parse Creatures'
@@ -77,7 +78,8 @@ describe 'Parser', ->
       it "can provide a card's details in Chinese Traditional", card_matches_fixture cards.birds_of_paradise_zh_cn
       it "can provide a card's details in Chinese Simplified", card_matches_fixture cards.birds_of_paradise_zh_tw
   describe '.language', ->
-    it 'can parse Birds of Paradise', language_matches_fixture cards.birds_of_paradise
+    it "can provide a card's language details", language_matches_fixture cards.birds_of_paradise
+    it "can workaround portugese language bug", language_matches_fixture cards.inquisition_of_kozilek
   describe '.set', ->
     describe 'old tests', ->
       it 'can parse the first page of homelands', (done) ->

@@ -971,6 +971,60 @@ exports.crackleburr =
     number: 100
     artist: 'Mike Dringenberg'
 
+exports.hill_giant =
+  params: ['129591']
+  name: 'hill giant'
+  response:
+    name: "Hill Giant"
+    mana_cost: "{3}{R}"
+    converted_mana_cost: 4
+    subtypes: ["Giant"]
+    types: ["Creature"]
+    text: ""
+    power: 3
+    toughness: 3
+    versions:
+      205:
+        expansion: "Limited Edition Alpha"
+        rarity: "Common"
+      500:
+        expansion: "Limited Edition Beta"
+        rarity: "Common"
+      802:
+        expansion: "Unlimited Edition"
+        rarity: "Common"
+      1299:
+        expansion: "Revised Edition"
+        rarity: "Common"
+      2284:
+        expansion: "Fourth Edition"
+        rarity: "Common"
+      4060:
+        expansion: "Fifth Edition"
+        rarity: "Common"
+      4344:
+        expansion: "Portal"
+        rarity: "Common"
+      25680:
+        expansion: "Seventh Edition"
+        rarity: "Common"
+      45348:
+        expansion: "Eighth Edition"
+        rarity: "Common"
+      83120:
+        expansion: "Ninth Edition"
+        rarity: "Common"
+      129591:
+        expansion: "Tenth Edition"
+        rarity: "Common"
+    rulings: []
+    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=129591"
+    flavor_text: "Fortunately, hill giants have large blind spots in which a human can easily hide. Unfortunately, these blind spots are beneath the bottoms of their feet."
+    expansion: "Tenth Edition"
+    rarity: "Common"
+    number: 212
+    artist: "Kev Walker"
+
 exports.black_lotus =
   params: ['600']
   name: 'black lotus'
@@ -1005,3 +1059,15 @@ exports.drowned_catacomb =
     'zh-CN': {id: 330747, name: '水沒墓穴'             }
     'zh-TW': {id: 330249, name: '水没墓穴'             }
 
+exports.inquisition_of_kozilek =
+  params: {name: 'inquisition of kozilek'}
+  name: 'inquisition of kozilek'
+  response:
+    'de':    {id: 217306, name: 'Kozileks Inquisition'  }
+    'es':    {id: 217058, name: 'Inquisición de Kozilek'}
+    'fr':    {id: 215570, name: 'Inquisition de Kozilek'}
+    'it':    {id: 216314, name: 'Indagini di Kozilek'   }
+    'ja':    {id: 216562, name: 'コジレックの審問'      }
+    'ru':    {id: 215818, name: 'Инквизиция Козилека'   }
+    'pt-BR': {id: 216810, name: 'Inquisição de Kozilek' }
+    'zh-TW': {id: 216066, name: '寇基雷的审讯'          }
