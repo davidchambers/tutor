@@ -776,7 +776,7 @@ exports.birds_of_paradise_ja =
         rarity: 'Rare'
     rulings: []
     gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=264287'
-    flavor_text: '「神様はその鳥の羽根で、世界中の色を塗り上げたのです。」'
+    flavor_text: '神様はその鳥の羽根で、世界中の色を塗り上げたのです。'
     flavor_text_attribution: 'グラマー森の保護者、イェイラ＝ティヴァ'
     expansion: 'Magic 2012'
     rarity: 'Rare'
@@ -844,7 +844,7 @@ exports.birds_of_paradise_zh_cn =
         rarity: 'Rare'
     rulings: []
     gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263291'
-    flavor_text: '「神明用牠們的羽毛來為世界著色。」'
+    flavor_text: '神明用牠們的羽毛來為世界著色。'
     flavor_text_attribution: '格拉莫樹林守衛葉提娃'
     expansion: 'Magic 2012'
     rarity: 'Rare'
@@ -912,7 +912,7 @@ exports.birds_of_paradise_zh_tw =
         rarity: 'Rare'
     rulings: []
     gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263042'
-    flavor_text: '「神明用他们的羽毛来为世界着色。」'
+    flavor_text: '神明用他们的羽毛来为世界着色。'
     flavor_text_attribution: '格拉莫树林守卫叶提娃'
     expansion: 'Magic 2012'
     rarity: 'Rare'

@@ -150,7 +150,7 @@ gid_specific_attrs =
     if match = /^(\u2014|\u2015\u2015|\uFF5E)(.+)$/.exec @text el
       data.flavor_text_attribution = match[2]
       el.remove()
-    /^"(.+)"$/.exec(text = @text flavor)?[1] or text
+    /^[„"«「](.+)["»」]$/.exec(text = @text flavor)?[1] or text
 
   hand_modifier: vanguard_modifier /Hand Modifier: ([+-]\d+)/
 
