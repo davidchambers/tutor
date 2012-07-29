@@ -73,10 +73,11 @@ describe 'Parser', ->
       it 'can parse the BFM'
     describe 'printed=true', ->
       it "can provide a card's original wording", card_matches_fixture cards.tunnel
-      it "can provide a card's details in French", card_matches_fixture cards.ange
+      it "can provide a card's details in French", card_matches_fixture cards.birds_of_paradise_fr
       it "can provide a card's details in Japanse", card_matches_fixture cards.birds_of_paradise_ja
       it "can provide a card's details in Chinese Traditional", card_matches_fixture cards.birds_of_paradise_zh_cn
       it "can provide a card's details in Chinese Simplified", card_matches_fixture cards.birds_of_paradise_zh_tw
+      it "can provide a card's details in German", card_matches_fixture cards.birds_of_paradise_de
   describe '.language', ->
     it "can provide a card's language details", language_matches_fixture cards.birds_of_paradise
     it "can workaround portugese language bug", language_matches_fixture cards.inquisition_of_kozilek

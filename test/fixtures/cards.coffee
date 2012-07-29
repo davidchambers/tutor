@@ -1,6 +1,5 @@
 {_} = require 'underscore'
-
-__ = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
+__  = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
 
 exports.recall =
   params: ['1496', null]
@@ -643,45 +642,6 @@ exports.ransacker =
     artist: 'David Palumbo'
     rulings: []
 
-exports.ange =
-  params: [273000, null]
-  options: {printed: 'true'}
-  response:
-    name: "Ange du vol d'albâtre"
-    mana_cost: '{4}{W}'
-    converted_mana_cost: 5
-    type: 'Créature : - ange'
-    text: __ """
-      Vol
-
-      Au début de votre entretien, renvoyez la carte d'esprit ciblée
-      depuis votre cimetière dans votre main.
-    """
-    flavor_text: __ """
-      Elle survit sans Avacyn mais secrètement, elle demande à chaque
-      âme qu'elle guide si elle l'a vue.
-    """
-    power: 4
-    toughness: 4
-    versions:
-      273000:
-        expansion: 'Innistrad'
-        rarity: 'Rare'
-    gatherer_url:
-      'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=273000'
-    expansion: 'Innistrad'
-    rarity: 'Rare'
-    number: 2
-    artist: 'Howard Lyon'
-    rulings: [
-      ['2011-09-22', __ """
-        The Spirit card must already be in your graveyard when the
-        ability triggers at the beginning of your upkeep. If there is
-        no Spirit card in your graveyard when your upkeep begins, the
-        ability will be removed from the stack with no effect.
-      """]
-    ]
-
 exports.tunnel =
   params: [226, null]
   options: {printed: 'true'}
@@ -715,6 +675,134 @@ exports.tunnel =
     rarity: 'Uncommon'
     artist: 'Dan Frazier'
     rulings: []
+
+exports.birds_of_paradise_de =
+  params: [264287]
+  options: {printed: true}
+  name: 'birdsofparadise_de'
+  response:
+    name: "Paradiesvögel"
+    mana_cost: "{G}"
+    converted_mana_cost: 1
+    text: "Fliegend\n\n{T}: Erhöhe deinen Manavorrat um ein Mana einer beliebigen Farbe."
+    power: 0
+    toughness: 1
+    versions:
+      142:
+        expansion: "Limited Edition Alpha"
+        rarity: "Rare"
+      437:
+        expansion: "Limited Edition Beta"
+        rarity: "Rare"
+      739:
+        expansion: "Unlimited Edition"
+        rarity: "Rare"
+      1236:
+        expansion: "Revised Edition"
+        rarity: "Rare"
+      2201:
+        expansion: "Fourth Edition"
+        rarity: "Rare"
+      3963:
+        expansion: "Fifth Edition"
+        rarity: "Rare"
+      11173:
+        expansion: "Seventh Edition"
+        rarity: "Rare"
+      14719:
+        expansion: "Classic Sixth Edition"
+        rarity: "Rare"
+      45439:
+        expansion: "Eighth Edition"
+        rarity: "Rare"
+      83688:
+        expansion: "Ravnica: City of Guilds"
+        rarity: "Rare"
+      129906:
+        expansion: "Tenth Edition"
+        rarity: "Rare"
+      191080:
+        expansion: "Magic 2010"
+        rarity: "Rare"
+      207334:
+        expansion: "Magic 2011"
+        rarity: "Rare"
+      221896:
+        expansion: "Magic 2012"
+        rarity: "Rare"
+    rulings: []
+    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=263789&printed=true"
+    flavor_text_attribution: "Yare-Tiva, Bewahrerin des Gramurwaldes"
+    flavor_text: "Ihre Federn dienten den Göttern, um die Welt farbig anzustreichen."
+    expansion: "Magic 2012"
+    rarity: "Rare"
+    number: 165
+    artist: "Marcelo Vignali"
+    type: "Kreatur"
+
+exports.birds_of_paradise_fr =
+  params: [264287]
+  options: {printed: true}
+  name: 'birdsofparadise_fr'
+  response:
+    name: "Oiseaux de paradis"
+    mana_cost: "{G}"
+    converted_mana_cost: 1
+    text: "Vol\n\n{T} : Ajoutez un mana de la couleur de votre choix à votre réserve."
+    power: 0
+    toughness: 1
+    versions:
+      142:
+        expansion: "Limited Edition Alpha"
+        rarity: "Rare"
+      437:
+        expansion: "Limited Edition Beta"
+        rarity: "Rare"
+      739:
+        expansion: "Unlimited Edition"
+        rarity: "Rare"
+      1236:
+        expansion: "Revised Edition"
+        rarity: "Rare"
+      2201:
+        expansion: "Fourth Edition"
+        rarity: "Rare"
+      3963:
+        expansion: "Fifth Edition"
+        rarity: "Rare"
+      11173:
+        expansion: "Seventh Edition"
+        rarity: "Rare"
+      14719:
+        expansion: "Classic Sixth Edition"
+        rarity: "Rare"
+      45439:
+        expansion: "Eighth Edition"
+        rarity: "Rare"
+      83688:
+        expansion: "Ravnica: City of Guilds"
+        rarity: "Rare"
+      129906:
+        expansion: "Tenth Edition"
+        rarity: "Rare"
+      191080:
+        expansion: "Magic 2010"
+        rarity: "Rare"
+      207334:
+        expansion: "Magic 2011"
+        rarity: "Rare"
+      221896:
+        expansion: "Magic 2012"
+        rarity: "Rare"
+    rulings: []
+    gatherer_url: "http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263540"
+    flavor_text_attribution: "Yare-Tiva, garde de la forêt de Gramur"
+    flavor_text: "Les dieux ont utilisé leurs plumes pour peindre toutes les couleurs du monde."
+    expansion: "Magic 2012"
+    rarity: "Rare"
+    number: 165
+    artist: "Marcelo Vignali"
+    type: "Créature : - oiseau"
 
 exports.birds_of_paradise_ja =
   params: [264287]
@@ -776,7 +864,7 @@ exports.birds_of_paradise_ja =
         rarity: 'Rare'
     rulings: []
     gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=264287'
-    flavor_text: '「神様はその鳥の羽根で、世界中の色を塗り上げたのです。」'
+    flavor_text: '神様はその鳥の羽根で、世界中の色を塗り上げたのです。'
     flavor_text_attribution: 'グラマー森の保護者、イェイラ＝ティヴァ'
     expansion: 'Magic 2012'
     rarity: 'Rare'
@@ -844,7 +932,7 @@ exports.birds_of_paradise_zh_cn =
         rarity: 'Rare'
     rulings: []
     gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263291'
-    flavor_text: '「神明用牠們的羽毛來為世界著色。」'
+    flavor_text: '神明用牠們的羽毛來為世界著色。'
     flavor_text_attribution: '格拉莫樹林守衛葉提娃'
     expansion: 'Magic 2012'
     rarity: 'Rare'
@@ -912,7 +1000,7 @@ exports.birds_of_paradise_zh_tw =
         rarity: 'Rare'
     rulings: []
     gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263042'
-    flavor_text: '「神明用他们的羽毛来为世界着色。」'
+    flavor_text: '神明用他们的羽毛来为世界着色。'
     flavor_text_attribution: '格拉莫树林守卫叶提娃'
     expansion: 'Magic 2012'
     rarity: 'Rare'
