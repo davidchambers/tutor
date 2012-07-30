@@ -980,7 +980,6 @@ exports.hill_giant =
     converted_mana_cost: 4
     subtypes: ["Giant"]
     types: ["Creature"]
-    text: ""
     power: 3
     toughness: 3
     versions:
