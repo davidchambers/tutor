@@ -27,7 +27,8 @@
   },
   "devDependencies": {
     "mocha": "1.0.x",
-    "should": "0.5.x"
+    "should": "0.5.x",
+    "jsondiffpatch": "0.0.x"
   },
   "scripts": {
     "test": "mocha",

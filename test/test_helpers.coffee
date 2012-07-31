@@ -1,4 +1,5 @@
 {compile} = require 'coffee-script'
+{diff}    = require 'jsondiffpatch'
 fs        = require 'fs'
 __        = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
 
@@ -19,10 +20,19 @@ web_fixture = (name) ->
 
 matches_fixture = (action, fixture) ->
   (done) ->
-    name = fixture.name || fixture.params?.name || fixture.response?.name
+    name = fixture.name or fixture.params?.name or fixture.response?.name
     html = web_fixture name
     test = (err, obj) ->
-      obj.should.eql fixture.response
+      # Show a diff like output when explicitly told
+      # It's slower than the deep equality test performed by should, but more
+      # developer friendly and very easy to read.
+      if process.env.TUTOR_SHOW_DELTA
+        delta = diff(obj, fixture.response) or []
+        patch = JSON.stringify delta, null, 4
+        info  = "\n\nUnexpected difference while parsing: #{name}:\n#{patch}"
+        delta.should.eql [], info
+      else
+        obj.should.eql fixture.response, message
       done()
     action html, test, (fixture.options || {})
 
