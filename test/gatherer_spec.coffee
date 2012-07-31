@@ -1,8 +1,5 @@
 should   = require 'should'
-
 gatherer = require '../gatherer'
-cards    = require './fixtures/cards'
-sets     = require './fixtures/sets'
 
 err_404 =
   error: 'Not Found'

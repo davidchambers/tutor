@@ -9,16 +9,18 @@ load_fixture = (prefix, fixture, format) ->
   path = "#{__dirname}/fixtures/#{prefix}/#{name}.#{format}"
   fs.readFileSync(path).toString()
 
-card_fixture = (name) ->
-  eval compile(load_fixture('cards', name, 'coffee'), bare: on)
-
-language_fixture = (name) ->
-  eval compile(load_fixture('languages', name, 'coffee'), bare: on)
-
 web_fixture = (name) ->
   load_fixture 'web', name, 'html'
 
-matches_fixture = (action, fixture) ->
+coffee_fixture_for = (prefix) ->
+  (name) ->
+    eval compile(load_fixture(prefix, name, 'coffee'), bare: on)
+
+exports.card     = coffee_fixture_for 'cards'
+exports.language = coffee_fixture_for 'languages'
+exports.web      = web_fixture
+
+exports.matcher = (action, fixture) ->
   (done) ->
     name = fixture.name or fixture.params?.name or fixture.response?.name
     html = web_fixture name
@@ -32,12 +34,7 @@ matches_fixture = (action, fixture) ->
         info  = "\n\nUnexpected difference while parsing: #{name}:\n#{patch}"
         delta.should.eql [], info
       else
-        obj.should.eql fixture.response, message
+        obj.should.eql fixture.response
       done()
     action html, test, (fixture.options || {})
-
-exports.card_fixture     = card_fixture
-exports.language_fixture = language_fixture
-exports.web_fixture      = web_fixture
-exports.matches_fixture  = matches_fixture
 
