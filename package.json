@@ -15,6 +15,10 @@
       "name": "Nick Novitski",
       "email": "nicknovitski@gmail.com",
       "web": "http://www.nicknovitski.com"
+    }, {
+      "name: "Pablo Castellazzi",
+      "email": "pablo.castellazzi@gmail.com",
+      "web": "http://bitbucket.org/pcastellazzi"
     }
   ],
   "dependencies": {
