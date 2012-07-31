@@ -25,4 +25,5 @@ exports.birds_of_paradise_zh_cn      = card_fixture 'birds_of_paradise_zh_cn'
 exports.birds_of_paradise_zh_tw      = card_fixture 'birds_of_paradise_zh_tw'
 exports.crackleburr                  = card_fixture 'crackleburr'
 exports.hill_giant                   = card_fixture 'hill_giant'
+exports.canyon_minotaur              = card_fixture 'canyon_minotaur'
 

@@ -60,6 +60,7 @@ describe 'Parser', ->
       it 'can parse a card without abilities', card_matches_fixture cards.hill_giant
       it 'can parse the first side of a transforming card', card_matches_fixture cards.afflicted_deserter
       it 'can parse the second side of a transforming card', card_matches_fixture cards.werewolf_ransacker
+      it 'can parse a card with multiline flavor text', card_matches_fixture cards.canyon_minotaur
 
     describe 'cards in other languages', ->
       it "can provide a card's details in German", card_matches_fixture cards.birds_of_paradise_de
