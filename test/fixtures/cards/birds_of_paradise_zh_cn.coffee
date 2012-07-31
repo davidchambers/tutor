@@ -1,5 +1,5 @@
 card =
-  params: [263291]
+  params: [263042]
   options: {printed: true}
   name: 'birdsofparadise_zh_cn'
   response:

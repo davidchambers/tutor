@@ -1,5 +1,5 @@
 exports.birds_of_paradise_zh_tw =
-  params: [263042]
+  params: [263291]
   options: {printed: true}
   name: 'birdsofparadise_zh_tw'
   response:
