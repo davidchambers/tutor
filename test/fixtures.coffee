@@ -6,8 +6,7 @@ __        = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
 
 load_fixture = (prefix, fixture, format) ->
   name = fixture.toLowerCase().replace(/[ ,-]/g, "")
-  path = "#{__dirname}/fixtures/#{prefix}/#{name}.#{format}"
-  fs.readFileSync(path).toString()
+  fs.readFileSync "#{__dirname}/fixtures/#{prefix}/#{name}.#{format}", 'utf-8'
 
 web_fixture = (name) ->
   load_fixture 'web', name, 'html'
