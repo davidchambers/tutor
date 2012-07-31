@@ -74,5 +74,5 @@ describe 'Parser', ->
     it "can provide a card's language details", language_matches_fixture languages.birds_of_paradise
     it "can provide a card's language details for a card without translations", language_matches_fixture languages.black_lotus
     it "can provide a card's language details for a card with all translations", language_matches_fixture languages.drowned_catacomb
-    it "can workaround portugese language bug", language_matches_fixture languages.inquisition_of_kozilek
+    it 'can work around Portugese language bug', language_matches_fixture languages.inquisition_of_kozilek
 
