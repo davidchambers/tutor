@@ -143,13 +143,16 @@ gid_specific_attrs =
 
   flavor_text: (data) ->
     return unless flavor = @get('Flavor Text')
+
     el = flavor.children().last()
     if match = /^(\u2014|\u2015\u2015|\uFF5E)\s*(.+)$/.exec @text el
       data.flavor_text_attribution = match[2]
       el.remove()
+
     text = (@text el for el in flavor.children()).join '\n'
-    if match = /^[„"«「]\s*(.+?)\s*["»」](\.)?$/.exec text
+    if data.flavor_text_attribution and match = /^[„"«「]\s*(.+?)\s*["»」](\.)?$/.exec text
       text = match[1] + (match[2] or "")
+
     text
 
   hand_modifier: vanguard_modifier /Hand Modifier: ([+-]\d+)/

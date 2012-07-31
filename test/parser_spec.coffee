@@ -57,6 +57,7 @@ describe 'Parser', ->
       it 'can parse the first side of a transforming card', card_matches_fixture 'afflicted_deserter'
       it 'can parse the second side of a transforming card', card_matches_fixture 'werewolf_ransacker'
       it 'can parse a card with multiline flavor text', card_matches_fixture 'canyon_minotaur'
+      it 'can parse a card with quoted flavor text and no attribution', card_matches_fixture 'akroma_angel_of_wrath_de'
 
     describe 'cards in other languages', ->
       it "can provide a card's details in German", card_matches_fixture 'birds_of_paradise_de'
