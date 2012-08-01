@@ -1,4 +1,2 @@
-language =
-  params: {name: 'black lotus'}
-  response: {}
-
+params: {name: 'black lotus'}
+response: {}
