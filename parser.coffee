@@ -149,10 +149,9 @@ gid_specific_attrs =
       data.flavor_text_attribution = match[2]
       el.remove()
 
+    pattern = /^["\u00AB\u201E\u300C]\s*(.+?)\s*["\u00BB\u300D]([.]?)$/
     text = (@text el for el in flavor.children()).join '\n'
-    if data.flavor_text_attribution and match = /^[„"«「]\s*(.+?)\s*["»」](\.)?$/.exec text
-      text = match[1] + (match[2] or "")
-
+    text = match[1] + match[2] if match and match = pattern.exec text
     text
 
   hand_modifier: vanguard_modifier /Hand Modifier: ([+-]\d+)/
