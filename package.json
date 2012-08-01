@@ -18,7 +18,7 @@
     }, {
       "name": "Pablo Castellazzi",
       "email": "pablo.castellazzi@gmail.com",
-      "web": "http://bitbucket.org/pcastellazzi"
+      "web": "https://bitbucket.org/pcastellazzi"
     }
   ],
   "dependencies": {
@@ -26,17 +26,16 @@
     "coffee-script": "1.3.x",
     "entities": "0.1.x",
     "express": "2.5.x",
-    "request": "2.9.x",
-    "underscore": "1.3.x"
+    "request": "2.9.x"
   },
   "devDependencies": {
+    "jsondiffpatch": "0.0.x",
     "mocha": "1.0.x",
-    "should": "0.5.x",
-    "jsondiffpatch": "0.0.x"
+    "should": "0.5.x"
   },
   "scripts": {
-    "test": "mocha",
-    "start": "foreman start"
+    "start": "foreman start",
+    "test": "mocha"
   },
   "engines": {
     "node": "0.6.x"

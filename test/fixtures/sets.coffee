@@ -1,5 +1,3 @@
-{_} = require 'underscore'
-
 __ = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
 
 exports.homelands_pg1 =

@@ -1,19 +1,18 @@
+fs        = require 'fs'
 {compile} = require 'coffee-script'
 {diff}    = require 'jsondiffpatch'
-fs        = require 'fs'
-__        = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
 
+
+__ = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
 
 load_fixture = (prefix, fixture, format) ->
-  name = fixture.toLowerCase().replace(/[ ,-]/g, "")
-  fs.readFileSync "#{__dirname}/fixtures/#{prefix}/#{name}.#{format}", 'utf-8'
-
-web_fixture = (name) ->
-  load_fixture 'web', name, 'html'
+  name = fixture.toLowerCase().replace(/[ ,-]/g, '')
+  fs.readFileSync "#{__dirname}/fixtures/#{prefix}/#{name}.#{format}", 'utf8'
 
 coffee_fixture_for = (prefix) ->
-  (name) ->
-    eval compile(load_fixture(prefix, name, 'coffee'), bare: on)
+  (name) -> eval compile load_fixture(prefix, name, 'coffee'), bare: yes
+
+web_fixture = (name) -> load_fixture 'web', name, 'html'
 
 exports.card     = coffee_fixture_for 'cards'
 exports.language = coffee_fixture_for 'languages'
@@ -35,5 +34,4 @@ exports.matcher = (action, fixture) ->
       else
         obj.should.eql fixture.response
       done()
-    action html, test, (fixture.options || {})
-
+    action html, test, fixture.options or {}
