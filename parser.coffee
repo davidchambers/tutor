@@ -106,7 +106,7 @@ common_attrs =
 
   stats: (data) ->
     return unless text = @text 'P/T'
-    [power, toughness] = ///^(.+?)\s*/\s*([^/]+)$///.exec(text)[1..]
+    [power, toughness] = ///^(.+?)\s+/\s+(.+)$///.exec(text)[1..]
     data.power = to_stat power
     data.toughness = to_stat toughness
     return

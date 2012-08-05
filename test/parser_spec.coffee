@@ -69,6 +69,7 @@ describe 'Parser', ->
 
     describe 'cards from un-sets', ->
       it "can parse cards with fractional power", card_matches_fixture 'cardpecker'
+      it "can parse cards with fractional toughness", card_matches_fixture 'cheap_ass'
 
   describe 'language parser', ->
     it "can provide a card's language details", language_matches_fixture 'birds_of_paradise'
