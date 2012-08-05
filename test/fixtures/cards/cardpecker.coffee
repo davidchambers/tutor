@@ -11,7 +11,7 @@ response:
     Gotcha Whenever an opponent touches the table with his or her hand, you may
     say "Gotcha" If you do, return Cardpecker from your graveyard to your hand.
   """
-  power: '1{1/2}'
+  power: 1.5
   toughness: 1
   versions:
     74244:

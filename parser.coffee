@@ -77,7 +77,7 @@ vanguard_modifier = (pattern) -> ->
   +pattern.exec(@text 'Hand/Life')?[1]
 
 to_stat = (stat_as_string) ->
-  stat_as_number = +stat_as_string
+  stat_as_number = +stat_as_string?.replace('{1/2}', '.5')
   # Use string representation if coercing to a number gives `NaN`.
   if stat_as_number is stat_as_number then stat_as_number else stat_as_string
 

@@ -8,7 +8,7 @@ response:
   text: 'Spells you play cost  less to play.'
   flavor_text: 'And you thought Yawgmoth drove a hard bargain.'
   power: 1
-  toughness: '3{1/2}'
+  toughness: 3.5
   versions:
     74220:
       expansion: 'Unhinged'
