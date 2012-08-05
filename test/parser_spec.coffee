@@ -67,6 +67,9 @@ describe 'Parser', ->
       it "can provide a card's details in Chinese Traditional", card_matches_fixture 'birds_of_paradise_zh_cn'
       it "can provide a card's details in Chinese Simplified", card_matches_fixture 'birds_of_paradise_zh_tw'
 
+    describe 'cards from un-sets', ->
+      it "can parse cards with fractional power", card_matches_fixture 'cardpecker'
+
   describe 'language parser', ->
     it "can provide a card's language details", language_matches_fixture 'birds_of_paradise'
     it "can provide a card's language details for a card without translations", language_matches_fixture 'black_lotus'
