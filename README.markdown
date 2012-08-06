@@ -24,7 +24,7 @@ Returns a JSON representation of the card specified (by Gatherer id) in the
 request path. The response includes version-specific metadata such as flavor
 text and rarity.
 
-![JSON response](http://f.cl.ly/items/2M160s0G0n0I0U0R3C3A/json-response.png)
+![JSON response](http://cl.ly/image/3f0y1I3D1N1p/json-response.png)
 
 ![Flame Javelin][4]
 
@@ -40,7 +40,7 @@ card. For example, `GET /card/27166/Ice` returns the Ice half of Fire and Ice.
 Returns a JSON representation of the specified card. The response does *not*
 include version-specific metadata such as flavor text and rarity.
 
-![JSON response](http://f.cl.ly/items/1P3i1m0H3E3H2F0u1U0V/json-response.png)
+![JSON response](http://cl.ly/image/2q0b3A3R3q0L/json-response.png)
 
 ## Attributes
 
