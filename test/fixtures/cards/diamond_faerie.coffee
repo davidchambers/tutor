@@ -24,6 +24,8 @@ response:
   artist: 'Heather Hudson'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=121138'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=121138&type=card'
   versions:
     121138:
       expansion: 'Coldsnap'

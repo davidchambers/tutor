@@ -22,6 +22,8 @@ response:
   artist: 'Aleksi Briclot'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=140233'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=140233&type=card'
   versions:
     140233:
       expansion: 'Lorwyn'

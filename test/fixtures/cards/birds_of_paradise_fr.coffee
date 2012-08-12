@@ -58,6 +58,8 @@ response:
   rulings: []
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263540'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=263540&type=card'
   flavor_text: __ """
     Les dieux ont utilisé leurs plumes pour peindre toutes les couleurs du
     monde.

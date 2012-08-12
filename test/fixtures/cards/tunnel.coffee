@@ -26,6 +26,8 @@ response:
       rarity: 'Uncommon'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=226'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=226&type=card'
   expansion: 'Limited Edition Alpha'
   rarity: 'Uncommon'
   artist: 'Dan Frazier'

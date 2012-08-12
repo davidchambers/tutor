@@ -17,6 +17,8 @@ response:
   rulings: []
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=182290'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=182290&type=card'
   flavor_text: __ """
     "Chuck's Virtual Party" avatar (2003)
   """

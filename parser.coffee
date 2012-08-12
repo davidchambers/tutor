@@ -1,8 +1,8 @@
 cheerio   = require 'cheerio'
 entities  = require 'entities'
 
-
-gatherer_root = 'http://gatherer.wizards.com/Pages/'
+gatherer_host = 'http://gatherer.wizards.com/'
+gatherer_root = gatherer_host + 'Pages/'
 
 prefix = '#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent'
 
@@ -103,6 +103,21 @@ common_attrs =
 
   watermark: ->
     @text 'Watermark'
+
+  image_url: ->
+    try
+      # best method, does not work on cards fetched by name
+      gatherer_id = @$('#aspnetForm').attr('action').match(/\=(\d+)/)[1]
+    catch error
+      console.log error
+      # next-best, does not work on transforming cards or cards in other languages
+      set_symbol_div = @$(prefix + '_currentSetSymbol')
+      set_symbol_anchor = set_symbol_div.children().first()
+      set_symbol_link = set_symbol_anchor.attr('href')
+      gatherer_id = +/\=(\d+)/.exec(set_symbol_link)[1]
+
+    gatherer_host + "Handlers/Image.ashx?multiverseid=#{gatherer_id}&type=card"
+
 
   stats: (data) ->
     return unless text = @text 'P/T'

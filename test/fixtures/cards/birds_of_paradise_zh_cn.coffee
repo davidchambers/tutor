@@ -58,6 +58,8 @@ response:
   rulings: []
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263291'
+  image_url: 
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=263291&type=card'
   flavor_text: '神明用牠們的羽毛來為世界著色。'
   flavor_text_attribution: '格拉莫樹林守衛葉提娃'
   expansion: 'Magic 2012'
