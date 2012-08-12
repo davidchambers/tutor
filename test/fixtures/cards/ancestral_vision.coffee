@@ -19,6 +19,8 @@ response:
   artist: 'Mark Poole'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=113505'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=113505&type=card'
   versions:
     113505:
       expansion: 'Time Spiral'

@@ -58,6 +58,8 @@ response:
   rulings: []
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=263789&printed=true'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=263789&type=card'
   flavor_text: __ """
     Ihre Federn dienten den Göttern, um die Welt farbig anzustreichen.
   """

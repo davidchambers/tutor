@@ -59,6 +59,8 @@ exports.birds_of_paradise_zh_tw =
     rulings: []
     gatherer_url:
       'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263042'
+    image_url:
+      'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=263042&type=card'
     flavor_text: '神明用他们的羽毛来为世界着色。'
     flavor_text_attribution: '格拉莫树林守卫叶提娃'
     expansion: 'Magic 2012'

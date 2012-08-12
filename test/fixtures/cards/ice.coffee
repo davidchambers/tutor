@@ -16,6 +16,8 @@ response:
   artist: 'Franz Vohwinkel'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?part=Ice&multiverseid=27166'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=27166&type=card'
   versions:
     27165:
       expansion: 'Apocalypse'

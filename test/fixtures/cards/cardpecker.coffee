@@ -20,6 +20,8 @@ response:
   rulings: []
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=74244'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=74244&type=card'
   expansion: 'Unhinged'
   rarity: 'Common'
   number: 4
