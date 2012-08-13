@@ -73,8 +73,8 @@ not present (e.g. certain creatures have no rules text) are omitted.
 ## GET /language/:id or GET /language/:name
 
 Return the JSON representation of the available translations of the specified
-card (by Gatherer id) or by name. The result is an objects with where the keys
-are a language code (or culture code when needed), and values are also objects
+card (by Gatherer id) or by name. The result is an object with the keys are
+language codes (or culture codes when needed), and the values are also objects
 with the following properties:
 
   - `name` - translated name of the card
