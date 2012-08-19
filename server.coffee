@@ -1,5 +1,5 @@
 express = require 'express'
-api     = require './gatherer'
+fetch   = require './fetch'
 
 
 responder = (fn) ->
@@ -16,14 +16,14 @@ responder = (fn) ->
         res.json data
 
 app = express.createServer()
-app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///,     responder api.fetch_card
-app.get '/card/:name',                          responder api.fetch_card
-app.get /// ^/language/(\d+)(?:/(\w+))?/?$ ///, responder api.fetch_language
-app.get '/language/:name',                      responder api.fetch_language
-app.get '/set/:name/:page?',                    responder api.fetch_set
-app.get '/sets',                                responder api.sets
-app.get '/formats',                             responder api.formats
-app.get '/types',                               responder api.types
+app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///,     responder fetch.card
+app.get '/card/:name',                          responder fetch.card
+app.get /// ^/language/(\d+)(?:/(\w+))?/?$ ///, responder fetch.language
+app.get '/language/:name',                      responder fetch.language
+app.get '/set/:name/:page?',                    responder fetch.set
+app.get '/sets',                                responder fetch.sets
+app.get '/formats',                             responder fetch.formats
+app.get '/types',                               responder fetch.types
 
 port = process.env.PORT ? 3000
 app.listen port, -> console.log "Listening on #{port}"
