@@ -15,7 +15,7 @@ responder = (fn) ->
         res.setHeader('Cache-Control', 'public, max-age=86400');
         res.json data
 
-app = express.createServer()
+app = express()
 app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///,     responder api.fetch_card
 app.get '/card/:name',                          responder api.fetch_card
 app.get /// ^/language/(\d+)(?:/(\w+))?/?$ ///, responder api.fetch_language
