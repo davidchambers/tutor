@@ -21,6 +21,8 @@ response:
   toughness: 1
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Phantasmal+Sphere'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?name=Phantasmal+Sphere&type=card'
   versions:
     3113:
       expansion: 'Alliances'

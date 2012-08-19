@@ -22,6 +22,8 @@ response:
   artist: 'Carl Critchlow'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=191312'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=191312&type=card'
   versions:
     48158:
       expansion: 'Darksteel'

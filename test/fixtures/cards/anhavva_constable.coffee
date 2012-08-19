@@ -21,6 +21,8 @@ response:
   artist: 'Dan Frazier'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2960'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2960&type=card'
   versions:
     2960:
       expansion: 'Homelands'

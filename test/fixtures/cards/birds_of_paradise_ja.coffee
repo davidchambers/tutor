@@ -58,6 +58,8 @@ response:
   rulings: []
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=264287'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=264287&type=card'
   flavor_text: '神様はその鳥の羽根で、世界中の色を塗り上げたのです。'
   flavor_text_attribution: 'グラマー森の保護者、イェイラ＝ティヴァ'
   expansion: 'Magic 2012'

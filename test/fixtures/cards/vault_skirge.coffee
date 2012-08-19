@@ -26,6 +26,8 @@ response:
   artist: 'Brad Rigney'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=217984'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=217984&type=card'
   versions:
     217984:
       expansion: 'New Phyrexia'

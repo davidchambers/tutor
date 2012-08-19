@@ -21,6 +21,8 @@ response:
       rarity: 'Uncommon'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=262698'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=262698&type=card'
   expansion: 'Dark Ascension'
   rarity: 'Uncommon'
   number: '81b'

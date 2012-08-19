@@ -58,6 +58,8 @@ response:
   rulings: []
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=264785'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=264785&type=card'
   flavor_text_attribution: 'Яре-Тива, хранительница Грамурского леса'
   flavor_text: 'Их перьями боги расписывали красочную картину мира.'
   expansion: 'Magic 2012'

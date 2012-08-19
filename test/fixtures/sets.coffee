@@ -20,6 +20,8 @@ exports.homelands_pg1 =
       rarity: 'Uncommon'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=3010'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=3010&type=card'
       versions:
         3010:
           expansion: 'Homelands'
@@ -43,6 +45,8 @@ exports.homelands_pg1 =
       rarity: 'Common'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=3012'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=3012&type=card'
       versions:
         3011:
           expansion: 'Homelands'
@@ -66,6 +70,8 @@ exports.homelands_pg1 =
       rarity: 'Uncommon'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2935'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2935&type=card'
       versions:
         2935:
           expansion: 'Homelands'
@@ -87,6 +93,8 @@ exports.homelands_pg1 =
       rarity: 'Common'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2986'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2986&type=card'
       versions:
         2985:
           expansion: 'Homelands'
@@ -105,6 +113,8 @@ exports.homelands_pg1 =
       rarity: 'Common'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2987'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2987&type=card'
       versions:
         2987:
           expansion: 'Homelands'
@@ -122,6 +132,8 @@ exports.homelands_pg1 =
       rarity: 'Common'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2989'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2989&type=card'
       versions:
         2988:
           expansion: 'Homelands'
@@ -151,6 +163,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2991'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2991&type=card'
       versions:
         2991:
           expansion: 'Homelands'
@@ -174,6 +188,8 @@ exports.homelands_pg1 =
       rarity: 'Common'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2993'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2993&type=card'
       versions:
         2992:
           expansion: 'Homelands'
@@ -203,6 +219,8 @@ exports.homelands_pg1 =
       rarity: 'Common'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2995'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2995&type=card'
       versions:
         2994:
           expansion: 'Homelands'
@@ -232,6 +250,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2996'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2996&type=card'
       versions:
         2996:
           expansion: 'Homelands'
@@ -255,6 +275,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2960'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2960&type=card'
       versions:
         2960:
           expansion: 'Homelands'
@@ -276,6 +298,8 @@ exports.homelands_pg1 =
       rarity: 'Uncommon'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2961'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2961&type=card'
       versions:
         2961:
           expansion: 'Homelands'
@@ -296,6 +320,8 @@ exports.homelands_pg1 =
       rarity: 'Uncommon'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=3035'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=3035&type=card'
       versions:
         3035:
           expansion: 'Homelands'
@@ -317,6 +343,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2990'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2990&type=card'
       versions:
         2990:
           expansion: 'Homelands'
@@ -339,6 +367,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2900'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2900&type=card'
       versions:
         2900:
           expansion: 'Homelands'
@@ -362,6 +392,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2962'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2962&type=card'
       versions:
         2962:
           expansion: 'Homelands'
@@ -385,6 +417,8 @@ exports.homelands_pg1 =
       rarity: 'Uncommon'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=3036'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=3036&type=card'
       versions:
         3036:
           expansion: 'Homelands'
@@ -402,6 +436,8 @@ exports.homelands_pg1 =
       rarity: 'Common'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=3014'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=3014&type=card'
       versions:
         3013:
           expansion: 'Homelands'
@@ -431,6 +467,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=3015'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=3015&type=card'
       versions:
         3015:
           expansion: 'Homelands'
@@ -449,6 +487,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=3016'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=3016&type=card'
       versions:
         3016:
           expansion: 'Homelands'
@@ -467,6 +507,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2936'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2936&type=card'
       versions:
         2936:
           expansion: 'Homelands'
@@ -491,6 +533,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2910'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2910&type=card'
       versions:
         2910:
           expansion: 'Homelands'
@@ -520,6 +564,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=3017'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=3017&type=card'
       versions:
         3017:
           expansion: 'Homelands'
@@ -544,6 +590,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2911'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2911&type=card'
       versions:
         2911:
           expansion: 'Homelands'
@@ -564,6 +612,8 @@ exports.homelands_pg1 =
       rarity: 'Rare'
       gatherer_url:
         'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2912'
+      image_url:
+        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2912&type=card'
       versions:
         2912:
           expansion: 'Homelands'

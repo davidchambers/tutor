@@ -23,6 +23,8 @@ response:
   rulings: []
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=259211'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=259211&type=card'
   flavor_text: """
     "We'll scale these cliffs, traverse Brittle Bridge, and then fight our way down the volcanic slopes on the other side."
     "Isn't the shortest route through the canyon?"

@@ -2,7 +2,8 @@ cheerio   = require 'cheerio'
 entities  = require 'entities'
 
 
-gatherer_root = 'http://gatherer.wizards.com/Pages/'
+gatherer_base_card_url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx'
+gatherer_image_handler = 'http://gatherer.wizards.com/Handlers/Image.ashx'
 
 prefix = '#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent'
 
@@ -231,8 +232,12 @@ exports.card = (body, callback, options = {}) ->
   for own key, fn of common_attrs
     data[key] = fn.call ctx, data
 
-  action = $('#aspnetForm').attr('action')
-  data.gatherer_url = "#{gatherer_root}Card/#{entities.decode action}"
+  action = entities.decode $('#aspnetForm').attr('action')
+  params = action.substr action.indexOf '?'
+  data.gatherer_url = gatherer_base_card_url + params
+  data.image_url = gatherer_image_handler +
+    '?' + /(multiverseid|name)=[^&]+/.exec(params)[0] + '&type=card'
+
   if /multiverseid/.test data.gatherer_url
     for own key, fn of gid_specific_attrs
       data[key] = fn.call ctx, data
@@ -271,7 +276,9 @@ exports.set = (body, callback) ->
 
         href = el.find('.cardTitle').find('a').attr('href')
         [param, id] = /multiverseid=(\d+)/.exec href
-        card.gatherer_url = "#{gatherer_root}Card/Details.aspx?#{param}"
+        params = '?' + param
+        card.gatherer_url = gatherer_base_card_url + params
+        card.image_url = gatherer_image_handler + params + '&type=card'
 
         {expansion, rarity} = get_versions('.setVersions').call(ctx)[id]
         card.expansion = expansion

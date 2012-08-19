@@ -14,6 +14,8 @@ response:
   artist: 'Brian Snoddy'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=1496'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=1496&type=card'
   versions:
     1496:
       expansion: 'Legends'
