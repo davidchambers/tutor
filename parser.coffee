@@ -277,6 +277,7 @@ exports.set = (body, callback) ->
         href = el.find('.cardTitle').find('a').attr('href')
         [param, id] = /multiverseid=(\d+)/.exec href
         params = '?' + param
+        card.multiverse_id = parseInt(id)
         card.gatherer_url = gatherer_base_card_url + params
         card.image_url = gatherer_image_handler + params + '&type=card'
 
