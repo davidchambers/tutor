@@ -73,20 +73,30 @@ not present (e.g. certain creatures have no rules text) are omitted.
 
 ## GET /language/:id or GET /language/:name
 
-Return the JSON representation of the available translations of the specified
-card (by Gatherer id) or by name. The result is an objects with where the keys
-are a language code (or culture code when needed), and values are also objects
-with the following properties:
-
-  - `name` - translated name of the card
-  - `id` - multiverse id of the translated card
-
-Example:
+Returns, as JSON, codes of the various languages in which the specified card
+is printed. Each language code has an associated card name and Gatherer id.
+For example:
 
     {
+      "de": {
+        "id": 167618,
+        "name": "Erhabener Engel"
+      },
+      "fr": {
+        "id": 167975,
+        "name": "Ange exalté"
+      },
+      "it": {
+        "id": 168340,
+        "name": "Angelo Eminente"
+      },
+      "pt-BR": {
+        "id": 168690,
+        "name": "Anjo Exaltado"
+      },
       "es": {
-        "name": "Ave del paraiso",
-        "id": 265034
+        "id": 170279,
+        "name": "Ángel exaltado"
       }
     }
 
