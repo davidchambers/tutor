@@ -46,6 +46,8 @@ response:
   ]
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=157420'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=157420&type=card'
   expansion: 'Eventide'
   rarity: 'Rare'
   number: 100

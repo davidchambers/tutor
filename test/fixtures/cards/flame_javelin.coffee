@@ -21,6 +21,8 @@ response:
   artist: 'Trevor Hairsine'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=146017'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=146017&type=card'
   versions:
     146017:
       expansion: 'Shadowmoor'

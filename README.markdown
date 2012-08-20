@@ -64,6 +64,7 @@ These attributes may be included in a response:
   - `number`
   - `artist`
   - `gatherer_url`
+  - `image_url`
   - `versions`
   - `rulings`
 
@@ -114,6 +115,7 @@ Each card in `cards` contains all applicable attributes among the following:
   - `expansion`
   - `rarity`
   - `gatherer_url`
+  - `image_url`
   - `versions`
 
 ## Running the tests

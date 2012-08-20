@@ -17,6 +17,8 @@ response:
   """
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Serrated+Arrows'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?name=Serrated+Arrows&type=card'
   versions:
     2909:
       expansion: 'Homelands'

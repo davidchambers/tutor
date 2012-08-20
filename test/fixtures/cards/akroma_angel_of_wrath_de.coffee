@@ -24,6 +24,8 @@ response:
   rulings: []
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=131257&printed=true'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=131257&type=card'
   flavor_text: '„Keine Ruhepause. Keine Gnade. Egal was geschieht."'
   expansion: 'Time Spiral "Timeshifted"'
   rarity: 'Special'

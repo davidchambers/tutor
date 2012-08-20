@@ -20,6 +20,8 @@ response:
   artist: 'David Palumbo'
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=262675'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=262675&type=card'
   versions:
     262675:
       expansion: 'Dark Ascension'

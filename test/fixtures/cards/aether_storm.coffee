@@ -13,6 +13,8 @@ response:
   """
   gatherer_url:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=%u00c6ther+Storm'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?name=%u00c6ther+Storm&type=card'
   versions:
     2935:
       expansion: 'Homelands'
