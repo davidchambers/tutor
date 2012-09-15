@@ -28,6 +28,9 @@ response:
     189244:
       expansion: 'Duel Decks: Jace vs. Chandra'
       rarity: 'Rare'
+  community_rating:
+    rating: 4.556
+    votes: 63
   rulings: [
     ['2006-10-15', __ """
       This has no mana cost, which means it can't normally be cast as

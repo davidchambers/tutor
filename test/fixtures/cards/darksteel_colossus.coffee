@@ -31,6 +31,9 @@ response:
     191312:
       expansion: 'Magic 2010'
       rarity: 'Mythic Rare'
+  community_rating:
+    rating: 4.583
+    votes: 228
   rulings: [
     ['2009-10-01', __ """
       Lethal damage, damage from a source with deathtouch, and effects

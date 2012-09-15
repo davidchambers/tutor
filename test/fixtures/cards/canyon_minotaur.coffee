@@ -36,3 +36,6 @@ response:
   rarity: 'Common'
   number: 122
   artist: 'Steve Prescott'
+  community_rating:
+    rating: 1.613
+    votes: 31

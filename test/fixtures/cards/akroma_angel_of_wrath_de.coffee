@@ -32,3 +32,6 @@ response:
   number: 1
   artist: 'Ron Spears'
   type: 'Legendäre Kreatur - Engel'
+  community_rating:
+    rating: 5
+    votes: 0

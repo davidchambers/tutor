@@ -27,4 +27,7 @@ response:
   rarity: 'Uncommon'
   number: '81b'
   artist: 'David Palumbo'
+  community_rating:
+    rating: 3.240
+    votes: 25
   rulings: []

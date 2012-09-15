@@ -56,3 +56,6 @@ response:
   rarity: 'Common'
   number: 212
   artist: 'Kev Walker'
+  community_rating:
+    rating: 2.029
+    votes: 70

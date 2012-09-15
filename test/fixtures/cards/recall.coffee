@@ -32,6 +32,9 @@ response:
     201161:
       expansion: 'Masters Edition III'
       rarity: 'Uncommon'
+  community_rating:
+    rating: 2.742
+    votes: 31
   rulings: [
     ['2009-10-01', __ """
       You don't discard cards until Recall resolves. If you don't have

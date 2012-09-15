@@ -28,3 +28,6 @@ response:
     'http://gatherer.wizards.com/Pages/Card/Details.aspx?part=Fire&multiverseid=27166'
   image_url:
     'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=27166&type=card'
+  community_rating:
+    rating: 4.474
+    votes: 39

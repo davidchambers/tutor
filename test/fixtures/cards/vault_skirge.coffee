@@ -32,6 +32,9 @@ response:
     217984:
       expansion: 'New Phyrexia'
       rarity: 'Common'
+  community_rating:
+    rating: 4.117
+    votes: 133
   rulings: [
     ['2011-06-01', __ """
       A card with Phyrexian mana symbols in its mana cost is each

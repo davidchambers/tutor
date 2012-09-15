@@ -67,3 +67,6 @@ response:
   number: 165
   artist: 'Marcelo Vignali'
   type: '生物～ - 鳥'
+  community_rating:
+    rating: 5
+    votes: 0

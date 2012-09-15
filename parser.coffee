@@ -126,6 +126,12 @@ common_attrs =
       versions[id] = {expansion, rarity}
     versions
 
+  community_rating: ->
+    text = @$('.textRating').text().replace(/\s+/g, '')
+    pattern = ///^Rating:(\d(?:[.]\d+)?)/5[(](\d+)votes?[)]$///
+    [rating, votes] = pattern.exec(text)[1..]
+    rating: +rating, votes: +votes
+
   rulings: ->
     rulings = []
     for el in @$('.cardDetails').find('tr.post')

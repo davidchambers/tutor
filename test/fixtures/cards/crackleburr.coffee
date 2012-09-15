@@ -52,3 +52,6 @@ response:
   rarity: 'Rare'
   number: 100
   artist: 'Mike Dringenberg'
+  community_rating:
+    rating: 3.913
+    votes: 75

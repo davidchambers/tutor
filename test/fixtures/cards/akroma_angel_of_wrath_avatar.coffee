@@ -26,3 +26,6 @@ response:
   rarity: 'Special'
   number: 33
   artist: 'UDON'
+  community_rating:
+    rating: 4.294
+    votes: 17

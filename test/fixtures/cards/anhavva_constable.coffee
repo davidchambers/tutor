@@ -30,4 +30,7 @@ response:
     3960:
       expansion: 'Fifth Edition'
       rarity: 'Rare'
+  community_rating:
+    rating: 3.141
+    votes: 32
   rulings: []

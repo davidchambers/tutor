@@ -68,4 +68,6 @@ exports.birds_of_paradise_zh_tw =
     number: 165
     artist: 'Marcelo Vignali'
     type: '生物～ - 鸟'
-
+    community_rating:
+      rating: 5
+      votes: 0

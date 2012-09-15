@@ -22,3 +22,6 @@ response:
   rarity: 'Common'
   number: 5
   artist: 'Randy Gallegos'
+  community_rating:
+    rating: 4.047
+    votes: 32

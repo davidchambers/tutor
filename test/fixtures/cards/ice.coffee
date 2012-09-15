@@ -28,4 +28,7 @@ response:
     247159:
       expansion: 'Magic: The Gathering-Commander'
       rarity: 'Uncommon'
+  community_rating:
+    rating: 4.474
+    votes: 39
   rulings: []

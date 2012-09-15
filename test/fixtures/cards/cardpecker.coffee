@@ -26,3 +26,6 @@ response:
   rarity: 'Common'
   number: 4
   artist: 'Richard Sardinha'
+  community_rating:
+    rating: 3.706
+    votes: 17

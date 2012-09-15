@@ -31,4 +31,7 @@ response:
   expansion: 'Limited Edition Alpha'
   rarity: 'Uncommon'
   artist: 'Dan Frazier'
+  community_rating:
+    rating: 2.361
+    votes: 36
   rulings: []

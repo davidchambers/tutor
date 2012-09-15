@@ -70,3 +70,6 @@ response:
   number: 165
   artist: 'Marcelo Vignali'
   type: 'Créature : - oiseau'
+  community_rating:
+    rating: 5
+    votes: 0
