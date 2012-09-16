@@ -4,8 +4,8 @@ response:
   name: 'Crackleburr'
   mana_cost: '{1}{U/R}{U/R}'
   converted_mana_cost: 3
-  subtypes: ['Elemental']
   types: ['Creature']
+  subtypes: ['Elemental']
   text: __ """
     {U/R}{U/R}, {T}, Tap two untapped red creatures you control:
     Crackleburr deals 3 damage to target creature or player.
@@ -16,10 +16,21 @@ response:
   """
   power: 2
   toughness: 2
+  expansion: 'Eventide'
+  rarity: 'Rare'
+  number: 100
+  artist: 'Mike Dringenberg'
+  gatherer_url:
+    'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=157420'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=157420&type=card'
   versions:
     157420:
       expansion: 'Eventide'
       rarity: 'Rare'
+  community_rating:
+    rating: 3.913
+    votes: 75
   rulings: [
     ['2008-08-01', __ """
       If the permanent is already untapped, you can't activate its {Q}
@@ -44,14 +55,3 @@ response:
       turn began (or have haste), but the other two creatures don't.
     """]
   ]
-  gatherer_url:
-    'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=157420'
-  image_url:
-    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=157420&type=card'
-  expansion: 'Eventide'
-  rarity: 'Rare'
-  number: 100
-  artist: 'Mike Dringenberg'
-  community_rating:
-    rating: 3.913
-    votes: 75

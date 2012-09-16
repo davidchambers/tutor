@@ -5,13 +5,24 @@ response:
   name: '極楽鳥'
   mana_cost: '{G}'
   converted_mana_cost: 1
+  type: 'クリーチャー ― - 鳥'
   text: __ """
     飛行
 
     {T}：あなたのマナ・プールに、好きな色１色のマナ１点を加える。
   """
+  flavor_text: '神様はその鳥の羽根で、世界中の色を塗り上げたのです。'
+  flavor_text_attribution: 'グラマー森の保護者、イェイラ＝ティヴァ'
   power: 0
   toughness: 1
+  expansion: 'Magic 2012'
+  rarity: 'Rare'
+  number: 165
+  artist: 'Marcelo Vignali'
+  gatherer_url:
+    'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=264287'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=264287&type=card'
   versions:
     142:
       expansion: 'Limited Edition Alpha'
@@ -55,18 +66,7 @@ response:
     221896:
       expansion: 'Magic 2012'
       rarity: 'Rare'
-  rulings: []
-  gatherer_url:
-    'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=264287'
-  image_url:
-    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=264287&type=card'
-  flavor_text: '神様はその鳥の羽根で、世界中の色を塗り上げたのです。'
-  flavor_text_attribution: 'グラマー森の保護者、イェイラ＝ティヴァ'
-  expansion: 'Magic 2012'
-  rarity: 'Rare'
-  number: 165
-  artist: 'Marcelo Vignali'
-  type: 'クリーチャー ― - 鳥'
   community_rating:
     rating: 5
     votes: 0
+  rulings: []

@@ -15,18 +15,18 @@ response:
   color_indicator: 'Red'
   power: 5
   toughness: 4
-  versions:
-    262698:
-      expansion: 'Dark Ascension'
-      rarity: 'Uncommon'
-  gatherer_url:
-    'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=262698'
-  image_url:
-    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=262698&type=card'
   expansion: 'Dark Ascension'
   rarity: 'Uncommon'
   number: '81b'
   artist: 'David Palumbo'
+  gatherer_url:
+    'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=262698'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=262698&type=card'
+  versions:
+    262698:
+      expansion: 'Dark Ascension'
+      rarity: 'Uncommon'
   community_rating:
     rating: 3.240
     votes: 25
