@@ -1,0 +1,5 @@
+#!/usr/bin/env coffee
+
+cli = require '../cli'
+
+cli.run(process.argv[2..])

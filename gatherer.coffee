@@ -4,48 +4,38 @@ parser  = require './parser'
 
 gatherer_url = 'http://gatherer.wizards.com/Pages/'
 
-exports.fetch_language = (callback) ->
-  url = gatherer_url + 'Card/Languages.aspx'
-
-  if 'name' of @params
-    url += '?name=' + encodeURIComponent @params.name
+card_query_string = (params) ->
+  q = ''
+  if params.name?
+    q += '?name=' + encodeURIComponent params.name
   else
-    [id, part] = @params
-    url += '?multiverseid=' + id
-    url += '&part=' + encodeURIComponent part if part
+    q += '?multiverseid=' + params.id
+    q += '&part=' + encodeURIComponent params.part if params.part
+  q += '&printed=true' if params.printed 
+  q
 
-  request {url, followRedirect: no}, (error, response, body) ->
-    if error or (status = response.statusCode) isnt 200
-      callback error, {error, status}
-      return
-
-    parser.language body, callback
-
-
-exports.fetch_card = (callback) ->
-  printed = @query.printed is 'true'
-  url = gatherer_url + 'Card/Details.aspx'
-  if 'name' of @params
-    url += '?name=' + encodeURIComponent @params.name
-  else
-    [id, part] = @params
-    url += '?multiverseid=' + id
-    url += '&part=' + encodeURIComponent part if part
-  if printed
-    url += '&printed=true'
-
-  request {url, followRedirect: no}, (error, response, body) ->
+request_and_parse = (params, callback) -> 
+  console.log "sending request to #{params.url}"
+  request {url:params.url, followRedirect: no}, (error, response, body) ->
     if error or (status = response.statusCode) isnt 200
       # Gatherer does a 302 redirect if the requested id does not exist.
       # In such cases, we respond with the more appropriate status code.
       callback error, {error, status}
       return
-    parser.card body, callback, {printed}
+    params.parser body, callback, params
 
-exports.fetch_set = (callback) ->
-  page = +(@params.page ? 1)
+exports.fetch_language = (params, callback) ->
+  url = gatherer_url + 'Card/Languages.aspx' + card_query_string(params)
+  request_and_parse {url, parser: parser.language}, callback
+
+exports.fetch_card = (params, callback) ->
+  url = gatherer_url + 'Card/Details.aspx' + card_query_string(params)   
+  request_and_parse {url, parser: parser.card, printed: params.printed}, callback
+
+exports.fetch_set = (params, callback) ->
+  page = +(params.page ? 1)
   url = gatherer_url + 'Search/Default.aspx'
-  url += "?set=[%22#{encodeURIComponent @params.name}%22]&page=#{page - 1}"
+  url += "?set=[%22#{encodeURIComponent params.name}%22]&page=#{page - 1}"
 
   request {url}, (error, response, body) ->
     parser.set body, callback
