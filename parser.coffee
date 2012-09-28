@@ -256,7 +256,7 @@ exports.card = (body, callback, options = {}) ->
     data.type = data.types.join ' '
     delete data.types
     delete data.subtypes
-    delete data.supertypes
+    delete data.supertype
 
   process.nextTick ->
     callback null, data
