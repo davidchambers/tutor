@@ -5,7 +5,7 @@ response:
   name: 'Paradiesvögel'
   mana_cost: '{G}'
   converted_mana_cost: 1
-  type: 'Kreatur'
+  type: 'Kreatur Vogel'
   text: __ """
     Fliegend
 

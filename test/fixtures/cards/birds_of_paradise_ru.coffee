@@ -5,7 +5,7 @@ response:
   name: 'Райские Птицы'
   mana_cost: '{G}'
   converted_mana_cost: 1
-  type: 'Существо'
+  type: 'Существо Птица'
   text: __ """
     Полет
 

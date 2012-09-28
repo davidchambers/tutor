@@ -253,7 +253,7 @@ exports.card = (body, callback, options = {}) ->
     delete data[key] if value is undefined or value isnt value # NaN
 
   if options.printed
-    data.type = data.types.join ' '
+    data.type = (t for t in [].concat([data.supertype], data.types, data.subtypes) when t).join ' '
     delete data.types
     delete data.subtypes
     delete data.supertype
