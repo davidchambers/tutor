@@ -2,6 +2,7 @@ params: ['113505']
 response:
   name: 'Ancestral Vision'
   converted_mana_cost: 0
+  supertypes: []
   types: ['Sorcery']
   subtypes: []
   text: __ """

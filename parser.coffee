@@ -2,6 +2,7 @@ cheerio   = require 'cheerio'
 entities  = require 'entities'
 
 
+supertypes = ['Basic', 'Legendary', 'Ongoing', 'Snow', 'World']
 gatherer_base_card_url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx'
 gatherer_image_handler = 'http://gatherer.wizards.com/Handlers/Image.ashx'
 
@@ -93,9 +94,12 @@ common_attrs =
 
   types: (data) ->
     return unless text = @text 'Types'
-    [types, subtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec(text)[1..]
-    data.subtypes = subtypes?.split(/\s+/) or []
-    types.split(/\s+/)
+    [xtypes, xsubtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec(text)[1..]
+    data.subtypes = xsubtypes?.split(/\s+/) or []
+    data.supertypes = []
+    types = []
+    (if t in supertypes then data.supertypes else types).push t for t in xtypes.split(/\s+/)
+    types
 
   text: get_text 'Card Text'
 
@@ -253,6 +257,7 @@ exports.card = (body, callback, options = {}) ->
 
   if options.printed
     data.type = data.types.join ' '
+    delete data.supertypes
     delete data.types
     delete data.subtypes
 

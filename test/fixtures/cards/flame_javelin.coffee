@@ -3,6 +3,7 @@ response:
   name: 'Flame Javelin'
   mana_cost: '{2/R}{2/R}{2/R}'
   converted_mana_cost: 6
+  supertypes: []
   types: ['Instant']
   subtypes: []
   text: __ """

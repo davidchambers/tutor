@@ -3,6 +3,7 @@ response:
   name: 'Ice'
   mana_cost: '{1}{U}'
   converted_mana_cost: 2
+  supertypes: []
   types: ['Instant']
   subtypes: []
   text: __ """

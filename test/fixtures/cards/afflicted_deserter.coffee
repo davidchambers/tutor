@@ -2,6 +2,7 @@ response:
   name: 'Afflicted Deserter'
   mana_cost: '{3}{R}'
   converted_mana_cost: 4
+  supertypes: []
   types: ['Creature']
   subtypes: ['Human', 'Werewolf']
   text: __ """

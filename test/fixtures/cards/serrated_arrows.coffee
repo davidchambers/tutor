@@ -3,6 +3,7 @@ response:
   name: 'Serrated Arrows'
   mana_cost: '{4}'
   converted_mana_cost: 4
+  supertypes: []
   types: ['Artifact']
   subtypes: []
   text: __ """

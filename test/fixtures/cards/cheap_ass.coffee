@@ -3,6 +3,7 @@ response:
   name: 'Cheap Ass'
   mana_cost: '{1}{W}'
   converted_mana_cost: 2
+  supertypes: []
   types: ['Creature']
   subtypes: ['Donkey', 'Townsfolk']
   text: 'Spells you play cost  less to play.'

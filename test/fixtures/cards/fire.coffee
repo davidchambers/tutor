@@ -3,6 +3,7 @@ response:
   name: 'Fire'
   mana_cost: '{1}{R}'
   converted_mana_cost: 2
+  supertypes: []
   types: ['Instant']
   subtypes: []
   text: __ """

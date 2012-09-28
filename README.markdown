@@ -49,6 +49,7 @@ These attributes may be included in a response:
   - `name`
   - `mana_cost`
   - `converted_mana_cost`
+  - `supertypes`
   - `types`
   - `subtypes`
   - `text`
@@ -117,6 +118,7 @@ Each card in `cards` contains all applicable attributes among the following:
   - `name`
   - `mana_cost`
   - `converted_mana_cost`
+  - `supertypes`
   - `types`
   - `subtypes`
   - `text`

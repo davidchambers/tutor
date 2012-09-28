@@ -3,6 +3,7 @@ response:
   name: 'An-Havva Constable'
   mana_cost: '{1}{G}{G}'
   converted_mana_cost: 3
+  supertypes: []
   types: ['Creature']
   subtypes: ['Human']
   text: __ """

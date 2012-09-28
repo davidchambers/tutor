@@ -1,6 +1,7 @@
 response:
   name: 'Akroma, Angel of Wrath Avatar'
   converted_mana_cost: 0
+  supertypes: []
   types: ['Vanguard']
   subtypes: []
   text: __ """

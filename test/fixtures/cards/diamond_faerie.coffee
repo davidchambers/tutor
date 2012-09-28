@@ -3,7 +3,8 @@ response:
   name: 'Diamond Faerie'
   mana_cost: '{2}{G}{W}{U}'
   converted_mana_cost: 5
-  types: ['Snow', 'Creature']
+  supertypes: ['Snow']
+  types: ['Creature']
   subtypes: ['Faerie']
   text: __ """
     Flying

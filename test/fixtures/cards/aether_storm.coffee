@@ -3,6 +3,7 @@ response:
   name: 'Æther Storm'
   mana_cost: '{3}{U}'
   converted_mana_cost: 4
+  supertypes: []
   types: ['Enchantment']
   subtypes: []
   text: __ """

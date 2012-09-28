@@ -3,6 +3,7 @@ response:
   name: 'Darksteel Colossus'
   mana_cost: '{11}'
   converted_mana_cost: 11
+  supertypes: []
   types: ['Artifact', 'Creature']
   subtypes: ['Golem']
   text: __ """

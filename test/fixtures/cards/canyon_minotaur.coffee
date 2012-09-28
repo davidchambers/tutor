@@ -3,6 +3,7 @@ response:
   name: 'Canyon Minotaur'
   mana_cost: '{3}{R}'
   converted_mana_cost: 4
+  supertypes: []
   types: ['Creature']
   subtypes: ['Minotaur', 'Warrior']
   flavor_text: """

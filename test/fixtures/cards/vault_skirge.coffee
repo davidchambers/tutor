@@ -3,6 +3,7 @@ response:
   name: 'Vault Skirge'
   mana_cost: '{1}{B/P}'
   converted_mana_cost: 2
+  supertypes: []
   types: ['Artifact', 'Creature']
   subtypes: ['Imp']
   text: __ """

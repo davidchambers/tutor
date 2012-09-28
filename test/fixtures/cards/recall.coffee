@@ -3,6 +3,7 @@ response:
   name: 'Recall'
   mana_cost: '{X}{X}{U}'
   converted_mana_cost: 1
+  supertypes: []
   types: ['Sorcery']
   subtypes: []
   text: __ """

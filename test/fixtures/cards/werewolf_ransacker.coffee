@@ -1,6 +1,7 @@
 response:
   name: 'Werewolf Ransacker'
   converted_mana_cost: 0
+  supertypes: []
   types: ['Creature']
   subtypes: ['Werewolf']
   text: __ """

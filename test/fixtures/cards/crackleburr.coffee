@@ -4,6 +4,7 @@ response:
   name: 'Crackleburr'
   mana_cost: '{1}{U/R}{U/R}'
   converted_mana_cost: 3
+  supertypes: []
   types: ['Creature']
   subtypes: ['Elemental']
   text: __ """

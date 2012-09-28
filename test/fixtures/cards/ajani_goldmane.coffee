@@ -3,6 +3,7 @@ response:
   name: 'Ajani Goldmane'
   mana_cost: '{2}{W}{W}'
   converted_mana_cost: 4
+  supertypes: []
   types: ['Planeswalker']
   subtypes: ['Ajani']
   text: __ """

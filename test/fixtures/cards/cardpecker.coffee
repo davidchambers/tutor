@@ -3,6 +3,7 @@ response:
   name: 'Cardpecker'
   mana_cost: '{1}{W}'
   converted_mana_cost: 2
+  supertypes: []
   types: ['Creature']
   subtypes: ['Bird']
   text: __ """

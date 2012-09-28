@@ -4,6 +4,7 @@ response:
   name: 'Hill Giant'
   mana_cost: '{3}{R}'
   converted_mana_cost: 4
+  supertypes: []
   types: ['Creature']
   subtypes: ['Giant']
   flavor_text: __ """

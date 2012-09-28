@@ -3,6 +3,7 @@ response:
   name: 'Phantasmal Sphere'
   mana_cost: '{1}{U}'
   converted_mana_cost: 2
+  supertypes: []
   types: ['Creature']
   subtypes: ['Illusion']
   text: __ """
