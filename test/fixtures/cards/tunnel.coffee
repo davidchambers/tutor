@@ -8,6 +8,13 @@ response:
   text: __ """
     Destroys 1 wall. Target wall cannot be regenerated.
   """
+  expansion: 'Limited Edition Alpha'
+  rarity: 'Uncommon'
+  artist: 'Dan Frazier'
+  gatherer_url:
+    'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=226'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=226&type=card'
   versions:
     226:
       expansion: 'Limited Edition Alpha'
@@ -24,11 +31,7 @@ response:
     2310:
       expansion: 'Fourth Edition'
       rarity: 'Uncommon'
-  gatherer_url:
-    'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=226'
-  image_url:
-    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=226&type=card'
-  expansion: 'Limited Edition Alpha'
-  rarity: 'Uncommon'
-  artist: 'Dan Frazier'
+  community_rating:
+    rating: 2.361
+    votes: 36
   rulings: []

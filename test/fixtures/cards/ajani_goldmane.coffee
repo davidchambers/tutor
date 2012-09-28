@@ -34,6 +34,9 @@ response:
     205957:
       expansion: 'Magic 2011'
       rarity: 'Mythic Rare'
+  community_rating:
+    rating: 4.139
+    votes: 97
   rulings: [
     ['2007-10-01', __ """
       The vigilance granted to a creature by the second ability

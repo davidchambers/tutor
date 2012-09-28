@@ -5,13 +5,24 @@ response:
   name: 'Райские Птицы'
   mana_cost: '{G}'
   converted_mana_cost: 1
+  type: 'Существо'
   text: __ """
     Полет
 
     {T}: добавьте одну ману любого цвета в ваше хранилище маны.
   """
+  flavor_text: 'Их перьями боги расписывали красочную картину мира.'
+  flavor_text_attribution: 'Яре-Тива, хранительница Грамурского леса'
   power: 0
   toughness: 1
+  expansion: 'Magic 2012'
+  rarity: 'Rare'
+  number: 165
+  artist: 'Marcelo Vignali'
+  gatherer_url:
+    'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=264785'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=264785&type=card'
   versions:
     142:
       expansion: 'Limited Edition Alpha'
@@ -55,15 +66,7 @@ response:
     221896:
       expansion: 'Magic 2012'
       rarity: 'Rare'
+  community_rating:
+    rating: 5
+    votes: 0
   rulings: []
-  gatherer_url:
-    'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=264785'
-  image_url:
-    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=264785&type=card'
-  flavor_text_attribution: 'Яре-Тива, хранительница Грамурского леса'
-  flavor_text: 'Их перьями боги расписывали красочную картину мира.'
-  expansion: 'Magic 2012'
-  rarity: 'Rare'
-  number: 165
-  artist: 'Marcelo Vignali'
-  type: 'Существо'

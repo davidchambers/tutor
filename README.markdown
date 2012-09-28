@@ -66,6 +66,7 @@ These attributes may be included in a response:
   - `gatherer_url`
   - `image_url`
   - `versions`
+  - `community_rating`
   - `rulings`
 
 Attributes not applicable to the card type (e.g. lands have no mana cost) or

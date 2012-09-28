@@ -30,6 +30,9 @@ response:
     189220:
       expansion: 'Duel Decks: Jace vs. Chandra'
       rarity: 'Uncommon'
+  community_rating:
+    rating: 4.386
+    votes: 44
   rulings: [
     ['2008-05-01', __ """
       If an effect reduces the cost to cast a spell by an

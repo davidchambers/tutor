@@ -29,6 +29,9 @@ response:
     202280:
       expansion: 'Duel Decks: Garruk vs. Liliana'
       rarity: 'Common'
+  community_rating:
+    rating: 4.024
+    votes: 42
   rulings: [
     ['2008-08-01', __ """
       The upkeep trigger checks the number of counters at the start

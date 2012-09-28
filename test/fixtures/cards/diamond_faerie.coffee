@@ -30,4 +30,7 @@ response:
     121138:
       expansion: 'Coldsnap'
       rarity: 'Rare'
+  community_rating:
+    rating: 3.167
+    votes: 27
   rulings: []

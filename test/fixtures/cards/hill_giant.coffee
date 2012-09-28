@@ -4,10 +4,23 @@ response:
   name: 'Hill Giant'
   mana_cost: '{3}{R}'
   converted_mana_cost: 4
-  subtypes: ['Giant']
   types: ['Creature']
+  subtypes: ['Giant']
+  flavor_text: __ """
+    Fortunately, hill giants have large blind spots in which a human
+    can easily hide. Unfortunately, these blind spots are beneath the
+    bottoms of their feet.
+  """
   power: 3
   toughness: 3
+  expansion: 'Tenth Edition'
+  rarity: 'Common'
+  number: 212
+  artist: 'Kev Walker'
+  gatherer_url:
+    'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=129591'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129591&type=card'
   versions:
     205:
       expansion: 'Limited Edition Alpha'
@@ -42,17 +55,7 @@ response:
     129591:
       expansion: 'Tenth Edition'
       rarity: 'Common'
+  community_rating:
+    rating: 2.029
+    votes: 70
   rulings: []
-  gatherer_url:
-    'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=129591'
-  image_url:
-    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=129591&type=card'
-  flavor_text: __ """
-    Fortunately, hill giants have large blind spots in which a human
-    can easily hide. Unfortunately, these blind spots are beneath the
-    bottoms of their feet.
-  """
-  expansion: 'Tenth Edition'
-  rarity: 'Common'
-  number: 212
-  artist: 'Kev Walker'

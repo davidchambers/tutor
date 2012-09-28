@@ -26,6 +26,9 @@ response:
     262675:
       expansion: 'Dark Ascension'
       rarity: 'Uncommon'
+  community_rating:
+    rating: 2.589
+    votes: 28
   rulings: [
     ['2011-01-22', __ """
       You choose the target artifact when Werewolf Ransacker's first

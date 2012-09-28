@@ -27,4 +27,7 @@ response:
     3113:
       expansion: 'Alliances'
       rarity: 'Rare'
+  community_rating:
+    rating: 1.577
+    votes: 26
   rulings: []

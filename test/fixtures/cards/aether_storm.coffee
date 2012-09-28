@@ -25,6 +25,9 @@ response:
     184722:
       expansion: 'Masters Edition II'
       rarity: 'Uncommon'
+  community_rating:
+    rating: 3.47
+    votes: 33
   rulings: [
     ['2004-10-04', __ """
       This does not stop a creature card from being put directly onto

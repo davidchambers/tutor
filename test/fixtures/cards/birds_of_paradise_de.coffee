@@ -5,13 +5,26 @@ response:
   name: 'Paradiesvögel'
   mana_cost: '{G}'
   converted_mana_cost: 1
+  type: 'Kreatur'
   text: __ """
     Fliegend
 
     {T}: Erhöhe deinen Manavorrat um ein Mana einer beliebigen Farbe.
   """
+  flavor_text: __ """
+    Ihre Federn dienten den Göttern, um die Welt farbig anzustreichen.
+  """
+  flavor_text_attribution: 'Yare-Tiva, Bewahrerin des Gramurwaldes'
   power: 0
   toughness: 1
+  expansion: 'Magic 2012'
+  rarity: 'Rare'
+  number: 165
+  artist: 'Marcelo Vignali'
+  gatherer_url:
+    'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=263789&printed=true'
+  image_url:
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=263789&type=card'
   versions:
     142:
       expansion: 'Limited Edition Alpha'
@@ -55,17 +68,7 @@ response:
     221896:
       expansion: 'Magic 2012'
       rarity: 'Rare'
+  community_rating:
+    rating: 5
+    votes: 0
   rulings: []
-  gatherer_url:
-    'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=263789&printed=true'
-  image_url:
-    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=263789&type=card'
-  flavor_text: __ """
-    Ihre Federn dienten den Göttern, um die Welt farbig anzustreichen.
-  """
-  flavor_text_attribution: 'Yare-Tiva, Bewahrerin des Gramurwaldes'
-  expansion: 'Magic 2012'
-  rarity: 'Rare'
-  number: 165
-  artist: 'Marcelo Vignali'
-  type: 'Kreatur'
