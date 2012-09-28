@@ -1,7 +1,7 @@
 cheerio   = require 'cheerio'
 entities  = require 'entities'
 
-
+supertypes = ['Basic', 'Legendary', 'Snow', 'Tribal']
 gatherer_base_card_url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx'
 gatherer_image_handler = 'http://gatherer.wizards.com/Handlers/Image.ashx'
 
@@ -82,7 +82,6 @@ to_stat = (stat_as_string) ->
   # Use string representation if coercing to a number gives `NaN`.
   if stat_as_number is stat_as_number then stat_as_number else stat_as_string
 
-
 common_attrs =
 
   name: get_name 'Card Name'
@@ -94,8 +93,10 @@ common_attrs =
   types: (data) ->
     return unless text = @text 'Types'
     [types, subtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec(text)[1..]
+    types = types.split(/\s+/)
     data.subtypes = subtypes?.split(/\s+/) or []
-    types.split(/\s+/)
+    data.supertype = types.shift() if types[0] in supertypes
+    types
 
   text: get_text 'Card Text'
 
@@ -255,6 +256,7 @@ exports.card = (body, callback, options = {}) ->
     data.type = data.types.join ' '
     delete data.types
     delete data.subtypes
+    delete data.supertypes
 
   process.nextTick ->
     callback null, data
