@@ -5,7 +5,7 @@ response:
   converted_mana_cost: 5
   types: ['Creature']
   subtypes: ['Faerie']
-  supertype: 'Snow'
+  supertypes: ['Snow']
   text: __ """
     Flying
 

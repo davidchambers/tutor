@@ -6,6 +6,7 @@ response:
   converted_mana_cost: 3
   types: ['Creature']
   subtypes: ['Elemental']
+  supertypes: []
   text: __ """
     {U/R}{U/R}, {T}, Tap two untapped red creatures you control:
     Crackleburr deals 3 damage to target creature or player.

@@ -6,6 +6,7 @@ response:
   converted_mana_cost: 4
   types: ['Creature']
   subtypes: ['Giant']
+  supertypes: []
   flavor_text: __ """
     Fortunately, hill giants have large blind spots in which a human
     can easily hide. Unfortunately, these blind spots are beneath the

@@ -4,6 +4,7 @@ response:
   converted_mana_cost: 4
   types: ['Creature']
   subtypes: ['Human', 'Werewolf']
+  supertypes: []
   text: __ """
     At the beginning of each upkeep, if no spells were cast last turn,
     transform Afflicted Deserter.

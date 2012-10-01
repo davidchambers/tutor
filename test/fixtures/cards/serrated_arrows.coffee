@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 4
   types: ['Artifact']
   subtypes: []
+  supertypes: []
   text: __ """
     Serrated Arrows enters the battlefield with three arrowhead
     counters on it.

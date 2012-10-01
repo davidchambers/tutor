@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 11
   types: ['Artifact', 'Creature']
   subtypes: ['Golem']
+  supertypes: []
   text: __ """
     Trample
 

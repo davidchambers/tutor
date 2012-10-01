@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 2
   types: ['Creature']
   subtypes: ['Donkey', 'Townsfolk']
+  supertypes: []
   text: 'Spells you play cost  less to play.'
   flavor_text: 'And you thought Yawgmoth drove a hard bargain.'
   power: 1

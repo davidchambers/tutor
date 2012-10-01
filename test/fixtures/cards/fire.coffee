@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 2
   types: ['Instant']
   subtypes: []
+  supertypes: []
   text: __ """
     Fire deals 2 damage divided as you choose among one or two target
     creatures and/or players.
