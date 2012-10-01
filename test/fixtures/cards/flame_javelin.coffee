@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 6
   types: ['Instant']
   subtypes: []
+  supertypes: []
   text: __ """
     ({2/R} can be paid with any two mana or with {R}. This card's
     converted mana cost is 6.)

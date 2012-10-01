@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 2
   types: ['Creature']
   subtypes: ['Illusion']
+  supertypes: []
   text: __ """
     Flying
 

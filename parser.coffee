@@ -1,7 +1,7 @@
 cheerio   = require 'cheerio'
 entities  = require 'entities'
 
-
+supertypes = ['Basic', 'Legendary', 'Ongoing', 'Snow', 'World']
 gatherer_base_card_url = 'http://gatherer.wizards.com/Pages/Card/Details.aspx'
 gatherer_image_handler = 'http://gatherer.wizards.com/Handlers/Image.ashx'
 
@@ -82,7 +82,6 @@ to_stat = (stat_as_string) ->
   # Use string representation if coercing to a number gives `NaN`.
   if stat_as_number is stat_as_number then stat_as_number else stat_as_string
 
-
 common_attrs =
 
   name: get_name 'Card Name'
@@ -93,9 +92,12 @@ common_attrs =
 
   types: (data) ->
     return unless text = @text 'Types'
-    [types, subtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec(text)[1..]
-    data.subtypes = subtypes?.split(/\s+/) or []
-    types.split(/\s+/)
+    [xtypes, xsubtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec(text)[1..]
+    data.subtypes = xsubtypes?.split(/\s+/) or []
+    data.supertypes = []
+    types = []
+    (if t in supertypes then data.supertypes else types).push t for t in xtypes.split(/\s+/)
+    types
 
   text: get_text 'Card Text'
 
@@ -252,9 +254,10 @@ exports.card = (body, callback, options = {}) ->
     delete data[key] if value is undefined or value isnt value # NaN
 
   if options.printed
-    data.type = data.types.join ' '
+    data.type = [data.supertypes..., data.types..., data.subtypes...].filter((e) -> e?).join ' '
     delete data.types
     delete data.subtypes
+    delete data.supertypes
 
   process.nextTick ->
     callback null, data

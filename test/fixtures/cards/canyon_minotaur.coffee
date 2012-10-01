@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 4
   types: ['Creature']
   subtypes: ['Minotaur', 'Warrior']
+  supertypes: []
   flavor_text: """
     "We'll scale these cliffs, traverse Brittle Bridge, and then fight our way down the volcanic slopes on the other side."
     "Isn't the shortest route through the canyon?"

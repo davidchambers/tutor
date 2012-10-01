@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 2
   types: ['Instant']
   subtypes: []
+  supertypes: []
   text: __ """
     Tap target permanent.
 

@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 2
   types: ['Artifact', 'Creature']
   subtypes: ['Imp']
+  supertypes: []
   text: __ """
     ({B/P} can be paid with either {B} or 2 life.)
 

@@ -4,6 +4,7 @@ response:
   converted_mana_cost: 0
   types: ['Sorcery']
   subtypes: []
+  supertypes: []
   text: __ """
     Suspend 4\u2014{U} (Rather than cast this card from your hand,
     pay {U} and exile it with four time counters on it. At the

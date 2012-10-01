@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 4
   types: ['Planeswalker']
   subtypes: ['Ajani']
+  supertypes: []
   text: __ """
     +1: You gain 2 life.
 

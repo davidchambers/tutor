@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 4
   types: ['Enchantment']
   subtypes: []
+  supertypes: []
   text: __ """
     Creature spells can't be cast.
 

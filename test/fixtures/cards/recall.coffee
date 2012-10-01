@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 1
   types: ['Sorcery']
   subtypes: []
+  supertypes: []
   text: __ """
     Discard X cards, then return a card from your graveyard to your
     hand for each card discarded this way. Exile Recall.

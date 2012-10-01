@@ -5,6 +5,7 @@ response:
   converted_mana_cost: 3
   types: ['Creature']
   subtypes: ['Human']
+  supertypes: []
   text: __ """
     An-Havva Constable's toughness is equal to 1 plus the number of
     green creatures on the battlefield.

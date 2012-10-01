@@ -3,6 +3,7 @@ response:
   converted_mana_cost: 0
   types: ['Creature']
   subtypes: ['Werewolf']
+  supertypes: []
   text: __ """
     Whenever this creature transforms into Werewolf Ransacker, you may
     destroy target artifact. If that artifact is put into a graveyard

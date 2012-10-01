@@ -3,6 +3,7 @@ response:
   converted_mana_cost: 0
   types: ['Vanguard']
   subtypes: []
+  supertypes: []
   text: __ """
     Whenever a creature enters the battlefield under your control, it
     gains two abilities chosen at random from flying, first strike, trample,
