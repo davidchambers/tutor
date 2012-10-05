@@ -11,6 +11,7 @@ exports.homelands_pg1 =
       name: 'Abbey Gargoyles'
       mana_cost: '{2}{W}{W}{W}'
       converted_mana_cost: 5
+      supertypes: []
       types: ['Creature']
       subtypes: ['Gargoyle']
       power: 3
@@ -36,6 +37,7 @@ exports.homelands_pg1 =
       name: 'Abbey Matron'
       mana_cost: '{2}{W}'
       converted_mana_cost: 3
+      supertypes: []
       types: ['Creature']
       subtypes: ['Human', 'Cleric']
       power: 1
@@ -58,6 +60,7 @@ exports.homelands_pg1 =
       name: 'Æther Storm'
       mana_cost: '{3}{U}'
       converted_mana_cost: 4
+      supertypes: []
       types: ['Enchantment']
       subtypes: []
       text: __ """
@@ -86,6 +89,7 @@ exports.homelands_pg1 =
       name: "Aliban's Tower"
       mana_cost: '{1}{R}'
       converted_mana_cost: 2
+      supertypes: []
       types: ['Instant']
       subtypes: []
       text: 'Target blocking creature gets +3/+1 until end of turn.'
@@ -106,6 +110,7 @@ exports.homelands_pg1 =
       name: 'Ambush'
       mana_cost: '{3}{R}'
       converted_mana_cost: 4
+      supertypes: []
       types: ['Instant']
       subtypes: []
       text: 'Blocking creatures gain first strike until end of turn.'
@@ -123,6 +128,7 @@ exports.homelands_pg1 =
       name: 'Ambush Party'
       mana_cost: '{4}{R}'
       converted_mana_cost: 5
+      supertypes: []
       types: ['Creature']
       subtypes: ['Human', 'Rogue']
       power: 3
@@ -151,6 +157,7 @@ exports.homelands_pg1 =
       name: 'Anaba Ancestor'
       mana_cost: '{1}{R}'
       converted_mana_cost: 2
+      supertypes: []
       types: ['Creature']
       subtypes: ['Minotaur', 'Spirit']
       power: 1
@@ -176,6 +183,7 @@ exports.homelands_pg1 =
       name: 'Anaba Bodyguard'
       mana_cost: '{3}{R}'
       converted_mana_cost: 4
+      supertypes: []
       types: ['Creature']
       subtypes: ['Minotaur']
       power: 2
@@ -207,6 +215,7 @@ exports.homelands_pg1 =
       name: 'Anaba Shaman'
       mana_cost: '{3}{R}'
       converted_mana_cost: 4
+      supertypes: []
       types: ['Creature']
       subtypes: ['Minotaur', 'Shaman']
       power: 2
@@ -241,6 +250,7 @@ exports.homelands_pg1 =
       name: 'Anaba Spirit Crafter'
       mana_cost: '{2}{R}{R}'
       converted_mana_cost: 4
+      supertypes: []
       types: ['Creature']
       subtypes: ['Minotaur', 'Shaman']
       power: 1
@@ -263,6 +273,7 @@ exports.homelands_pg1 =
       name: 'An-Havva Constable'
       mana_cost: '{1}{G}{G}'
       converted_mana_cost: 3
+      supertypes: []
       types: ['Creature']
       subtypes: ['Human']
       power: 2
@@ -288,6 +299,7 @@ exports.homelands_pg1 =
       name: 'An-Havva Inn'
       mana_cost: '{1}{G}{G}'
       converted_mana_cost: 3
+      supertypes: []
       types: ['Sorcery']
       subtypes: []
       text: __ """
@@ -307,6 +319,7 @@ exports.homelands_pg1 =
     ,
       name: 'An-Havva Township'
       converted_mana_cost: 0
+      supertypes: []
       types: ['Land']
       subtypes: []
       text: __ """
@@ -330,6 +343,7 @@ exports.homelands_pg1 =
       name: 'An-Zerrin Ruins'
       mana_cost: '{2}{R}{R}'
       converted_mana_cost: 4
+      supertypes: []
       types: ['Enchantment']
       subtypes: []
       text: __ """
@@ -356,6 +370,7 @@ exports.homelands_pg1 =
       name: 'Apocalypse Chime'
       mana_cost: '{2}'
       converted_mana_cost: 2
+      supertypes: []
       types: ['Artifact']
       subtypes: []
       text: __ """
@@ -377,7 +392,8 @@ exports.homelands_pg1 =
       name: 'Autumn Willow'
       mana_cost: '{4}{G}{G}'
       converted_mana_cost: 6
-      types: ['Legendary', 'Creature']
+      supertypes: ['Legendary']
+      types: ['Creature']
       subtypes: ['Avatar']
       power: 4
       toughness: 4
@@ -404,6 +420,7 @@ exports.homelands_pg1 =
     ,
       name: 'Aysen Abbey'
       converted_mana_cost: 0
+      supertypes: []
       types: ['Land']
       subtypes: []
       text: __ """
@@ -427,6 +444,7 @@ exports.homelands_pg1 =
       name: 'Aysen Bureaucrats'
       mana_cost: '{1}{W}'
       converted_mana_cost: 2
+      supertypes: []
       types: ['Creature']
       subtypes: ['Human', 'Advisor']
       power: 1
@@ -455,6 +473,7 @@ exports.homelands_pg1 =
       name: 'Aysen Crusader'
       mana_cost: '{2}{W}{W}'
       converted_mana_cost: 4
+      supertypes: []
       types: ['Creature']
       subtypes: ['Human', 'Knight']
       power: '2+*'
@@ -480,6 +499,7 @@ exports.homelands_pg1 =
       name: 'Aysen Highway'
       mana_cost: '{3}{W}{W}{W}'
       converted_mana_cost: 6
+      supertypes: []
       types: ['Enchantment']
       subtypes: []
       text: 'White creatures have plainswalk.'
@@ -497,6 +517,7 @@ exports.homelands_pg1 =
       name: "Baki's Curse"
       mana_cost: '{2}{U}{U}'
       converted_mana_cost: 4
+      supertypes: []
       types: ['Sorcery']
       subtypes: []
       text: __ """
@@ -517,7 +538,8 @@ exports.homelands_pg1 =
       name: 'Baron Sengir'
       mana_cost: '{5}{B}{B}{B}'
       converted_mana_cost: 8
-      types: ['Legendary', 'Creature']
+      supertypes: ['Legendary']
+      types: ['Creature']
       subtypes: ['Vampire']
       power: 5
       toughness: 5
@@ -546,6 +568,7 @@ exports.homelands_pg1 =
       name: 'Beast Walkers'
       mana_cost: '{1}{W}{W}'
       converted_mana_cost: 3
+      supertypes: []
       types: ['Creature']
       subtypes: ['Human', 'Beast', 'Soldier']
       power: 2
@@ -574,6 +597,7 @@ exports.homelands_pg1 =
       name: 'Black Carriage'
       mana_cost: '{3}{B}{B}'
       converted_mana_cost: 5
+      supertypes: []
       types: ['Creature']
       subtypes: ['Horse']
       power: 4
@@ -600,6 +624,7 @@ exports.homelands_pg1 =
       name: 'Broken Visage'
       mana_cost: '{4}{B}'
       converted_mana_cost: 5
+      supertypes: []
       types: ['Instant']
       subtypes: []
       text: __ """

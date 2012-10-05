@@ -33,6 +33,9 @@ languages =
   'Russian':             'ru'
   'Spanish':             'es'
 
+meaningful = (value) ->
+  not (value is undefined or Number.isNaN value)
+
 to_symbol = (alt) ->
   match = /^(\S+) or (\S+)$/.exec alt
   if match and [a, b] = match[1..] then "#{to_symbol a}/#{to_symbol b}"
@@ -80,8 +83,7 @@ vanguard_modifier = (pattern) -> ->
 
 to_stat = (stat_as_string) ->
   stat_as_number = +stat_as_string?.replace('{1/2}', '.5')
-  # Use string representation if coercing to a number gives `NaN`.
-  if stat_as_number is stat_as_number then stat_as_number else stat_as_string
+  if Number.isNaN stat_as_number then stat_as_string else stat_as_number
 
 
 common_attrs =
@@ -94,12 +96,13 @@ common_attrs =
 
   types: (data) ->
     return unless text = @text 'Types'
-    [xtypes, xsubtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec(text)[1..]
-    data.subtypes = xsubtypes?.split(/\s+/) or []
+    [types, subtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec(text)[1..]
     data.supertypes = []
-    types = []
-    (if t in supertypes then data.supertypes else types).push t for t in xtypes.split(/\s+/)
-    types
+    data.types = []
+    for type in types.split(/\s+/)
+      data[if type in supertypes then 'supertypes' else 'types'].push type
+    data.subtypes = subtypes?.split(/\s+/) or []
+    return
 
   text: get_text 'Card Text'
 
@@ -202,11 +205,15 @@ list_view_attrs =
       )[)])?                    # ")"
     $///
     [types, subtypes, power, toughness, loyalty] = regex.exec(text)[1..]
+    data.supertypes = []
+    data.types = []
+    for type in types.split(/\s+/)
+      data[if type in supertypes then 'supertypes' else 'types'].push type
+    data.subtypes = subtypes?.split(/\s+/) or []
     data.power = to_stat power
     data.toughness = to_stat toughness
     data.loyalty = +loyalty
-    data.subtypes = subtypes?.split(/\s+/) or []
-    types.split(/\s+/)
+    return
 
   text: get_text '.rulesText'
 
@@ -240,7 +247,8 @@ exports.card = (body, callback, options = {}) ->
 
   data = {}
   for own key, fn of common_attrs
-    data[key] = fn.call ctx, data
+    value = fn.call ctx, data
+    data[key] = value if meaningful value
 
   action = entities.decode $('#aspnetForm').attr('action')
   params = action.substr action.indexOf '?'
@@ -250,10 +258,8 @@ exports.card = (body, callback, options = {}) ->
 
   if /multiverseid/.test data.gatherer_url
     for own key, fn of gid_specific_attrs
-      data[key] = fn.call ctx, data
-
-  for own key, value of data
-    delete data[key] if value is undefined or value isnt value # NaN
+      value = fn.call ctx, data
+      data[key] = value if meaningful value
 
   if options.printed
     data.type = data.types.join ' '
@@ -295,9 +301,9 @@ exports.set = (body, callback) ->
         card.expansion = expansion
         card.rarity = rarity
 
-        card[key] = fn.call ctx, card
-      for own key, value of card
-        delete card[key] if value is undefined or value isnt value # NaN
+        value = fn.call ctx, card
+        card[key] = value if meaningful value
+      delete card[key] for own key, value of card when not meaningful value
       cards.push card
     [error, data] = [null, {page, pages, cards}]
   else
