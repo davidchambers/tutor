@@ -262,7 +262,7 @@ exports.card = (body, callback, options = {}) ->
       data[key] = value if meaningful value
 
   if options.printed
-    data.type = data.types.join ' '
+    data.type = [data.supertypes..., data.types..., data.subtypes...].join ' '
     delete data.supertypes
     delete data.types
     delete data.subtypes
