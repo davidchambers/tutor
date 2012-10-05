@@ -64,8 +64,8 @@ describe 'Parser', ->
       it "can provide a card's details in French", card_matches_fixture 'birds_of_paradise_fr'
       it "can provide a card's details in Japanse", card_matches_fixture 'birds_of_paradise_ja'
       it "can provide a card's details in Russian", card_matches_fixture 'birds_of_paradise_ru'
-      it "can provide a card's details in Chinese Traditional", card_matches_fixture 'birds_of_paradise_zh_cn'
-      it "can provide a card's details in Chinese Simplified", card_matches_fixture 'birds_of_paradise_zh_tw'
+      it "can provide a card's details in Chinese Traditional", card_matches_fixture 'birds_of_paradise_zh_tw'
+      it "can provide a card's details in Chinese Simplified", card_matches_fixture 'birds_of_paradise_zh_cn'
 
     describe 'cards from un-sets', ->
       it 'can parse cards with fractional power', card_matches_fixture 'cardpecker'

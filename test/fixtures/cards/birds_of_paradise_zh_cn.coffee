@@ -2,17 +2,17 @@ params: [263042]
 options: {printed: true}
 name: 'birdsofparadise_zh_cn'
 response:
-  name: '天堂鳥'
+  name: '天堂鸟'
   mana_cost: '{G}'
   converted_mana_cost: 1
-  type: '生物～ - 鳥'
+  type: '生物～ - 鸟'
   text: __ """
-    飛行
+    飞行
 
-    {T}：加一點任意顏色的魔法力到你的魔法力池中。
+    {T}：加一点任意颜色的法术力到你的法术力池中。
   """
-  flavor_text: '神明用牠們的羽毛來為世界著色。'
-  flavor_text_attribution: '格拉莫樹林守衛葉提娃'
+  flavor_text: '神明用他们的羽毛来为世界着色。'
+  flavor_text_attribution: '格拉莫树林守卫叶提娃'
   power: 0
   toughness: 1
   expansion: 'Magic 2012'
@@ -20,9 +20,9 @@ response:
   number: 165
   artist: 'Marcelo Vignali'
   gatherer_url:
-    'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263291'
+    'http://gatherer.wizards.com/Pages/Card/Details.aspx?printed=true&multiverseid=263042'
   image_url:
-    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=263291&type=card'
+    'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=263042&type=card'
   versions:
     142:
       expansion: 'Limited Edition Alpha'
