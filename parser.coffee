@@ -287,11 +287,8 @@ exports.legality = (body, callback, options = {}) ->
     
     data[format] =
       legality: legality
+      conditions: if conditions.length > 0 then [ conditions ] else []
 
-    # Most formats have an empty (and hidden) conditions row.
-    # See 'Braids, Cabal Minion' as an example of a card with a condition.
-    if conditions.length > 0
-      data[format].conditions = conditions
     row = row.next()
 
   process.nextTick ->
