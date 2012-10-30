@@ -73,6 +73,29 @@ These attributes may be included in a response:
 Attributes not applicable to the card type (e.g. lands have no mana cost) or
 not present (e.g. certain creatures have no rules text) are omitted.
 
+## GET /legality/:id or GET /legality/:name
+
+Returns JSON data regarding which formats the card is legal in including any
+restrictions it may have.
+For example:
+
+`/legality/Braids,%20Cabal%20Minion`
+
+    {
+        "Odyssey Block":{"legality":"Legal"},
+        "Legacy":{"legality":"Legal"},
+        "Vintage":{"legality":"Legal"},
+        "Freeform":{"legality":"Legal"},
+        "Prismatic":{"legality":"Legal"},
+        "Tribal Wars Legacy":{"legality":"Legal"},
+        "Classic":{"legality":"Legal"},
+        "Singleton 100":{"legality":"Legal"},
+        "Commander":{
+            "legality":"Special",
+            "conditions":"Banned as Commander"
+        }
+    }
+
 ## GET /language/:id or GET /language/:name
 
 Returns, as JSON, codes of the various languages in which the specified card

@@ -18,6 +18,8 @@ responder = (fn) ->
 app = express.createServer()
 app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///,     responder api.fetch_card
 app.get '/card/:name',                          responder api.fetch_card
+app.get /// ^/legality/(\d+)(?:/(\w+))?/?$ ///, responder api.fetch_legality
+app.get '/legality/:name',                      responder api.fetch_legality
 app.get /// ^/language/(\d+)(?:/(\w+))?/?$ ///, responder api.fetch_language
 app.get '/language/:name',                      responder api.fetch_language
 app.get '/set/:name/:page?',                    responder api.fetch_set

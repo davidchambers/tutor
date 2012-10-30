@@ -42,6 +42,23 @@ exports.fetch_card = (callback) ->
       return
     parser.card body, callback, {printed}
 
+exports.fetch_legality = (callback) ->
+  url = gatherer_url + 'Card/Printings.aspx'
+  if 'name' of @params
+    url += '?name=' + encodeURIComponent @params.name
+  else
+    [id, part] = @params
+    url += '?multiverseid=' + id
+    url += '&part=' + encodeURIComponent part if part
+
+  request {url, followRedirect: no}, (error, response, body) ->
+    if error or (status = response.statusCode) isnt 200
+      # Gatherer does a 302 redirect if the requested id does not exist.
+      # In such cases, we respond with the more appropriate status code.
+      callback error, {error, status}
+      return
+    parser.legality body, callback, {}
+
 exports.fetch_set = (callback) ->
   page = +(@params.page ? 1)
   url = gatherer_url + 'Search/Default.aspx'
