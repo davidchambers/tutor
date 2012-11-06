@@ -1,4 +1,6 @@
 express = require 'express'
+fs      = require 'fs'
+marked  = require 'marked'
 api     = require './gatherer'
 
 
@@ -15,15 +17,20 @@ responder = (fn) ->
         res.setHeader('Cache-Control', 'public, max-age=86400');
         res.json data
 
-app = express.createServer()
-app.get /// ^/card/(\d+)(?:/(\w+))?/?$ ///,     responder api.fetch_card
-app.get '/card/:name',                          responder api.fetch_card
-app.get /// ^/language/(\d+)(?:/(\w+))?/?$ ///, responder api.fetch_language
-app.get '/language/:name',                      responder api.fetch_language
-app.get '/set/:name/:page?',                    responder api.fetch_set
-app.get '/sets',                                responder api.sets
-app.get '/formats',                             responder api.formats
-app.get '/types',                               responder api.types
+readme = (req, res) ->
+  fs.readFile './README.markdown', 'utf8', (err, str) ->
+    res.send marked(str)
+
+app = express()
+app.get /// ^/v1/card/(\d+)/languages/?$ ///, responder api.fetch_language
+app.get /// ^/v1/card/(\d+)/?$ ///,           responder api.fetch_card
+app.get '/v1/card/:name/languages/?',         responder api.fetch_language
+app.get '/v1/card/:name',                     responder api.fetch_card
+app.get '/v1/set/:name/:page?',               responder api.fetch_set
+app.get '/v1/sets',                           responder api.sets
+app.get '/v1/formats',                        responder api.formats
+app.get '/v1/types',                          responder api.types
+app.get '/',                                  readme
 
 port = process.env.PORT ? 3000
 app.listen port, -> console.log "Listening on #{port}"
