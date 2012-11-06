@@ -10,7 +10,8 @@ exports.fetch_language = (callback) ->
   if 'name' of @params
     url += '?name=' + encodeURIComponent @params.name
   else
-    [id, part] = @params
+    [id] = @params
+    part = @query.part
     url += '?multiverseid=' + id
     url += '&part=' + encodeURIComponent part if part
 
@@ -28,7 +29,8 @@ exports.fetch_card = (callback) ->
   if 'name' of @params
     url += '?name=' + encodeURIComponent @params.name
   else
-    [id, part] = @params
+    [id] = @params
+    part = @query.part
     url += '?multiverseid=' + id
     url += '&part=' + encodeURIComponent part if part
   if printed
