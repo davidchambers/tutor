@@ -32,6 +32,7 @@
     "mocha": "1.0.x",
     "should": "0.5.x"
   },
+  "main": "./gatherer",
   "scripts": {
     "test": "mocha"
   },
