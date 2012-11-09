@@ -31,7 +31,8 @@
   "devDependencies": {
     "jsondiffpatch": "0.0.x",
     "mocha": "1.0.x",
-    "should": "0.5.x"
+    "nock": "0.13.x",
+    "should": "1.2.x",
   },
   "main": "./gatherer",
   "scripts": {
