@@ -4,6 +4,27 @@ parser  = require './parser'
 
 gatherer_url = 'http://gatherer.wizards.com/Pages/'
 
+exports.card = (arg, callback) ->
+  params = switch typeof arg
+    when 'object' then arg
+    when 'number' then id: arg
+    when 'string' then name: arg
+    else throw new TypeError
+
+  url = gatherer_url + 'Card/Details.aspx'
+  if 'id' of params
+    url += '?multiverseid=' + params.id
+    url += '&part=' + encodeURIComponent params.part if params.part
+  else
+    url += '?name=' + encodeURIComponent params.name
+  url += '&printed=true' if params.printed
+
+  request {url, followRedirect: no}, (error, response, body) ->
+    if response.statusCode is 200
+      parser.card body, callback
+    else
+      callback new Error('Card Not Found')
+
 exports.fetch_language = (callback) ->
   url = gatherer_url + 'Card/Languages.aspx'
 

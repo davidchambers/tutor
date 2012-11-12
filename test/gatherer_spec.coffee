@@ -12,7 +12,7 @@ err_302 =
   status: 302
 
 fake_page = 'totally html, i swear'
-fake_card = {name: 'Forest', cost: 'Free', expansion: 'all of them'}
+fake_card = {name: 'Forest', id: 5, part: 'Trees', cost: 'Free', expansion: 'all of them'}
 fake_set = {page:'1', cards: {}}
 fake_language_set = {}
 fake_list = [1,2,3]
@@ -21,6 +21,79 @@ site = nock('http://gatherer.wizards.com')
 card_route = '/Pages/Card/Details.aspx'
 set_route = '/Pages/Search/Default.aspx'
 language_route = '/Pages/Card/Languages.aspx'
+
+mock_route = (route) ->
+  site.get(route).reply(200, fake_page)
+mock_card_route = (query_string) ->
+  mock_route card_route + query_string
+mock_id_route = () -> mock_card_route '?multiverseid=' + fake_card.id
+mock_name_route = () -> mock_card_route '?name=' + fake_card.name
+
+
+describe '.card', ->
+  before ->
+    # helpers
+    @should_work = (done) ->
+      (error, card) ->
+        site.done()
+        card.should.eql fake_card
+        done()
+    # stub the parser
+    @real_parse_function = parser.card
+    parser.card = (body, callback, options ={}) ->
+      body.should.equal fake_page
+      callback(null, fake_card)
+
+  after ->
+    # restore the parser
+    parser.card = @real_parse_function
+
+  it 'fetches cards based on id', (done) ->
+    mock_id_route()
+
+    gatherer.card {id: fake_card.id}, @should_work(done)
+
+  it 'fetches cards based on name', (done) ->
+    mock_name_route()
+
+    gatherer.card {name: fake_card.name}, @should_work(done)
+
+  it 'prioritizes id when both name and id are given', (done) ->
+    mock_id_route()
+
+    gatherer.card {name: fake_card.name, id: fake_card.id}, @should_work(done)
+
+  it 'fetches cards with an id and a part', (done) ->
+    mock_card_route "?multiverseid=#{fake_card.id}&part=#{fake_card.part}"
+
+    gatherer.card {id: fake_card.id, part: fake_card.part}, @should_work(done)
+
+  it 'treats a straight string argument as a name', (done) ->
+    mock_name_route()
+
+    gatherer.card fake_card.name, @should_work(done)
+
+  it 'treats a straight integer argument as an id', (done) ->
+    mock_id_route()
+
+    gatherer.card fake_card.id, @should_work(done)
+
+  it 'recognizes redirects as a not-found error', (done) ->
+    site.get(card_route + '?multiverseid=' + fake_card.id)
+      .reply(302, fake_page)
+    
+    gatherer.card fake_card.id, (error, card) ->
+      error.message.should.eql 'Card Not Found'
+      site.done()
+      done()
+
+  describe 'optional arguments', ->
+
+    it 'can get the printed text of a card', (done) ->
+      mock_card_route '?multiverseid=' + fake_card.id + '&printed=true'
+
+      gatherer.card {id: fake_card.id, printed: true}, @should_work(done)
+
 
 describe 'Deprecated API', ->
   describe '.fetch_card', ->
@@ -43,13 +116,12 @@ describe 'Deprecated API', ->
 
     describe 'in a context that has a params property which has a name property', ->
       before ->
-        @context = {params: {name: 'Forest'}, query: {}}
+        @context = {params: {name: fake_card.name}, query: {}}
 
       it 'gets and parses the named gatherer page', (done) ->
-        site.get(card_route + '?name=' + @context.params.name)
-          .reply(200, fake_page)
+        mock_name_route()
 
-          @fetch_card_should_yield fake_card, done
+        @fetch_card_should_yield fake_card, done
 
       it 'passes back errors', (done) ->
         site.get(card_route + '?name=' + @context.params.name)
@@ -62,11 +134,10 @@ describe 'Deprecated API', ->
       describe 'whose first element is a number', ->
 
         before ->
-          @context = {params: [1], query: {}}
+          @context = {params: [fake_card.id], query: {}}
 
         it 'parses the gatherer page for that id', (done) ->
-          site.get(card_route + '?multiverseid=' + @context.params[0])
-            .reply(200, fake_page)
+          mock_id_route()
 
           @fetch_card_should_yield fake_card, done
 
@@ -76,8 +147,7 @@ describe 'Deprecated API', ->
           @context = {params: [1, 'apart'], query: {}}
 
         it 'parses the gatherer page for that id and part name', (done) ->
-          site.get(card_route + "?multiverseid=#{@context.params[0]}&part=#{@context.params[1]}")
-            .reply(200, fake_page)
+          mock_card_route "?multiverseid=#{@context.params[0]}&part=#{@context.params[1]}"
 
           @fetch_card_should_yield fake_card, done
 
