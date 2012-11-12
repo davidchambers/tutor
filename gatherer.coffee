@@ -53,10 +53,10 @@ exports.fetch_set = (callback) ->
 index = (parse_function) ->
   (callback) ->
     request {url: gatherer_url}, (error, response, body) ->
-      parse_function body, callback
+      parser[parse_function] body, callback
 
-exports.sets = index parser.sets
+exports.sets = index 'sets'
 
-exports.formats = index parser.formats
+exports.formats = index 'formats'
 
-exports.types = index parser.types
+exports.types = index 'types'
