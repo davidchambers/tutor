@@ -7,7 +7,7 @@ gatherer_url = 'http://gatherer.wizards.com/Pages/'
 exports.card = (params, callback) ->
   url = gatherer_url + 'Card/Details.aspx'
   
-  switch typeof(params)
+  switch typeof params 
     when 'number' then params = {id: params}
     when 'string' then params = {name:params}
   
