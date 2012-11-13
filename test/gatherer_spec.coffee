@@ -1,5 +1,7 @@
 nock     = require 'nock'
 should   = require 'should'
+sinon    = require 'sinon'
+
 gatherer = require '../gatherer'
 parser   = require '../parser'
 
@@ -96,7 +98,30 @@ describe '.card', ->
       gatherer.card {id: fake_card.id, printed: true}, @should_work(done)
 
 describe '.index', ->
-  it 'builds an object using parset.sets, .formats, and .types'
+  beforeEach ->
+    sets_stub = sinon.stub parser, 'sets', (body, callback) ->
+      callback null, 'a list of sets'
+    formats_stub = sinon.stub parser, 'formats', (body, callback) ->
+      callback null, 'a list of formats'
+    types_stub = sinon.stub parser, 'types', (body, callback) ->
+      callback null, 'a list of types'
+    @stubs = [sets_stub, formats_stub, types_stub]
+
+  afterEach ->
+    for stub in @stubs
+      stub.calledOnce.should.be.true
+      stub.restore()
+
+  it 'builds an object using parset.sets, .formats, and .types', (done) ->
+    mock_route '/Pages/'
+
+    gatherer.index (err, lists) ->
+      lists.sets.should.eql 'a list of sets'
+      lists.formats.should.eql 'a list of formats'
+      lists.types.should.eql 'a list of types'
+      site.done()
+      done()
+
 
 describe 'Deprecated API', ->
   describe '.fetch_card', ->
