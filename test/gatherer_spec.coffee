@@ -33,52 +33,19 @@ mock_name_route = () -> mock_card_route '?name=' + fake_card.name
 
 
 describe '.card', ->
-  before ->
+  beforeEach ->
     # helpers
     @should_work = (done) ->
       (error, card) ->
         site.done()
         card.should.eql fake_card
         done()
-    # stub the parser
-    @real_parse_function = parser.card
-    parser.card = (body, callback, options ={}) ->
+    @parser_stub = sinon.stub parser, 'card', (body, callback) ->
       body.should.equal fake_page
       callback(null, fake_card)
 
-  after ->
-    # restore the parser
-    parser.card = @real_parse_function
-
-  it 'fetches cards based on id', (done) ->
-    mock_id_route()
-
-    gatherer.card {id: fake_card.id}, @should_work(done)
-
-  it 'fetches cards based on name', (done) ->
-    mock_name_route()
-
-    gatherer.card {name: fake_card.name}, @should_work(done)
-
-  it 'prioritizes id when both name and id are given', (done) ->
-    mock_id_route()
-
-    gatherer.card {name: fake_card.name, id: fake_card.id}, @should_work(done)
-
-  it 'fetches cards with an id and a part', (done) ->
-    mock_card_route "?multiverseid=#{fake_card.id}&part=#{fake_card.part}"
-
-    gatherer.card {id: fake_card.id, part: fake_card.part}, @should_work(done)
-
-  it 'treats a straight string argument as a name', (done) ->
-    mock_name_route()
-
-    gatherer.card fake_card.name, @should_work(done)
-
-  it 'treats a straight integer argument as an id', (done) ->
-    mock_id_route()
-
-    gatherer.card fake_card.id, @should_work(done)
+  afterEach ->
+    @parser_stub.restore()
 
   it 'recognizes redirects as a not-found error', (done) ->
     site.get(card_route + '?multiverseid=' + fake_card.id)
@@ -89,12 +56,47 @@ describe '.card', ->
       site.done()
       done()
 
-  describe 'optional arguments', ->
+  describe 'success', ->
+    
+    afterEach ->
+      @parser_stub.withArgs(fake_page).calledOnce.should.be.true
 
-    it 'can get the printed text of a card', (done) ->
-      mock_card_route '?multiverseid=' + fake_card.id + '&printed=true'
+    it 'fetches cards based on id', (done) ->
+      mock_id_route()
 
-      gatherer.card {id: fake_card.id, printed: true}, @should_work(done)
+      gatherer.card {id: fake_card.id}, @should_work(done)
+
+    it 'fetches cards based on name', (done) ->
+      mock_name_route()
+
+      gatherer.card {name: fake_card.name}, @should_work(done)
+
+    it 'prioritizes id when both name and id are given', (done) ->
+      mock_id_route()
+
+      gatherer.card {name: fake_card.name, id: fake_card.id}, @should_work(done)
+
+    it 'fetches cards with an id and a part', (done) ->
+      mock_card_route "?multiverseid=#{fake_card.id}&part=#{fake_card.part}"
+
+      gatherer.card {id: fake_card.id, part: fake_card.part}, @should_work(done)
+
+    it 'treats a straight string argument as a name', (done) ->
+      mock_name_route()
+
+      gatherer.card fake_card.name, @should_work(done)
+
+    it 'treats a straight integer argument as an id', (done) ->
+      mock_id_route()
+
+      gatherer.card fake_card.id, @should_work(done)
+
+    describe 'with optional arguments', ->
+
+      it 'can get the printed text of a card', (done) ->
+        mock_card_route '?multiverseid=' + fake_card.id + '&printed=true'
+
+        gatherer.card {id: fake_card.id, printed: true}, @should_work(done)
 
 describe '.index', ->
   beforeEach ->
