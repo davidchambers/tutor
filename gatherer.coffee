@@ -25,6 +25,26 @@ exports.card = (params, callback) ->
     else
       callback new Error('Card Not Found')
 
+exports.set = (params, callback) ->
+  if typeof params is 'string'
+    name = params
+    page = 0
+  else
+    name = params.name
+    if 'page' of params
+      page = params.page - 1 #urls are zero-indexed
+      if page < 0
+        callback new Error('Page must be a positive number')
+        return
+    else
+      page = 0
+
+  url = gatherer_url + 'Search/Default.aspx'
+  url += "?set=[%22#{encodeURIComponent name}%22]&page=#{page}"
+
+  request {url}, (error, response, body) ->
+    parser.set body, callback
+
 exports.index = (callback) ->
   request {url: gatherer_url}, (error, response, body) ->
     count = 3

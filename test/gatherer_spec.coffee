@@ -99,6 +99,43 @@ describe '.card', ->
 
         gatherer.card {id: fake_card.id, printed: true}, @should_work(done)
 
+describe '.set', ->
+  beforeEach ->
+    @parser_stub = sinon.stub parser, 'set', (body, callback) ->
+      callback(null, fake_set)
+
+  afterEach ->
+    @parser_stub.restore()
+
+  it 'fetches sets by name', (done) ->
+
+    site.get(set_route + '?set=[%22Homelands%22]&page=0')
+      .reply(200, fake_page)
+
+    gatherer.set 'Homelands', (err, set) ->
+      set.should.eql fake_set
+      parser.set.withArgs(fake_page).calledOnce.should.be.true
+      site.done()
+      done()
+
+  it 'fetches a page when specified', (done) ->
+    site.get(set_route + '?set=[%22Homelands%22]&page=3')
+      .reply(200, fake_page)
+
+    gatherer.set {name: 'Homelands', page: 4}, (err, set) ->
+      set.should.eql fake_set
+      parser.set.withArgs(fake_page).calledOnce.should.be.true
+      site.done()
+      done()
+
+  it 'errors without requesting or parsing if you ask for a too-low page', (done) ->
+    # note that only the parser can know if a page is too high
+    gatherer.set {name: 'Whatever', page: 0}, (err, set) ->
+      err.message.should.eql 'Page must be a positive number'
+      parser.set.called.should.be.false
+      site.done()
+      done()
+
 describe '.index', ->
   beforeEach ->
     sets_stub = sinon.stub parser, 'sets', (body, callback) ->
