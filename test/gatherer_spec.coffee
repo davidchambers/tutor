@@ -96,6 +96,8 @@ describe '.card', ->
 
       gatherer.card {id: fake_card.id, printed: true}, @should_work(done)
 
+describe '.index', ->
+  it 'builds an object using parset.sets, .formats, and .types'
 
 describe 'Deprecated API', ->
   describe '.fetch_card', ->
