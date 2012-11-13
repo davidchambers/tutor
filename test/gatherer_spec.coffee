@@ -13,126 +13,153 @@ err_302 =
   error: null
   status: 302
 
+# response fixtures 
 fake_page = 'totally html, i swear'
-fake_card = {name: 'Forest', id: 5, part: 'Trees', cost: 'Free', expansion: 'all of them'}
-fake_set = {page:'1', cards: {}}
-fake_language_set = {}
-fake_list = [1,2,3]
+fake_object = {source: 'parser', contents: 'arbitrary'}
 
+# parameter fixtures
+id_only = {id: 10}
+name_only = {name: 'a name'}
+name_and_id = {name: name_only.name, id: id_only.id}
+id_and_part = {id: id_only.id, part: 'the name of a part'}
+id_printed = {id: id_only.id, printed: true}
+
+# Nock
 site = nock('http://gatherer.wizards.com')
+
 main_route = '/Pages/'
-card_route = main_route + 'Card/Details.aspx'
+card_route = (params) ->
+  main_route + 'Card/Details.aspx' + card_query_string(params)
+language_route = (params) ->
+  main_route + 'Card/Languages.aspx' + card_query_string(params)
 set_route = main_route + 'Search/Default.aspx'
-language_route = main_route + 'Card/Languages.aspx'
+
+card_query_string = (params) ->
+  string = ''
+  return string unless params?
+  switch typeof params 
+    when 'number' then params = {id: params}
+    when 'string' then params = {name:params}
+                  
+  if 'id' of params
+    string += '?multiverseid=' + params.id
+    string += '&part=' + encodeURIComponent params.part if params.part
+  else
+    string += '?name='  + encodeURIComponent params.name
+                                    
+  string += '&printed=true' if params.printed
+  string
 
 mock_route = (route) ->
   site.get(route).reply(200, fake_page)
-mock_card_route = (query_string) ->
-  mock_route card_route + query_string
-mock_id_route = () -> mock_card_route '?multiverseid=' + fake_card.id
-mock_name_route = () -> mock_card_route '?name=' + fake_card.name
+mock_card_route = (params) ->
+  mock_route card_route(params)
+mock_language_route = (params) ->
+  mock_route language_route(params)
 
+# Gatherer frequently redirects rather than 404ing
+mock_redirect = (route) ->
+  site.get(route).reply(302)
 
+stub_parser = (func_name) ->
+  sinon.stub parser, func_name, (body, callback) ->
+    callback null, fake_object
+
+should_parse_using = (parser_function, done) ->
+  (error, data) ->
+    data.should.eql fake_object
+    parser_function.withArgs(fake_page).calledOnce.should.be.true
+    site.done()
+    done()
+
+it_requests_and_parses = (func, params, request_route, parse_func) ->
+  it 'can request and parse properly given the argument ' + JSON.stringify(params), (done) ->
+    mock_route request_route
+    if parse_func?
+      parse_with = parser[parse_func]
+    else
+      parse_with = parser[func]
+    gatherer[func] params, should_parse_using(parse_with, done)
+
+it_can_request_and_parse_a_card_using = (params) ->
+  it_requests_and_parses 'card', params, card_route(params)
+
+it_can_request_and_parse_a_cards_languages_using = (params) ->
+  it_requests_and_parses 'languages', params, language_route(params), 'language'
+    
 describe '.card', ->
+  
   beforeEach ->
-    # helpers
-    @should_work = (done) ->
-      (error, card) ->
-        site.done()
-        card.should.eql fake_card
-        done()
-    @parser_stub = sinon.stub parser, 'card', (body, callback) ->
-      body.should.equal fake_page
-      callback(null, fake_card)
-
+    @parser_stub = stub_parser 'card'
+    
   afterEach ->
     @parser_stub.restore()
 
+  it_can_request_and_parse_a_card_using id_only
+  it_can_request_and_parse_a_card_using name_only
+  it_can_request_and_parse_a_card_using name_and_id
+  it_can_request_and_parse_a_card_using 'a name'
+  it_can_request_and_parse_a_card_using 10
+  it_can_request_and_parse_a_card_using id_printed
+
   it 'recognizes redirects as a not-found error', (done) ->
-    site.get(card_route + '?multiverseid=' + fake_card.id)
-      .reply(302, fake_page)
+    mock_redirect card_route(id_only)
     
-    gatherer.card fake_card.id, (error, card) ->
+    gatherer.card id_only, (error, data) ->
       error.message.should.eql 'Card Not Found'
+      parser.card.called.should.be.false
       site.done()
       done()
 
-  describe 'success', ->
-    
-    afterEach ->
-      @parser_stub.withArgs(fake_page).calledOnce.should.be.true
-
-    it 'fetches cards based on id', (done) ->
-      mock_id_route()
-
-      gatherer.card {id: fake_card.id}, @should_work(done)
-
-    it 'fetches cards based on name', (done) ->
-      mock_name_route()
-
-      gatherer.card {name: fake_card.name}, @should_work(done)
-
-    it 'prioritizes id when both name and id are given', (done) ->
-      mock_id_route()
-
-      gatherer.card {name: fake_card.name, id: fake_card.id}, @should_work(done)
-
-    it 'fetches cards with an id and a part', (done) ->
-      mock_card_route "?multiverseid=#{fake_card.id}&part=#{fake_card.part}"
-
-      gatherer.card {id: fake_card.id, part: fake_card.part}, @should_work(done)
-
-    it 'treats a straight string argument as a name', (done) ->
-      mock_name_route()
-
-      gatherer.card fake_card.name, @should_work(done)
-
-    it 'treats a straight integer argument as an id', (done) ->
-      mock_id_route()
-
-      gatherer.card fake_card.id, @should_work(done)
-
-    describe 'with optional arguments', ->
-
-      it 'can get the printed text of a card', (done) ->
-        mock_card_route '?multiverseid=' + fake_card.id + '&printed=true'
-
-        gatherer.card {id: fake_card.id, printed: true}, @should_work(done)
 
 describe '.set', ->
   beforeEach ->
     @parser_stub = sinon.stub parser, 'set', (body, callback) ->
-      callback(null, fake_set)
+      callback(null, fake_object)
 
   afterEach ->
     @parser_stub.restore()
 
   it 'fetches sets by name', (done) ->
-
     site.get(set_route + '?set=[%22Homelands%22]&page=0')
       .reply(200, fake_page)
 
-    gatherer.set 'Homelands', (err, set) ->
-      set.should.eql fake_set
-      parser.set.withArgs(fake_page).calledOnce.should.be.true
-      site.done()
-      done()
+    gatherer.set 'Homelands', should_parse_using(parser.set, done)
 
   it 'fetches a page when specified', (done) ->
     site.get(set_route + '?set=[%22Homelands%22]&page=3')
       .reply(200, fake_page)
 
-    gatherer.set {name: 'Homelands', page: 4}, (err, set) ->
-      set.should.eql fake_set
-      parser.set.withArgs(fake_page).calledOnce.should.be.true
-      site.done()
-      done()
+    gatherer.set {name: 'Homelands', page: 4}, should_parse_using(parser.set, done)
 
   it 'errors without requesting or parsing if you ask for a too-low page', (done) ->
     # note that only the parser can know if a page is too high
     gatherer.set {name: 'Whatever', page: 0}, (err, set) ->
       err.message.should.eql 'Page must be a positive number'
       parser.set.called.should.be.false
+      site.done()
+      done()
+
+describe '.languages', ->
+  beforeEach ->
+    @parser_stub = sinon.stub parser, 'language', (body, callback) ->
+      callback(null, fake_object)
+
+  afterEach ->
+    @parser_stub.restore()
+
+  it_can_request_and_parse_a_cards_languages_using id_only
+  it_can_request_and_parse_a_cards_languages_using name_only
+  it_can_request_and_parse_a_cards_languages_using name_and_id
+  it_can_request_and_parse_a_cards_languages_using 'a name'
+  it_can_request_and_parse_a_cards_languages_using 10
+
+  it 'recognizes redirects as a not-found error', (done) ->
+    mock_redirect language_route(id_only)
+    
+    gatherer.languages id_only, (error, data) ->
+      error.message.should.eql 'Card Not Found'
+      parser.language.called.should.be.false
       site.done()
       done()
 
@@ -169,7 +196,7 @@ describe 'Deprecated API', ->
       @old_parse_function = parser.card
       parser.card = (body, callback, options ={}) ->
         body.should.equal fake_page
-        callback(null, fake_card)
+        callback(null, fake_object)
       # make a helper
       @fetch_card_should_yield = (expectedValue, done) ->
         gatherer.fetch_card.call @context, (err, data) ->
@@ -183,15 +210,15 @@ describe 'Deprecated API', ->
 
     describe 'in a context that has a params property which has a name property', ->
       before ->
-        @context = {params: {name: fake_card.name}, query: {}}
+        @context = {params: name_only, query: {}}
 
       it 'gets and parses the named gatherer page', (done) ->
-        mock_name_route()
+        mock_card_route @context.params
 
-        @fetch_card_should_yield fake_card, done
+        @fetch_card_should_yield fake_object, done
 
       it 'passes back errors', (done) ->
-        site.get(card_route + '?name=' + @context.params.name)
+        site.get(card_route(@context.params))
           .reply(404)
 
         @fetch_card_should_yield err_404, done
@@ -201,12 +228,12 @@ describe 'Deprecated API', ->
       describe 'whose first element is a number', ->
         
         before ->
-          @context = {params: [fake_card.id], query: {}}
+          @context = {params: [id_only.id], query: {}}
         
         it 'parses the gatherer page for that id', (done) ->
-          mock_id_route()
+          mock_card_route id_only.id
 
-          @fetch_card_should_yield fake_card, done
+          @fetch_card_should_yield fake_object, done
 
       describe 'whose first element is a number and whose second element is a string', ->
     
@@ -214,9 +241,9 @@ describe 'Deprecated API', ->
           @context = {params: [1, 'apart'], query: {}}
 
         it 'parses the gatherer page for that id and part name', (done) ->
-          mock_card_route "?multiverseid=#{@context.params[0]}&part=#{@context.params[1]}"
+          mock_route "/Pages/Card/Details.aspx?multiverseid=#{@context.params[0]}&part=#{@context.params[1]}"
 
-          @fetch_card_should_yield fake_card, done
+          @fetch_card_should_yield fake_object, done
 
   describe '.fetch_set', ->
 
@@ -225,7 +252,7 @@ describe 'Deprecated API', ->
       @old_parse_function = parser.set
       parser.set = (body, callback) ->
         body.should.equal fake_page
-        callback(null, fake_set)
+        callback(null, fake_object)
       # make a helper
       @fetch_set_should_yield = (expectedValue, done) ->
         gatherer.fetch_set.call @context, (err, data) ->
@@ -245,7 +272,7 @@ describe 'Deprecated API', ->
         site.get(set_route + '?set=[%22Homelands%22]&page=0')
           .reply(200, fake_page)
 
-        @fetch_set_should_yield fake_set, done
+        @fetch_set_should_yield fake_object, done
     
       describe 'and a page parameter', ->
 
@@ -257,7 +284,7 @@ describe 'Deprecated API', ->
           site.get(set_route + '?set=[%22Homelands%22]&page=1')
             .reply(200, fake_page)
 
-          @fetch_set_should_yield fake_set, done
+          @fetch_set_should_yield fake_object, done
 
   describe '.fetch_language', ->
     before ->
@@ -265,7 +292,7 @@ describe 'Deprecated API', ->
       @old_parse_function = parser.language
       parser.language = (body, callback, options ={}) ->
         body.should.equal fake_page
-        callback(null, fake_language_set)
+        callback(null, fake_object)
       # make a helper
       @fetch_language_should_yield = (expectedValue, done) ->
         gatherer.fetch_language.call @context, (err, data) ->
@@ -282,13 +309,12 @@ describe 'Deprecated API', ->
         @context = {params: {name: 'Forest'}, query: {}}
 
       it 'gets and parses the named gatherer page', (done) ->
-        site.get(language_route + '?name=' + @context.params.name)
-          .reply(200, fake_page)
+        mock_language_route @context.params
 
-          @fetch_language_should_yield fake_language_set, done
+        @fetch_language_should_yield fake_object, done
 
       it 'passes back errors', (done) ->
-        site.get(language_route + '?name=' + @context.params.name)
+        site.get(language_route(@context.params))
           .reply(404)
 
         @fetch_language_should_yield err_404, done
@@ -301,10 +327,9 @@ describe 'Deprecated API', ->
           @context = {params: [1], query: {}}
         
         it 'parses the gatherer page for that id', (done) ->
-          site.get(language_route + '?multiverseid=' + @context.params[0])
-            .reply(200, fake_page)
+          mock_language_route @context.params[0]
 
-          @fetch_language_should_yield fake_language_set, done
+          @fetch_language_should_yield fake_object, done
 
       describe 'whose first element is a number and whose second element is a string', ->
     
@@ -312,17 +337,16 @@ describe 'Deprecated API', ->
           @context = {params: [1, 'apart'], query: {}}
 
         it 'parses the gatherer page for that id and part name', (done) ->
-          site.get(language_route + "?multiverseid=#{@context.params[0]}&part=#{@context.params[1]}")
-            .reply(200, fake_page)
+          mock_language_route {id: @context.params[0], part: @context.params[1]}
 
-          @fetch_language_should_yield fake_language_set, done
+          @fetch_language_should_yield fake_object, done
 
   describe '.sets', ->
     before ->
       @real_parse_function = parser.sets
       parser.sets = (body, callback) ->
         body.should.eql fake_page
-        callback null, fake_list
+        callback null, fake_object
 
     after ->
       parser.sets = @real_parse_function
@@ -331,7 +355,7 @@ describe 'Deprecated API', ->
       site.get('/Pages/').reply(200, fake_page)
 
       gatherer.sets (err, data) ->
-        data.should.eql fake_list
+        data.should.eql fake_object
         site.isDone().should.be.true
         done()
 
@@ -340,7 +364,7 @@ describe 'Deprecated API', ->
       @real_parse_function = parser.formats
       parser.formats = (body, callback) ->
         body.should.eql fake_page
-        callback null, fake_list
+        callback null, fake_object
 
     after ->
       parser.formats = @real_parse_function
@@ -349,7 +373,7 @@ describe 'Deprecated API', ->
       site.get('/Pages/').reply(200, fake_page)
 
       gatherer.formats (err, data) ->
-        data.should.eql fake_list
+        data.should.eql fake_object
         site.isDone().should.be.true
         done()
 
@@ -358,7 +382,7 @@ describe 'Deprecated API', ->
       @real_parse_function = parser.types
       parser.types = (body, callback) ->
         body.should.eql fake_page
-        callback null, fake_list
+        callback null, fake_object
 
     after ->
       parser.types = @real_parse_function
@@ -367,6 +391,6 @@ describe 'Deprecated API', ->
       site.get('/Pages/').reply(200, fake_page)
 
       gatherer.types (err, data) ->
-        data.should.eql fake_list
+        data.should.eql fake_object
         site.isDone().should.be.true
         done()
