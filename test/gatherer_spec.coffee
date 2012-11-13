@@ -23,7 +23,7 @@ card_route = main_route + 'Card/Details.aspx'
 set_route = main_route + 'Search/Default.aspx'
 language_route = main_route + 'Card/Languages.aspx'
 
-mock_route(route) ->
+mock_route = (route) ->
   site.get(route).reply(200, fake_page)
 mock_card_route = (query_string) ->
   mock_route card_route + query_string
@@ -87,7 +87,6 @@ describe '.card', ->
       error.message.should.eql 'Card Not Found'
       site.done()
       done()
-
 
   describe 'optional arguments', ->
 
