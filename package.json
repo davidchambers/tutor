@@ -33,6 +33,7 @@
     "mocha": "1.0.x",
     "nock": "0.13.x",
     "should": "1.2.x",
+    "sinon": "1.5.x"
   },
   "main": "./gatherer",
   "scripts": {

@@ -25,6 +25,22 @@ exports.card = (arg, callback) ->
     else
       callback new Error('Card Not Found')
 
+exports.index = (callback) ->
+  request {url: gatherer_url}, (error, response, body) ->
+    count = 3
+    results = {}
+    parse_and_merge = (method_name) ->
+      parser[method_name] body, (err, local_results) ->
+        count--
+        results[method_name] = local_results
+        callback null, results if count is 0
+
+    parse_and_merge 'sets'
+    parse_and_merge 'formats'
+    parse_and_merge 'types'
+
+# old API
+
 exports.fetch_language = (callback) ->
   url = gatherer_url + 'Card/Languages.aspx'
 
