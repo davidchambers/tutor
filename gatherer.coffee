@@ -4,26 +4,34 @@ parser  = require './parser'
 
 gatherer_url = 'http://gatherer.wizards.com/Pages/'
 
-exports.card = (arg, callback) ->
+card_query_string = (arg) ->
   params = switch typeof arg
     when 'object' then arg
     when 'number' then id: arg
     when 'string' then name: arg
     else throw new TypeError
 
-  url = gatherer_url + 'Card/Details.aspx'
+  qs = ''
   if 'id' of params
-    url += '?multiverseid=' + params.id
-    url += '&part=' + encodeURIComponent params.part if params.part
+    qs += '?multiverseid=' + params.id
+    qs += '&part=' + encodeURIComponent params.part if params.part
   else
-    url += '?name=' + encodeURIComponent params.name
-  url += '&printed=true' if params.printed
+    qs += '?name=' + encodeURIComponent params.name
+  qs += '&printed=true' if params.printed
+  qs
 
-  request {url, followRedirect: no}, (error, response, body) ->
-    if response.statusCode is 200
-      parser.card body, callback
-    else
-      callback new Error('Card Not Found')
+request_and_parse = (url, fn, callback) ->
+  request {url, followRedirect: no}, (error, {statusCode}, body) ->
+    if statusCode is 200 then fn body, callback
+    else callback new Error 'Card Not Found'
+
+exports.card = (params, callback) ->
+  url = gatherer_url + 'Card/Details.aspx' + card_query_string params
+  request_and_parse url, parser.card, callback
+
+exports.languages = (params, callback) ->
+  url = gatherer_url + 'Card/Languages.aspx' + card_query_string params
+  request_and_parse url, parser.language, callback
 
 exports.set = (params, callback) ->
   if typeof params is 'string'
