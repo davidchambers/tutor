@@ -30,6 +30,18 @@ describe 'Parser', ->
       parser.set fixtures.web('homelands_pg1'), (err, obj) ->
         obj.should.eql sets.homelands_pg1.response
         done()
+    it 'can parse fractional stats', (done) ->
+      parser.set fixtures.web('unhinged_pg1'), (err, obj) ->
+        assquatch = obj.cards[6]
+        bad_ass   = obj.cards[10]
+        cheap_ass = obj.cards[20]
+        should.strictEqual assquatch.power, 3.5
+        should.strictEqual assquatch.toughness, 3.5
+        should.strictEqual bad_ass.power, 3.5
+        should.strictEqual bad_ass.toughness, 1
+        should.strictEqual cheap_ass.power, 1
+        should.strictEqual cheap_ass.toughness, 3.5
+        done()
 
   describe 'card parser', ->
     describe 'basic types', ->
