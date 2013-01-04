@@ -199,7 +199,9 @@ list_view_attrs =
       ([^\u2014]+?)             # types
       (?:\s+\u2014\s+(.+?))?    # subtypes
       (?:\s+[(](?:              # "("
-        ([^/]+?)\s*/\s*([^/]+)  # power and toughness
+        ([^/]+(?:[{][^}]+[}])?) # power
+        \s*/\s*                 # "/"
+        ([^/]+(?:[{][^}]+[}])?) # toughness
         |                       # or...
         (\d+)                   # loyalty
       )[)])?                    # ")"
