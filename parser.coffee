@@ -283,7 +283,8 @@ exports.set = (body, callback) ->
     1
 
   id = '#ctl00_ctl00_ctl00_MainContent_SubContent_topPagingControlsContainer'
-  page = +ctx.text $(id).children('a[style="text-decoration:underline;"]')
+  underlined = $(id).children('a[style="text-decoration:underline;"]')
+  page = if underlined.length then +ctx.text underlined else 1
 
   if +$('#aspnetForm').attr('action').match(/page=(\d+)/)?[1] + 1 is page
     cards = []
