@@ -30,6 +30,10 @@ describe 'Parser', ->
       parser.set fixtures.web('homelands_pg1'), (err, obj) ->
         obj.should.eql sets.homelands_pg1.response
         done()
+    it 'can parse single-page sets', (done) ->
+      parser.set fixtures.web('dragons_pg1'), (err, obj) ->
+        should.strictEqual obj.cards.length, 15
+        done()
     it 'can parse fractional stats', (done) ->
       parser.set fixtures.web('unhinged_pg1'), (err, obj) ->
         assquatch = obj.cards[6]
