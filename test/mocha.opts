@@ -1,3 +1,0 @@
--t 3000
---compilers coffee:coffee-script
--R spec

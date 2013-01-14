@@ -1,1 +1,3 @@
 node_modules
+test/fixtures/*.html
+test/fixtures/**/*.html

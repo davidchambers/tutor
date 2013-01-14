@@ -1,46 +1,34 @@
 {
   "name": "tutor",
-  "version": "0.2.0",
-  "description": "An API for the Gatherer card database for the Magic the Gathering CCG",
+  "version": "0.3.0",
+  "description": "Interface for Gatherer, the Magic: The Gathering card database",
   "repository": {
     "type": "git",
     "url": "git://github.com/davidchambers/tutor.git"
   },
-  "contributors": [
-    {
-      "name": "David Chambers",
-      "email": "david.chambers.05@gmail.com",
-      "web": "http://davidchambersdesign.com"
-    }, {
-      "name": "Nick Novitski",
-      "email": "nicknovitski@gmail.com",
-      "web": "http://www.nicknovitski.com"
-    }, {
-      "name": "Pablo Castellazzi",
-      "email": "pablo.castellazzi@gmail.com",
-      "web": "https://bitbucket.org/pcastellazzi"
-    }
-  ],
+  "contributors": [{
+    "name": "David Chambers",
+    "email": "dc@hashify.me",
+    "web": "http://davidchambersdesign.com"
+  }, {
+    "name": "Nick Novitski",
+    "email": "nicknovitski@gmail.com",
+    "web": "http://www.nicknovitski.com"
+  }, {
+    "name": "Pablo Castellazzi",
+    "email": "pablo.castellazzi@gmail.com",
+    "web": "https://bitbucket.org/pcastellazzi"
+  }],
+  "main": "./lib/tutor",
   "dependencies": {
-    "cheerio": "0.8.x",
-    "coffee-script": "1.3.x",
+    "cheerio": "0.10.x",
+    "coffee-script": "1.4.x",
     "entities": "0.1.x",
-    "express": "2.5.x",
-    "request": "2.9.x"
+    "request": "2.12.x"
   },
   "devDependencies": {
-    "jsondiffpatch": "0.0.x",
-    "mocha": "1.0.x",
-    "nock": "0.13.x",
-    "should": "1.2.x",
-    "sinon": "1.5.x"
-  },
-  "main": "./gatherer",
-  "scripts": {
-    "start": "foreman start",
-    "test": "mocha"
-  },
-  "engines": {
-    "node": "0.6.x"
+    "mocha": "1.8.x",
+    "nock": "0.14.x",
+    "should": "1.2.x"
   }
 }
