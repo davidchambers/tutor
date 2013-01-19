@@ -1,4 +1,4 @@
-![Alt text](https://f.cloud.github.com/assets/390010/80316/1b436bbe-6245-11e2-9d9c-8fc40552da2a.jpg "Tutor")
+![Alt text](https://github.com/socrattes/tutor/blob/add-logo/logo.svg "Tutor")
 
 [Gatherer][1] is the canonical source for _Magic: The Gathering_ card details.
 While useful, it lacks an interface for retrieving this data programmatically.
