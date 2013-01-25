@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+require('../lib/command_line').parse(process.argv);
+
