@@ -22,11 +22,11 @@
   "main": "./lib/tutor",
   "dependencies": {
     "cheerio": "0.10.x",
-    "coffee-script": "1.4.x",
     "entities": "0.1.x",
     "request": "2.12.x"
   },
   "devDependencies": {
+    "coffee-script": "1.4.x",
     "mocha": "1.8.x",
     "nock": "0.14.x",
     "should": "1.2.x"
