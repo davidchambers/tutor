@@ -20,7 +20,9 @@
     "web": "https://bitbucket.org/pcastellazzi"
   }],
   "main": "./lib/tutor",
+  "bin": { "tutor" : "./bin/tutor" },
   "dependencies": {
+    "commander": "1.1.x",
     "cheerio": "0.10.x",
     "entities": "0.1.x",
     "request": "2.12.x"
