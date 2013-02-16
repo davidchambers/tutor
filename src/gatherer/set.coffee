@@ -1,8 +1,8 @@
 gatherer    = require '../gatherer'
 load        = require '../load'
+pagination  = require '../pagination'
 request     = require '../request'
 supertypes  = require '../supertypes'
-urlmod      = require '../url'
 
 
 module.exports = ({name, page}, callback) ->
@@ -24,15 +24,10 @@ extract = (html) ->
   $ = load html
   t = (el) -> gatherer._get_text $ el
 
-  underlined = $(
+  {selected, max} = pagination $ \
     '#ctl00_ctl00_ctl00_MainContent_SubContent_topPagingControlsContainer'
-  ).children('a[style="text-decoration:underline;"]')
 
-  set =
-    page: if underlined.length then +t underlined else 1
-    pages: Math.max 1, $('.paging').find('a').map(->
-      +urlmod.parse(@attr('href'), yes).query.page + 1)...
-    cards: []
+  set = page: selected, pages: max, cards: []
 
   # Gatherer returns the last page of results for a specified page
   # parameter beyond the upper bound.
