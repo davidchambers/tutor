@@ -2,6 +2,7 @@ gatherer    = require '../gatherer'
 load        = require '../load'
 request     = require '../request'
 supertypes  = require '../supertypes'
+urlmod      = require '../url'
 
 
 module.exports = ({name, page}, callback) ->
@@ -29,10 +30,8 @@ extract = (html) ->
 
   set =
     page: if underlined.length then +t underlined else 1
-    pages: do ->
-      for link in $('.paging').find('a').toArray().reverse()
-        return number if (number = +t link) > 0
-      1
+    pages: Math.max 1, $('.paging').find('a').map(->
+      +urlmod.parse(@attr('href'), yes).query.page + 1)...
     cards: []
 
   # Gatherer returns the last page of results for a specified page

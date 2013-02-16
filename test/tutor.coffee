@@ -156,6 +156,9 @@ describe 'tutor.set', ->
       assert.strictEqual cheap_ass.power, 1
       assert.strictEqual cheap_ass.toughness, 3.5
 
+  it 'handles sets with more than ten pages', #47
+    set name: 'Limited Edition Alpha', {page: 1, pages: 12}
+
 
 describe 'tutor.card', ->
 
