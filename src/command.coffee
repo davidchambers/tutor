@@ -21,16 +21,19 @@ program = require 'commander'
 program.version require('../package').version
 
 program
-  .command('card <name>')
-  .description("output the named card's details")
-  .action (name) ->
-    tutor.card {name}, formatters.card
+  .command('card <name|id>')
+  .description("output the given card's details")
+  .option('-f, --format [formatter]', '"json" or "summary"', 'summary')
+  .action (value, options) ->
+    tutor.card (if +value is +value then +value else value),
+               formatters.card[options.format]
 
 program
   .command('set <name>')
   .description('output one page of cards from the named set')
+  .option('-f, --format [formatter]', '"json" or "summary"', 'summary')
   .option('-p, --page [number]', 'specify page number', 1)
   .action (name, options) ->
-    tutor.set {name, page: options.page}, formatters.set
+    tutor.set {name, page: options.page}, formatters.set[options.format]
 
 module.exports = program

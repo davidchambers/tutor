@@ -1,4 +1,5 @@
 assert    = require 'assert'
+{exec}    = require 'child_process'
 fs        = require 'fs'
 
 nock      = require 'nock'
@@ -393,3 +394,38 @@ describe 'tutor.card', ->
 
   it 'parses back face of double-faced card specified by id',
     card 262698, name: 'Werewolf Ransacker'
+
+
+$ = (command, test) -> (done) ->
+  exec "bin/#{command}", (err, stdout, stderr) ->
+    if typeof test is 'string'
+      assert.strictEqual stdout, "#{test}\n"
+    else
+      test err, stdout, stderr
+    done()
+
+
+describe '$ tutor set', ->
+
+  it 'prints first page of set',
+    $ 'tutor set Alliances | head -n 1',
+      "Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block."
+
+  it 'prints second page of set',
+    $ 'tutor set Alliances --page 2 | head -n 1',
+      'Elvish Ranger {2}{G} 4/1'
+
+
+describe '$ tutor card', ->
+
+  it 'prints summary of card',
+    $ 'tutor card Braingeyser',
+      'Braingeyser {X}{U}{U} Target player draws X cards.'
+
+  it 'prints JSON representation of card specified by name',
+    $ 'tutor card Fireball --format json', (err, stdout) ->
+      assert.strictEqual JSON.parse(stdout).name, 'Fireball'
+
+  it 'prints JSON representation of card specified by id',
+    $ 'tutor card 987 --format json', (err, stdout) ->
+      assert.strictEqual JSON.parse(stdout).artist, 'Brian Snoddy'

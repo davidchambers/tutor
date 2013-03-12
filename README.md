@@ -210,32 +210,42 @@ tutor.types (err, types) ->
 
 `npm install tutor --global` will make the `tutor` command available globally.
 
-    $ tutor --help
-
-      Usage: tutor [options] [command]
-
-      Commands:
-
-        card <name>            output the named card's details
-        set [options] <name>   output one page of cards from the named set
-
-      Options:
-
-        -h, --help     output usage information
-        -V, --version  output the version number
-
     $ tutor card 'Demonic Tutor'
     Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
 
-    $ tutor set 'Homelands' --page 3
+    $ tutor card 'Demonic Tutor' --format json | python -mjson.tool | head -n 10
+    {
+        "community_rating": {
+            "rating": 4.714,
+            "votes": 229
+        },
+        "converted_mana_cost": 2,
+        "languages": {},
+        "legality": {
+            "Commander": "Legal",
+            "Legacy": "Banned",
+
+    $ tutor card 60 --format json | python -mjson.tool | head -n 10
+    {
+        "artist": "Douglas Schuler",
+        "community_rating": {
+            "rating": 4.917,
+            "votes": 109
+        },
+        "converted_mana_cost": 2,
+        "expansion": "Limited Edition Alpha",
+        "languages": {},
+        "legality": {
+
+    $ tutor set 'Homelands' --page 3 | head -n 2
     Forget {U}{U} Target player discards two cards, then draws as many cards as he or she discarded this way.
     Funeral March {1}{B}{B} Enchant creature When enchanted creature leaves the battlefield, its controller sacrifices a creature.
-    ...
 
 ### Running the tests
 
     make fixtures
     make test
+    make testcli
 
 
 [1]: http://gatherer.wizards.com/

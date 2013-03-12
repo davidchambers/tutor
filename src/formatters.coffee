@@ -4,17 +4,21 @@ withCaution = (view) -> (err, res) ->
   else if err.errno is 'ENOTFOUND'
     console.error 'cannot connect to gatherer'
   else
-    console.error "unknown error: #{err}"
+    console.error "#{err}"
 
 printCard = (card) ->
   output  = "#{card.name}"
   output += " #{card.mana_cost}" if 'mana_cost' of card
   output += " #{card.power}/#{card.toughness}" if 'power' of card
-  output += " #{card.text.replace(/[\n\r]+/g, ' ')}" if 'text' of card
+  output += " #{card.text.replace(/[\n\r]+/g, ' ')}" if card.text
   console.log output
 
 printSet = (set) ->
   printCard card for card in set.cards
 
-exports.card = withCaution printCard
-exports.set  = withCaution printSet
+module.exports =
+  card:
+    json: withCaution (card) -> console.log JSON.stringify card
+    summary: withCaution printCard
+  set:
+    summary: withCaution printSet
