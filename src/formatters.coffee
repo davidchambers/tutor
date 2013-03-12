@@ -13,8 +13,12 @@ printCard = (card) ->
   output += " #{card.text.replace(/[\n\r]+/g, ' ')}" if 'text' of card
   console.log output
 
+printFullCard = (card) ->
+  console.log JSON.stringify card
+
 printSet = (set) ->
   printCard card for card in set.cards
 
-exports.card = withCaution printCard
-exports.set  = withCaution printSet
+exports.card     = withCaution printCard
+exports.set      = withCaution printSet
+exports.fullCard = withCaution printFullCard
