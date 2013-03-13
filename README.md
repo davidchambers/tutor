@@ -216,10 +216,7 @@ tutor.types (err, types) ->
 
       Commands:
 
-        card <name>            output the named card's details
-        id <id>                prints the information found for a card given an id
-        fullcard <name>        prints the complete information found for a named card
-        fullid <id>            prints the complete information for a card given an id
+        card [options] <name|id> prints the information for a card based on name or id (if provided an integer number, id is assumed)
         set [options] <name>   output one page of cards from the named set
 
       Options:
@@ -227,16 +224,42 @@ tutor.types (err, types) ->
         -h, --help     output usage information
         -V, --version  output the version number
 
+    $ tutor card --help
+
+      Usage: card [options] <name|id>
+
+      Options:
+
+        -h, --help                output usage information
+        -f, --format [formatter]  Use this output format. Options are: summary (default), json
+        --id                      if set, interpret argument as the gatherer id
+        --name                    if set, interpret argument as the card name
+
+    $ tutor set --help
+
+      Usage: set [options] <name>
+
+      Options:
+
+        -h, --help           output usage information
+        -p, --page [number]  specify page number
+
     $ tutor card 'Demonic Tutor'
     Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
 
-    $ tutor id 60
+    $ tutor card --name 'Demonic Tutor'
     Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
 
-    $ tutor fullcard 'Demonic Tutor'
+    $ tutor card 60
+    Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
+
+    $ tutor card --id 60
+    Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
+
+    $ tutor card 'Demonic Tutor' --format json
     {"converted_mana_cost":2,"supertypes":[],"types":["Sorcery"],"subtypes":[],"rulings":[["2004-10-04","You pick a card on resolution."],["2004-10-04","You do not show the card you pick out of your library to your opponent."],["2004-10-04","This is not a draw."]],"name":"Demonic Tutor","mana_cost":"{1}{B}","text":"Search your library for a card and put that card into your hand. Then shuffle your library.","versions":{"60":{"expansion":"Limited Edition Alpha","rarity":"Uncommon"},"355":{"expansion":"Limited Edition Beta","rarity":"Uncommon"},"657":{"expansion":"Unlimited Edition","rarity":"Uncommon"},"1155":{"expansion":"Revised Edition","rarity":"Uncommon"},"193867":{"expansion":"Duel Decks: Divine vs. Demonic","rarity":"Uncommon"},"202628":{"expansion":"Masters Edition IV","rarity":"Rare"}},"community_rating":{"rating":4.713,"votes":225},"languages":{},"legality":{"Legacy":"Banned","Vintage":"Restricted","Commander":"Legal"}}
 
-    $ tutor fullid 60
+    $ tutor 60 --format json
     {"converted_mana_cost":2,"supertypes":[],"types":["Sorcery"],"subtypes":[],"rulings":[["2004-10-04","You pick a card on resolution."],["2004-10-04","You do not show the card you pick out of your library to your opponent."],["2004-10-04","This is not a draw."]],"name":"Demonic Tutor","mana_cost":"{1}{B}","text":"Search your library for a card and put that card into your hand. Then shuffle your library.","expansion":"Limited Edition Alpha","rarity":"Uncommon","versions":{"60":{"expansion":"Limited Edition Alpha","rarity":"Uncommon"},"355":{"expansion":"Limited Edition Beta","rarity":"Uncommon"},"657":{"expansion":"Unlimited Edition","rarity":"Uncommon"},"1155":{"expansion":"Revised Edition","rarity":"Uncommon"},"193867":{"expansion":"Duel Decks: Divine vs. Demonic","rarity":"Uncommon"},"202628":{"expansion":"Masters Edition IV","rarity":"Rare"}},"artist":"Douglas Schuler","community_rating":{"rating":4.917,"votes":109},"languages":{},"legality":{"Legacy":"Banned","Vintage":"Restricted","Commander":"Legal"}}
 
     $ tutor set 'Homelands' --page 3
