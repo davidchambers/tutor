@@ -1,9 +1,10 @@
-assert    = require 'assert'
-fs        = require 'fs'
-
-nock      = require 'nock'
-gatherer  = require '../src/gatherer'
-tutor     = require '../src/tutor'
+assert       = require 'assert'
+exec_sync    = require 'execSync'
+fs           = require 'fs'
+nock         = require 'nock'
+command_line = require '../src/command'
+gatherer     = require '../src/gatherer'
+tutor        = require '../src/tutor'
 
 
 origin = 'http://gatherer.wizards.com'
@@ -68,6 +69,18 @@ card = (details, test) -> (done) ->
     (if typeof test is 'function' then test else assert_equal test) err, card
     done()
 
+commandLine = (args, expected, firstLineOnly) -> (done) ->
+  command = './bin/tutor ' + args
+  if firstLineOnly
+    assert.equal exec_sync.stdout(command).split('\n')[0], expected
+  else
+    assert.equal exec_sync.stdout(command), expected
+  done()
+
+invalidCommandLine = (args) -> (done) ->
+  command = './bin/tutor ' + args
+  assert.notEqual exec_sync.code(command), 0
+  done()
 
 describe 'tutor.formats', ->
 
@@ -393,3 +406,53 @@ describe 'tutor.card', ->
 
   it 'parses back face of double-faced card specified by id',
     card 262698, name: 'Werewolf Ransacker'
+
+describe "tutor.command", ->
+
+  hill_giant_summary = 'Hill Giant {3}{R} 3/3\n'
+  hill_giant_json = '{"converted_mana_cost":4,"supertypes":[],"types":["Creature"],"subtypes":["Giant"],"rulings":[],"name":"Hill Giant","mana_cost":"{3}{R}","power":3,"toughness":3,"versions":{"205":{"expansion":"Limited Edition Alpha","rarity":"Common"},"500":{"expansion":"Limited Edition Beta","rarity":"Common"},"802":{"expansion":"Unlimited Edition","rarity":"Common"},"1299":{"expansion":"Revised Edition","rarity":"Common"},"2284":{"expansion":"Fourth Edition","rarity":"Common"},"4060":{"expansion":"Fifth Edition","rarity":"Common"},"4344":{"expansion":"Portal","rarity":"Common"},"25680":{"expansion":"Seventh Edition","rarity":"Common"},"45348":{"expansion":"Eighth Edition","rarity":"Common"},"83120":{"expansion":"Ninth Edition","rarity":"Common"},"129591":{"expansion":"Tenth Edition","rarity":"Common"}},"community_rating":{"rating":1.987,"votes":75},"languages":{"ja":{"id":148158,"name":"丘巨人"},"it":{"id":148924,"name":"Gigante delle Colline"},"es":{"id":150528,"name":"Gigante de las colinas"},"zh-TW":{"id":147775,"name":"山丘巨人"},"pt-BR":{"id":149762,"name":"Gigante da Colina"},"ru":{"id":149379,"name":"Гигант с Холмов"},"de":{"id":148541,"name":"Hügelriese"},"zh-CN":{"id":151440,"name":"山丘巨人"},"fr":{"id":150145,"name":"Géant des collines"}},"legality":{"Modern":"Legal","Legacy":"Legal","Vintage":"Legal","Freeform":"Legal","Prismatic":"Legal","Tribal Wars Legacy":"Legal","Classic":"Legal","Singleton 100":"Legal","Commander":"Legal"}}\n'
+  hill_giant_version_205_json = '{"converted_mana_cost":4,"supertypes":[],"types":["Creature"],"subtypes":["Giant"],"rulings":[],"name":"Hill Giant","mana_cost":"{3}{R}","flavor_text":"Fortunately, Hill Giants have large blind spots in which a human can easily hide. Unfortunately, these blind spots are beneath the bottoms of their feet.","power":3,"toughness":3,"expansion":"Limited Edition Alpha","rarity":"Common","versions":{"205":{"expansion":"Limited Edition Alpha","rarity":"Common"},"500":{"expansion":"Limited Edition Beta","rarity":"Common"},"802":{"expansion":"Unlimited Edition","rarity":"Common"},"1299":{"expansion":"Revised Edition","rarity":"Common"},"2284":{"expansion":"Fourth Edition","rarity":"Common"},"4060":{"expansion":"Fifth Edition","rarity":"Common"},"4344":{"expansion":"Portal","rarity":"Common"},"25680":{"expansion":"Seventh Edition","rarity":"Common"},"45348":{"expansion":"Eighth Edition","rarity":"Common"},"83120":{"expansion":"Ninth Edition","rarity":"Common"},"129591":{"expansion":"Tenth Edition","rarity":"Common"}},"artist":"Dan Frazier","community_rating":{"rating":2.338,"votes":34},"languages":{},"legality":{"Modern":"Legal","Legacy":"Legal","Vintage":"Legal","Freeform":"Legal","Prismatic":"Legal","Tribal Wars Legacy":"Legal","Classic":"Legal","Singleton 100":"Legal","Commander":"Legal"}}\n'
+
+  it 'defaults to a search by name with summary output',
+    commandLine 'card "Hill Giant"', hill_giant_summary
+  it 'defaults to a search with an integer as a search by id with summary output',
+    commandLine 'card 205', hill_giant_summary
+  it 'defaults to a search by name but specifies a json output',
+    commandLine 'card "Hill Giant" --format json', hill_giant_json
+  it 'defaults to a search with an integer as a search by id that can still specify json output',
+    commandLine 'card 205 --format json', hill_giant_version_205_json
+  it 'can specify a search by id and defaults to summary output',
+     commandLine 'card --id 205', hill_giant_summary
+  it 'can specify a search by id that can still specify json output',
+    commandLine 'card --id 205 --format json', hill_giant_version_205_json
+  it 'can specify a search by name and defaults to summary output',
+    commandLine 'card --name "Hill Giant"', hill_giant_summary
+  it 'can specify a search by id that can still specify json output',
+   commandLine 'card --name "Hill Giant" --format json', hill_giant_json
+
+  it 'can handle a bad name',
+   invalidCommandLine 'card --name Hill Giant'
+  it 'can handle people specifying name but pass a number',
+    invalidCommandLine 'card --name 205'
+  it 'can handle people specifying id but passing a name',
+    invalidCommandLine 'card --id "Hill Giant"'
+  it 'can handle people specifying id and name',
+    invalidCommandLine 'card --id --name "Hill Giant"'
+  it 'can handle people not specifying a card',
+    invalidCommandLine 'card'
+  it 'can handle people not specifying anything',
+    commandLine '', ''
+
+  homelands_p1_c1_summary = "Abbey Gargoyles {2}{W}{W}{W} 3/4 Flying, protection from red"
+  homelands_p2_c1_summary = "Carapace {G} Enchant creature Enchanted creature gets +0/+2. Sacrifice Carapace: Regenerate enchanted creature."
+
+  it 'can print a set with a default page 1',
+    commandLine 'set Homelands', homelands_p1_c1_summary, true
+  it 'can print a set with a specified page 1',
+    commandLine 'set Homelands --page 1', homelands_p1_c1_summary, true
+  it 'can print a set with a specified page 1 via short option',
+     commandLine 'set Homelands -p 1', homelands_p1_c1_summary, true
+  it 'can print a set with a specified page 2',
+     commandLine 'set Homelands --page 2', homelands_p2_c1_summary, true
+  it 'can print a set with a specified page 2 via short option',
+     commandLine 'set Homelands -p 2', homelands_p2_c1_summary, true

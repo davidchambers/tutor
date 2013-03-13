@@ -34,3 +34,7 @@ setup:
 
 test:
 	@$(bin)/mocha --compilers coffee:coffee-script test/tutor.coffee
+testcore:
+	@$(bin)/mocha --compilers coffee:coffee-script test/tutor.coffee --grep "tutor\.command" --invert
+testcli:
+	@$(bin)/mocha --compilers coffee:coffee-script test/tutor.coffee --grep "tutor\.command"

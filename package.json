@@ -18,6 +18,10 @@
     "name": "Pablo Castellazzi",
     "email": "pablo.castellazzi@gmail.com",
     "web": "https://bitbucket.org/pcastellazzi"
+  }, {
+    "name": "Rob Dennis",
+    "email": "rdennis@gmail.com",
+    "web": "https://github.com/rdennis463"
   }],
   "main": "./lib/tutor",
   "bin": { "tutor" : "./bin/tutor" },
@@ -28,6 +32,7 @@
     "request": "2.12.x"
   },
   "devDependencies": {
+    "execSync": "0.0.x",
     "coffee-script": "1.6.x",
     "mocha": "1.8.x",
     "nock": "0.16.x",
