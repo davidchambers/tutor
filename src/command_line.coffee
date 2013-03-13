@@ -2,32 +2,29 @@ tutor = require './tutor'
 formatters = require './formatters'
 
 program = require 'commander'
+assert = require 'assert'
 
 program.version require('../package').version
 
 program
-  .command('card <name>')
-  .description('prints the information for a named card')
-  .action (name) ->
-    tutor.card {name}, formatters.card
+  .command('card <name|id>')
+  .description('prints the information for a card based on name or id (if provided an integer number, id is assumed)')
+  .option('-f, --format [formatter]', 'Use this output format. Options are: summary (default), json', 'summary')
+  .option('--id', 'if set, interpret argument as the gatherer id', false)
+  .option('--name', 'if set, interpret argument as the card name', false)
+  .action (name, options) ->
+    formatMap =
+      summary: formatters.cardSummary
+      json: formatters.cardJson
 
-program
-  .command('id <id>')
-  .description('prints the information found for a card given an id')
-  .action (id) ->
-    tutor.card {id}, formatters.card
+    if options.id and options.name
+      throw "don't specify that we should search by both name AND id"
 
-program
-  .command('fullcard <name>')
-  .description('prints the complete information found for a named card')
-  .action (name) ->
-    tutor.card {name}, formatters.fullCard
-
-program
-  .command('fullid <id>')
-  .description('prints the complete information for a card given an id')
-  .action (id) ->
-    tutor.card {id}, formatters.fullCard
+    if options.id or (not options.name and /^\d+$/.test(name))
+      id = name
+      tutor.card {id}, formatMap[options.format]
+    else
+      tutor.card {name}, formatMap[options.format]
 
 program
   .command("set <name>")
