@@ -9,8 +9,8 @@ tutor        = require '../src/tutor'
 
 origin = 'http://gatherer.wizards.com'
 wizards = nock origin
-card_url = (path, details) ->
-  gatherer.card.url(path, details).substr(origin.length)
+card_url = (args...) ->
+  gatherer.card.url(args...).substr(origin.length)
 
 lower = (text) -> text.toLowerCase()
 upper = (text) -> text.toUpperCase()
@@ -59,6 +59,11 @@ card = (details, test) -> (done) ->
     wizards
       .get(card_url resource.replace(/./, upper) + '.aspx', details)
       .replyWithFile(200, "#{__dirname}/fixtures/cards/#{parts.join('~')}.html")
+    if (pages = details._pages?[resource]) > 1
+      for page in [2..pages]
+        wizards
+          .get(card_url resource.replace(/./, upper) + '.aspx', details, {page})
+          .replyWithFile(200, "#{__dirname}/fixtures/cards/#{parts.join('~')}~#{page}.html")
 
   tutor.card details, (err, card) ->
     (if typeof test is 'function' then test else assert_equal test) err, card
@@ -168,6 +173,9 @@ describe 'tutor.set', ->
       assert.strictEqual bad_ass.toughness, 1
       assert.strictEqual cheap_ass.power, 1
       assert.strictEqual cheap_ass.toughness, 3.5
+
+  it 'handles sets with more than ten pages', #47
+    set name: 'Limited Edition Alpha', {page: 1, pages: 12}
 
 
 describe 'tutor.card', ->
@@ -324,21 +332,39 @@ describe 'tutor.card', ->
     card 'Werewolf Ransacker', (err, card) ->
       assert card.rulings.length
 
+  assert_languages_equal = (expected) ->
+    (err, card) ->
+      codes = Object.keys(expected).sort()
+      assert.deepEqual Object.keys(card.languages).sort(), codes
+      for code in codes
+        assert.strictEqual card.languages[code].name, expected[code].name
+        assert.deepEqual   card.languages[code].ids,  expected[code].ids
+
   it 'extracts languages',
-    card 262698, languages: {
-      'de'    : id: 337042, name: 'Werwolf-Einsacker'
-      'es'    : id: 337213, name: 'Saqueador licántropo'
-      'fr'    : id: 336700, name: 'Saccageur loup-garou'
-      'it'    : id: 337384, name: 'Predone Mannaro'
-      'ja'    : id: 337555, name: '\u72FC\u7537\u306E\u8352\u3089\u3057\u5C4B'
-      'kr'    : id: 336187, name: '\uB291\uB300\uC778\uAC04 \uC57D\uD0C8\uC790'
-      'pt-BR' : id: 336529, name: 'Lobisomem Saqueador'
-      'ru'    : id: 336871, name: '\u0412\u0435\u0440\u0432\u043E\u043B\u044C' +
-                                  '\u0444-\u041F\u043E\u0433\u0440\u043E\u043C' +
-                                  '\u0449\u0438\u043A'
-      'zh-CN' : id: 336358, name: '\u641C\u62EC\u72FC\u4EBA'
-      'zh-TW' : id: 336016, name: '\u641C\u62EC\u72FC\u4EBA'
-    }
+    card 262698, assert_languages_equal
+      'de'    : ids: [337042], name: 'Werwolf-Einsacker'
+      'es'    : ids: [337213], name: 'Saqueador licántropo'
+      'fr'    : ids: [336700], name: 'Saccageur loup-garou'
+      'it'    : ids: [337384], name: 'Predone Mannaro'
+      'ja'    : ids: [337555], name: '\u72FC\u7537\u306E\u8352\u3089\u3057\u5C4B'
+      'kr'    : ids: [336187], name: '\uB291\uB300\uC778\uAC04 \uC57D\uD0C8\uC790'
+      'pt-BR' : ids: [336529], name: 'Lobisomem Saqueador'
+      'ru'    : ids: [336871], name: '\u0412\u0435\u0440\u0432\u043E\u043B\u044C\u0444-\u041F\u043E\u0433\u0440\u043E\u043C\u0449\u0438\u043A'
+      'zh-CN' : ids: [336358], name: '\u641C\u62EC\u72FC\u4EBA'
+      'zh-TW' : ids: [336016], name: '\u641C\u62EC\u72FC\u4EBA'
+
+  it 'extracts languages for card with multiple pages of languages', #37
+    card {id: 289327, _pages: languages: 2}, assert_languages_equal
+      'de'    : ids: [356006, 356007, 356008, 356009, 356010], name: 'Wald'
+      'es'    : ids: [365728, 365729, 365730, 365731, 365732], name: 'Bosque'
+      'fr'    : ids: [356280, 356281, 356282, 356283, 356284], name: 'Forêt'
+      'it'    : ids: [356554, 356555, 356556, 356557, 356558], name: 'Foresta'
+      'ja'    : ids: [356828, 356829, 356830, 356831, 356832], name: '\u68ee'
+      'kr'    : ids: [357650, 357651, 357652, 357653, 357654], name: '\uc232'
+      'pt-BR' : ids: [357102, 357103, 357104, 357105, 357106], name: 'Floresta'
+      'ru'    : ids: [355458, 355459, 355460, 355461, 355462], name: '\u041b\u0435\u0441'
+      'zh-CN' : ids: [355732, 355733, 355734, 355735, 355736], name: '\u6a39\u6797'
+      'zh-TW' : ids: [357376, 357377, 357378, 357379, 357380], name: '\u6811\u6797'
 
   it 'extracts legality info',
     card 'Braids, Cabal Minion', (err, card) ->

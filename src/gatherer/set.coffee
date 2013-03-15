@@ -1,5 +1,6 @@
 gatherer    = require '../gatherer'
 load        = require '../load'
+pagination  = require '../pagination'
 request     = require '../request'
 supertypes  = require '../supertypes'
 
@@ -23,17 +24,10 @@ extract = (html) ->
   $ = load html
   t = (el) -> gatherer._get_text $ el
 
-  underlined = $(
+  {selected, max} = pagination $ \
     '#ctl00_ctl00_ctl00_MainContent_SubContent_topPagingControlsContainer'
-  ).children('a[style="text-decoration:underline;"]')
 
-  set =
-    page: if underlined.length then +t underlined else 1
-    pages: do ->
-      for link in $('.paging').find('a').toArray().reverse()
-        return number if (number = +t link) > 0
-      1
-    cards: []
+  set = page: selected, pages: max, cards: []
 
   # Gatherer returns the last page of results for a specified page
   # parameter beyond the upper bound.
