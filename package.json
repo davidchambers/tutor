@@ -1,6 +1,6 @@
 {
   "name": "tutor",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Interface for Gatherer, the Magic: The Gathering card database",
   "repository": {
     "type": "git",
@@ -26,9 +26,9 @@
     "request": "2.12.x"
   },
   "devDependencies": {
-    "coffee-script": "1.4.x",
+    "coffee-script": "1.6.x",
     "mocha": "1.8.x",
-    "nock": "0.14.x",
+    "nock": "0.16.x",
     "should": "1.2.x"
   }
 }
