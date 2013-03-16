@@ -13,12 +13,11 @@ Installing the package with the `-g` option gives you access to the `tutor` comm
 
 ```bash
 $ tutor -h
-
-  Usage: tutor.js [options] [command]
+  Usage: tutor [options] [command]
 
   Commands:
 
-    card <name>            prints the information for a named card
+    card [options] <name|id> prints the information for a card based on name or id (if provided an integer number, id is assumed)
     set [options] <name>   prints the information for the first page of the named set
 
   Options:
@@ -26,10 +25,43 @@ $ tutor -h
     -h, --help     output usage information
     -V, --version  output the version number
 
+$ tutor card -h
+  Usage: card [options] <name|id>
+
+  Options:
+
+    -h, --help                output usage information
+    -f, --format [formatter]  Use this output format. Options are: summary (default), json
+    --id                      if set, interpret argument as the gatherer id
+    --name                    if set, interpret argument as the card name
+
+$ tutor set -h
+  Usage: set [options] <name>
+
+  Options:
+
+    -h, --help           output usage information
+    -p, --page [number]  specify page of set
+
 $ tutor card 'Demonic Tutor'
 Demonic Tutor {1}{B}  Search your library for a card and put that card into your hand. Then shuffle your library.
 
-$ tutor set 'Homelands' --page 3                                                                                                                                  
+$ tutor card --name 'Demonic Tutor'
+Demonic Tutor {1}{B}  Search your library for a card and put that card into your hand. Then shuffle your library.
+
+$ tutor card 60
+Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
+
+$ tutor card --id 60
+Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
+
+$ tutor card 'Demonic Tutor' --format json
+{"converted_mana_cost":2,"supertypes":[],"types":["Sorcery"],"subtypes":[],"rulings":[["2004-10-04","You pick a card on resolution."],["2004-10-04","You do not show the card you pick out of your library to your opponent."],["2004-10-04","This is not a draw."]],"name":"Demonic Tutor","mana_cost":"{1}{B}","text":"Search your library for a card and put that card into your hand. Then shuffle your library.","versions":{"60":{"expansion":"Limited Edition Alpha","rarity":"Uncommon"},"355":{"expansion":"Limited Edition Beta","rarity":"Uncommon"},"657":{"expansion":"Unlimited Edition","rarity":"Uncommon"},"1155":{"expansion":"Revised Edition","rarity":"Uncommon"},"193867":{"expansion":"Duel Decks: Divine vs. Demonic","rarity":"Uncommon"},"202628":{"expansion":"Masters Edition IV","rarity":"Rare"}},"community_rating":{"rating":4.713,"votes":225},"languages":{},"legality":{"Legacy":"Banned","Vintage":"Restricted","Commander":"Legal"}}
+
+$ tutor 60 --format json
+{"converted_mana_cost":2,"supertypes":[],"types":["Sorcery"],"subtypes":[],"rulings":[["2004-10-04","You pick a card on resolution."],["2004-10-04","You do not show the card you pick out of your library to your opponent."],["2004-10-04","This is not a draw."]],"name":"Demonic Tutor","mana_cost":"{1}{B}","text":"Search your library for a card and put that card into your hand. Then shuffle your library.","expansion":"Limited Edition Alpha","rarity":"Uncommon","versions":{"60":{"expansion":"Limited Edition Alpha","rarity":"Uncommon"},"355":{"expansion":"Limited Edition Beta","rarity":"Uncommon"},"657":{"expansion":"Unlimited Edition","rarity":"Uncommon"},"1155":{"expansion":"Revised Edition","rarity":"Uncommon"},"193867":{"expansion":"Duel Decks: Divine vs. Demonic","rarity":"Uncommon"},"202628":{"expansion":"Masters Edition IV","rarity":"Rare"}},"artist":"Douglas Schuler","community_rating":{"rating":4.917,"votes":109},"languages":{},"legality":{"Legacy":"Banned","Vintage":"Restricted","Commander":"Legal"}}
+
+$ tutor set 'Homelands' --page 3
 Forget  {U}{U}  Target player discards two cards, then draws as many cards as he or she discarded this way.
 Funeral March   {1}{B}{B}   Enchant creature  When enchanted creature leaves the battlefield, its controller sacrifices a creature.
 [etc]

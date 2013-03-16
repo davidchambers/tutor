@@ -1,15 +1,16 @@
-assert    = require 'assert'
-fs        = require 'fs'
-
-nock      = require 'nock'
-gatherer  = require '../src/gatherer'
-tutor     = require '../src/tutor'
+assert       = require 'assert'
+exec_sync    = require 'execSync'
+fs           = require 'fs'
+nock         = require 'nock'
+command_line = require '../src/command_line'
+gatherer     = require '../src/gatherer'
+tutor        = require '../src/tutor'
 
 
 origin = 'http://gatherer.wizards.com'
 wizards = nock origin
-card_url = (path, details) ->
-  gatherer.card.url(path, details).substr(origin.length)
+card_url = (args...) ->
+  gatherer.card.url(args...).substr(origin.length)
 
 lower = (text) -> text.toLowerCase()
 upper = (text) -> text.toUpperCase()
@@ -58,11 +59,34 @@ card = (details, test) -> (done) ->
     wizards
       .get(card_url resource.replace(/./, upper) + '.aspx', details)
       .replyWithFile(200, "#{__dirname}/fixtures/cards/#{parts.join('~')}.html")
+    if (pages = details._pages?[resource]) > 1
+      for page in [2..pages]
+        wizards
+          .get(card_url resource.replace(/./, upper) + '.aspx', details, {page})
+          .replyWithFile(200, "#{__dirname}/fixtures/cards/#{parts.join('~')}~#{page}.html")
 
   tutor.card details, (err, card) ->
     (if typeof test is 'function' then test else assert_equal test) err, card
     done()
 
+commandLine = (args, expected, firstLineOnly) -> (done) ->
+  command = './bin/tutor ' + args
+  if firstLineOnly
+    assert.equal exec_sync.stdout(command).split('\n')[0], expected
+  else
+    assert.equal exec_sync.stdout(command), expected
+  done()
+
+commandLineJson = (args, expected) -> (done) ->
+  command = './bin/tutor ' + args
+  actual = JSON.parse exec_sync.stdout(command)
+  assert.deepEqual actual, expected
+  done()
+
+invalidCommandLine = (args) -> (done) ->
+  command = './bin/tutor ' + args
+  assert.notEqual exec_sync.code(command), 0
+  done()
 
 describe 'tutor.formats', ->
 
@@ -155,6 +179,9 @@ describe 'tutor.set', ->
       assert.strictEqual bad_ass.toughness, 1
       assert.strictEqual cheap_ass.power, 1
       assert.strictEqual cheap_ass.toughness, 3.5
+
+  it 'handles sets with more than ten pages', #47
+    set name: 'Limited Edition Alpha', {page: 1, pages: 12}
 
 
 describe 'tutor.card', ->
@@ -311,21 +338,39 @@ describe 'tutor.card', ->
     card 'Werewolf Ransacker', (err, card) ->
       assert card.rulings.length
 
+  assert_languages_equal = (expected) ->
+    (err, card) ->
+      codes = Object.keys(expected).sort()
+      assert.deepEqual Object.keys(card.languages).sort(), codes
+      for code in codes
+        assert.strictEqual card.languages[code].name, expected[code].name
+        assert.deepEqual   card.languages[code].ids,  expected[code].ids
+
   it 'extracts languages',
-    card 262698, languages: {
-      'de'    : id: 337042, name: 'Werwolf-Einsacker'
-      'es'    : id: 337213, name: 'Saqueador licántropo'
-      'fr'    : id: 336700, name: 'Saccageur loup-garou'
-      'it'    : id: 337384, name: 'Predone Mannaro'
-      'ja'    : id: 337555, name: '\u72FC\u7537\u306E\u8352\u3089\u3057\u5C4B'
-      'kr'    : id: 336187, name: '\uB291\uB300\uC778\uAC04 \uC57D\uD0C8\uC790'
-      'pt-BR' : id: 336529, name: 'Lobisomem Saqueador'
-      'ru'    : id: 336871, name: '\u0412\u0435\u0440\u0432\u043E\u043B\u044C' +
-                                  '\u0444-\u041F\u043E\u0433\u0440\u043E\u043C' +
-                                  '\u0449\u0438\u043A'
-      'zh-CN' : id: 336358, name: '\u641C\u62EC\u72FC\u4EBA'
-      'zh-TW' : id: 336016, name: '\u641C\u62EC\u72FC\u4EBA'
-    }
+    card 262698, assert_languages_equal
+      'de'    : ids: [337042], name: 'Werwolf-Einsacker'
+      'es'    : ids: [337213], name: 'Saqueador licántropo'
+      'fr'    : ids: [336700], name: 'Saccageur loup-garou'
+      'it'    : ids: [337384], name: 'Predone Mannaro'
+      'ja'    : ids: [337555], name: '\u72FC\u7537\u306E\u8352\u3089\u3057\u5C4B'
+      'kr'    : ids: [336187], name: '\uB291\uB300\uC778\uAC04 \uC57D\uD0C8\uC790'
+      'pt-BR' : ids: [336529], name: 'Lobisomem Saqueador'
+      'ru'    : ids: [336871], name: '\u0412\u0435\u0440\u0432\u043E\u043B\u044C\u0444-\u041F\u043E\u0433\u0440\u043E\u043C\u0449\u0438\u043A'
+      'zh-CN' : ids: [336358], name: '\u641C\u62EC\u72FC\u4EBA'
+      'zh-TW' : ids: [336016], name: '\u641C\u62EC\u72FC\u4EBA'
+
+  it 'extracts languages for card with multiple pages of languages', #37
+    card {id: 289327, _pages: languages: 2}, assert_languages_equal
+      'de'    : ids: [356006, 356007, 356008, 356009, 356010], name: 'Wald'
+      'es'    : ids: [365728, 365729, 365730, 365731, 365732], name: 'Bosque'
+      'fr'    : ids: [356280, 356281, 356282, 356283, 356284], name: 'Forêt'
+      'it'    : ids: [356554, 356555, 356556, 356557, 356558], name: 'Foresta'
+      'ja'    : ids: [356828, 356829, 356830, 356831, 356832], name: '\u68ee'
+      'kr'    : ids: [357650, 357651, 357652, 357653, 357654], name: '\uc232'
+      'pt-BR' : ids: [357102, 357103, 357104, 357105, 357106], name: 'Floresta'
+      'ru'    : ids: [355458, 355459, 355460, 355461, 355462], name: '\u041b\u0435\u0441'
+      'zh-CN' : ids: [355732, 355733, 355734, 355735, 355736], name: '\u6a39\u6797'
+      'zh-TW' : ids: [357376, 357377, 357378, 357379, 357380], name: '\u6811\u6797'
 
   it 'extracts legality info',
     card 'Braids, Cabal Minion', (err, card) ->
@@ -367,3 +412,53 @@ describe 'tutor.card', ->
 
   it 'parses back face of double-faced card specified by id',
     card 262698, name: 'Werewolf Ransacker'
+
+describe "tutor.command_line", ->
+
+  hill_giant_summary = 'Hill Giant {3}{R} 3/3\n'
+  hill_giant_json = {"converted_mana_cost":4,"supertypes":[],"types":["Creature"],"subtypes":["Giant"],"rulings":[],"name":"Hill Giant","mana_cost":"{3}{R}","power":3,"toughness":3,"versions":{"205":{"expansion":"Limited Edition Alpha","rarity":"Common"},"500":{"expansion":"Limited Edition Beta","rarity":"Common"},"802":{"expansion":"Unlimited Edition","rarity":"Common"},"1299":{"expansion":"Revised Edition","rarity":"Common"},"2284":{"expansion":"Fourth Edition","rarity":"Common"},"4060":{"expansion":"Fifth Edition","rarity":"Common"},"4344":{"expansion":"Portal","rarity":"Common"},"25680":{"expansion":"Seventh Edition","rarity":"Common"},"45348":{"expansion":"Eighth Edition","rarity":"Common"},"83120":{"expansion":"Ninth Edition","rarity":"Common"},"129591":{"expansion":"Tenth Edition","rarity":"Common"}},"community_rating":{"rating":1.987,"votes":75},"languages":{"ja":{"name":"丘巨人","ids":[148158]},"it":{"name":"Gigante delle Colline","ids":[148924]},"es":{"name":"Gigante de las colinas","ids":[150528]},"zh-TW":{"name":"山丘巨人","ids":[147775]},"pt-BR":{"name":"Gigante da Colina","ids":[149762]},"ru":{"name":"Гигант с Холмов","ids":[149379]},"de":{"name":"Hügelriese","ids":[148541]},"zh-CN":{"name":"山丘巨人","ids":[151440]},"fr":{"name":"Géant des collines","ids":[150145]}},"legality":{"Modern":"Legal","Legacy":"Legal","Vintage":"Legal","Freeform":"Legal","Prismatic":"Legal","Tribal Wars Legacy":"Legal","Classic":"Legal","Singleton 100":"Legal","Commander":"Legal"}}
+  hill_giant_version_205_json = {"converted_mana_cost":4,"supertypes":[],"types":["Creature"],"subtypes":["Giant"],"rulings":[],"name":"Hill Giant","mana_cost":"{3}{R}","flavor_text":"Fortunately, Hill Giants have large blind spots in which a human can easily hide. Unfortunately, these blind spots are beneath the bottoms of their feet.","power":3,"toughness":3,"expansion":"Limited Edition Alpha","rarity":"Common","versions":{"205":{"expansion":"Limited Edition Alpha","rarity":"Common"},"500":{"expansion":"Limited Edition Beta","rarity":"Common"},"802":{"expansion":"Unlimited Edition","rarity":"Common"},"1299":{"expansion":"Revised Edition","rarity":"Common"},"2284":{"expansion":"Fourth Edition","rarity":"Common"},"4060":{"expansion":"Fifth Edition","rarity":"Common"},"4344":{"expansion":"Portal","rarity":"Common"},"25680":{"expansion":"Seventh Edition","rarity":"Common"},"45348":{"expansion":"Eighth Edition","rarity":"Common"},"83120":{"expansion":"Ninth Edition","rarity":"Common"},"129591":{"expansion":"Tenth Edition","rarity":"Common"}},"artist":"Dan Frazier","community_rating":{"rating":2.338,"votes":34},"languages":{},"legality":{"Modern":"Legal","Legacy":"Legal","Vintage":"Legal","Freeform":"Legal","Prismatic":"Legal","Tribal Wars Legacy":"Legal","Classic":"Legal","Singleton 100":"Legal","Commander":"Legal"}}
+
+  it 'defaults to a search by name with summary output',
+    commandLine 'card "Hill Giant"', hill_giant_summary
+  it 'defaults to a search with an integer as a search by id with summary output',
+    commandLine 'card 205', hill_giant_summary
+  it 'defaults to a search by name but specifies a json output',
+     commandLineJson 'card "Hill Giant" --format json', hill_giant_json
+  it 'defaults to a search with an integer as a search by id that can still specify json output',
+     commandLineJson 'card 205 --format json', hill_giant_version_205_json
+  it 'can specify a search by id and defaults to summary output',
+     commandLine 'card --id 205', hill_giant_summary
+  it 'can specify a search by id that can still specify json output',
+     commandLineJson 'card --id 205 --format json', hill_giant_version_205_json
+  it 'can specify a search by name and defaults to summary output',
+    commandLine 'card --name "Hill Giant"', hill_giant_summary
+  it 'can specify a search by id that can still specify json output',
+   commandLineJson 'card --name "Hill Giant" --format json', hill_giant_json
+
+  it 'can handle a bad name',
+   invalidCommandLine 'card --name Hill Giant'
+  it 'can handle people specifying name but pass a number',
+    invalidCommandLine 'card --name 205'
+  it 'can handle people specifying id but passing a name',
+    invalidCommandLine 'card --id "Hill Giant"'
+  it 'can handle people specifying id and name',
+    invalidCommandLine 'card --id --name "Hill Giant"'
+  it 'can handle people not specifying a card',
+    invalidCommandLine 'card'
+  it 'can handle people not specifying anything',
+    commandLine '', ''
+
+  homelands_p1_c1_summary = "Abbey Gargoyles {2}{W}{W}{W} 3/4 Flying, protection from red"
+  homelands_p2_c1_summary = "Carapace {G} Enchant creature  Enchanted creature gets +0/+2.  Sacrifice Carapace: Regenerate enchanted creature."
+
+  it 'can print a set with a default page 1',
+    commandLine 'set Homelands', homelands_p1_c1_summary, true
+  it 'can print a set with a specified page 1',
+    commandLine 'set Homelands --page 1', homelands_p1_c1_summary, true
+  it 'can print a set with a specified page 1 via short option',
+     commandLine 'set Homelands -p 1', homelands_p1_c1_summary, true
+  it 'can print a set with a specified page 2',
+     commandLine 'set Homelands --page 2', homelands_p2_c1_summary, true
+  it 'can print a set with a specified page 2 via short option',
+     commandLine 'set Homelands -p 2', homelands_p2_c1_summary, true

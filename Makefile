@@ -1,4 +1,4 @@
-.PHONY: all clean fixtures setup test
+.PHONY: all clean fixtures release setup test
 
 bin = node_modules/.bin
 
@@ -6,11 +6,9 @@ all: $(shell find src/*.coffee src/**/*.coffee | sed -e 's/^src/lib/' -e 's/coff
 
 fixtures: test/fixtures/index.html $(shell find test/fixtures/**/* -regex '[^.]*' -exec echo {}.html \;)
 
-lib/gatherer:
-	@mkdir -p $@
-
-lib/%.js: src/%.coffee lib/gatherer
-	@cat $< | $(bin)/coffee --stdio --print > $@
+lib/%.js: src/%.coffee
+	@mkdir -p $(@D)
+	@cat $< | $(bin)/coffee --compile --stdio > $@
 
 test/fixtures/%.html: test/fixtures/%
 	@curl "$(shell cat $<)" --output $@ --silent
@@ -20,8 +18,23 @@ clean:
 	@rm -rf test/fixtures
 	@git checkout -- lib test/fixtures
 
+release:
+ifndef VERSION
+	$(error VERSION not set)
+endif
+	@rm -rf lib
+	@make
+	@sed -i '' 's/"version": "[^"]*"/"version": "$(VERSION)"/' package.json
+	@git commit --all --message $(VERSION)
+	@git tag $(VERSION)
+	@echo 'remember to run `npm publish`'
+
 setup:
 	@npm install
 
 test:
 	@$(bin)/mocha --compilers coffee:coffee-script test/tutor.coffee
+testcore:
+	@$(bin)/mocha --compilers coffee:coffee-script test/tutor.coffee --grep "tutor\.command_line" --invert
+testcli:
+	@$(bin)/mocha --compilers coffee:coffee-script test/tutor.coffee --grep "tutor\.command_line"

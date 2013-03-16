@@ -18,8 +18,12 @@ printCard = (card) ->
   console.log output
   return
 
+printFullCard = (card) ->
+  console.log JSON.stringify(card)
+
 printSet = (set) ->
   printCard card for card in set.cards
 
-exports.card = withCaution(printCard)
+exports.cardSummary = withCaution(printCard)
 exports.set  = withCaution(printSet)
+exports.cardJson = withCaution(printFullCard)

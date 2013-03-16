@@ -114,7 +114,7 @@ extract = (html, details) ->
       when 'Rarity:'
         set 'rarity', t1 this if verbose
 
-      when 'Card #:'
+      when 'Card Number:'
         set 'number', gatherer._to_stat t1 this if verbose
 
       when 'Artist:'
@@ -124,17 +124,22 @@ extract = (html, details) ->
         set 'versions', gatherer._get_versions @next().find('img')
 
   [rating, votes] =
-    ///^Rating:(\d(?:[.]\d+)?)/5[(](\d+)votes?[)]$///
+    ///^Community Rating:(\d(?:[.]\d+)?)/5[(](\d+)votes?[)]$///
     .exec($('.textRating').text().replace(/\s+/g, ''))[1..]
   set 'community_rating', rating: +rating, votes: +votes
 
   card
 
-module.exports.url = (path, {id, name}) ->
-  "http://gatherer.wizards.com/Pages/Card/#{path}" +
-  if id? and name?
+module.exports.url = (path, rest...) ->
+  params = {}
+  params[k] = v for k, v of o for o in rest
+  {id, name, page} = params
+  url = "http://gatherer.wizards.com/Pages/Card/#{path}"
+  url += if id? and name?
     "?multiverseid=#{id}&part=#{encodeURIComponent name}"
   else if id?
     "?multiverseid=#{id}"
   else
     "?name=#{encodeURIComponent name}"
+  url += "&page=#{page - 1}" if page > 1
+  url
