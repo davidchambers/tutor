@@ -77,6 +77,12 @@ commandLine = (args, expected, firstLineOnly) -> (done) ->
     assert.equal exec_sync.stdout(command), expected
   done()
 
+commandLineJson = (args, expected) -> (done) ->
+  command = './bin/tutor ' + args
+  actual = JSON.parse exec_sync.stdout(command)
+  assert.deepEqual actual, expected
+  done()
+
 invalidCommandLine = (args) -> (done) ->
   command = './bin/tutor ' + args
   assert.notEqual exec_sync.code(command), 0
@@ -410,25 +416,25 @@ describe 'tutor.card', ->
 describe "tutor.command", ->
 
   hill_giant_summary = 'Hill Giant {3}{R} 3/3\n'
-  hill_giant_json = '{"converted_mana_cost":4,"supertypes":[],"types":["Creature"],"subtypes":["Giant"],"rulings":[],"name":"Hill Giant","mana_cost":"{3}{R}","power":3,"toughness":3,"versions":{"205":{"expansion":"Limited Edition Alpha","rarity":"Common"},"500":{"expansion":"Limited Edition Beta","rarity":"Common"},"802":{"expansion":"Unlimited Edition","rarity":"Common"},"1299":{"expansion":"Revised Edition","rarity":"Common"},"2284":{"expansion":"Fourth Edition","rarity":"Common"},"4060":{"expansion":"Fifth Edition","rarity":"Common"},"4344":{"expansion":"Portal","rarity":"Common"},"25680":{"expansion":"Seventh Edition","rarity":"Common"},"45348":{"expansion":"Eighth Edition","rarity":"Common"},"83120":{"expansion":"Ninth Edition","rarity":"Common"},"129591":{"expansion":"Tenth Edition","rarity":"Common"}},"community_rating":{"rating":1.987,"votes":75},"languages":{"ja":{"id":148158,"name":"丘巨人"},"it":{"id":148924,"name":"Gigante delle Colline"},"es":{"id":150528,"name":"Gigante de las colinas"},"zh-TW":{"id":147775,"name":"山丘巨人"},"pt-BR":{"id":149762,"name":"Gigante da Colina"},"ru":{"id":149379,"name":"Гигант с Холмов"},"de":{"id":148541,"name":"Hügelriese"},"zh-CN":{"id":151440,"name":"山丘巨人"},"fr":{"id":150145,"name":"Géant des collines"}},"legality":{"Modern":"Legal","Legacy":"Legal","Vintage":"Legal","Freeform":"Legal","Prismatic":"Legal","Tribal Wars Legacy":"Legal","Classic":"Legal","Singleton 100":"Legal","Commander":"Legal"}}\n'
-  hill_giant_version_205_json = '{"converted_mana_cost":4,"supertypes":[],"types":["Creature"],"subtypes":["Giant"],"rulings":[],"name":"Hill Giant","mana_cost":"{3}{R}","flavor_text":"Fortunately, Hill Giants have large blind spots in which a human can easily hide. Unfortunately, these blind spots are beneath the bottoms of their feet.","power":3,"toughness":3,"expansion":"Limited Edition Alpha","rarity":"Common","versions":{"205":{"expansion":"Limited Edition Alpha","rarity":"Common"},"500":{"expansion":"Limited Edition Beta","rarity":"Common"},"802":{"expansion":"Unlimited Edition","rarity":"Common"},"1299":{"expansion":"Revised Edition","rarity":"Common"},"2284":{"expansion":"Fourth Edition","rarity":"Common"},"4060":{"expansion":"Fifth Edition","rarity":"Common"},"4344":{"expansion":"Portal","rarity":"Common"},"25680":{"expansion":"Seventh Edition","rarity":"Common"},"45348":{"expansion":"Eighth Edition","rarity":"Common"},"83120":{"expansion":"Ninth Edition","rarity":"Common"},"129591":{"expansion":"Tenth Edition","rarity":"Common"}},"artist":"Dan Frazier","community_rating":{"rating":2.338,"votes":34},"languages":{},"legality":{"Modern":"Legal","Legacy":"Legal","Vintage":"Legal","Freeform":"Legal","Prismatic":"Legal","Tribal Wars Legacy":"Legal","Classic":"Legal","Singleton 100":"Legal","Commander":"Legal"}}\n'
+  hill_giant_json = {"converted_mana_cost":4,"supertypes":[],"types":["Creature"],"subtypes":["Giant"],"rulings":[],"name":"Hill Giant","mana_cost":"{3}{R}","power":3,"toughness":3,"versions":{"205":{"expansion":"Limited Edition Alpha","rarity":"Common"},"500":{"expansion":"Limited Edition Beta","rarity":"Common"},"802":{"expansion":"Unlimited Edition","rarity":"Common"},"1299":{"expansion":"Revised Edition","rarity":"Common"},"2284":{"expansion":"Fourth Edition","rarity":"Common"},"4060":{"expansion":"Fifth Edition","rarity":"Common"},"4344":{"expansion":"Portal","rarity":"Common"},"25680":{"expansion":"Seventh Edition","rarity":"Common"},"45348":{"expansion":"Eighth Edition","rarity":"Common"},"83120":{"expansion":"Ninth Edition","rarity":"Common"},"129591":{"expansion":"Tenth Edition","rarity":"Common"}},"community_rating":{"rating":1.987,"votes":75},"languages":{"ja":{"name":"丘巨人","ids":[148158]},"it":{"name":"Gigante delle Colline","ids":[148924]},"es":{"name":"Gigante de las colinas","ids":[150528]},"zh-TW":{"name":"山丘巨人","ids":[147775]},"pt-BR":{"name":"Gigante da Colina","ids":[149762]},"ru":{"name":"Гигант с Холмов","ids":[149379]},"de":{"name":"Hügelriese","ids":[148541]},"zh-CN":{"name":"山丘巨人","ids":[151440]},"fr":{"name":"Géant des collines","ids":[150145]}},"legality":{"Modern":"Legal","Legacy":"Legal","Vintage":"Legal","Freeform":"Legal","Prismatic":"Legal","Tribal Wars Legacy":"Legal","Classic":"Legal","Singleton 100":"Legal","Commander":"Legal"}}
+  hill_giant_version_205_json = {"converted_mana_cost":4,"supertypes":[],"types":["Creature"],"subtypes":["Giant"],"rulings":[],"name":"Hill Giant","mana_cost":"{3}{R}","flavor_text":"Fortunately, Hill Giants have large blind spots in which a human can easily hide. Unfortunately, these blind spots are beneath the bottoms of their feet.","power":3,"toughness":3,"expansion":"Limited Edition Alpha","rarity":"Common","versions":{"205":{"expansion":"Limited Edition Alpha","rarity":"Common"},"500":{"expansion":"Limited Edition Beta","rarity":"Common"},"802":{"expansion":"Unlimited Edition","rarity":"Common"},"1299":{"expansion":"Revised Edition","rarity":"Common"},"2284":{"expansion":"Fourth Edition","rarity":"Common"},"4060":{"expansion":"Fifth Edition","rarity":"Common"},"4344":{"expansion":"Portal","rarity":"Common"},"25680":{"expansion":"Seventh Edition","rarity":"Common"},"45348":{"expansion":"Eighth Edition","rarity":"Common"},"83120":{"expansion":"Ninth Edition","rarity":"Common"},"129591":{"expansion":"Tenth Edition","rarity":"Common"}},"artist":"Dan Frazier","community_rating":{"rating":2.338,"votes":34},"languages":{},"legality":{"Modern":"Legal","Legacy":"Legal","Vintage":"Legal","Freeform":"Legal","Prismatic":"Legal","Tribal Wars Legacy":"Legal","Classic":"Legal","Singleton 100":"Legal","Commander":"Legal"}}
 
   it 'defaults to a search by name with summary output',
     commandLine 'card "Hill Giant"', hill_giant_summary
   it 'defaults to a search with an integer as a search by id with summary output',
     commandLine 'card 205', hill_giant_summary
   it 'defaults to a search by name but specifies a json output',
-    commandLine 'card "Hill Giant" --format json', hill_giant_json
+     commandLineJson 'card "Hill Giant" --format json', hill_giant_json
   it 'defaults to a search with an integer as a search by id that can still specify json output',
-    commandLine 'card 205 --format json', hill_giant_version_205_json
+     commandLineJson 'card 205 --format json', hill_giant_version_205_json
   it 'can specify a search by id and defaults to summary output',
      commandLine 'card --id 205', hill_giant_summary
   it 'can specify a search by id that can still specify json output',
-    commandLine 'card --id 205 --format json', hill_giant_version_205_json
+     commandLineJson 'card --id 205 --format json', hill_giant_version_205_json
   it 'can specify a search by name and defaults to summary output',
     commandLine 'card --name "Hill Giant"', hill_giant_summary
   it 'can specify a search by id that can still specify json output',
-   commandLine 'card --name "Hill Giant" --format json', hill_giant_json
+   commandLineJson 'card --name "Hill Giant" --format json', hill_giant_json
 
   it 'can handle a bad name',
    invalidCommandLine 'card --name Hill Giant'
