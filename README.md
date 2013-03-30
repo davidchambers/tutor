@@ -7,34 +7,6 @@ difficult.
 
 Tutor is a simple JavaScript interface for Gatherer.
 
-### CLI
-
-Installing the package with the `-g` option gives you access to the `tutor` command.
-
-```bash
-$ tutor -h
-
-  Usage: tutor.js [options] [command]
-
-  Commands:
-
-    card <name>            prints the information for a named card
-    set [options] <name>   prints the information for the first page of the named set
-
-  Options:
-
-    -h, --help     output usage information
-    -V, --version  output the version number
-
-$ tutor card 'Demonic Tutor'
-Demonic Tutor {1}{B}  Search your library for a card and put that card into your hand. Then shuffle your library.
-
-$ tutor set 'Homelands' --page 3                                                                                                                                  
-Forget  {U}{U}  Target player discards two cards, then draws as many cards as he or she discarded this way.
-Funeral March   {1}{B}{B}   Enchant creature  When enchanted creature leaves the battlefield, its controller sacrifices a creature.
-[etc]
-```
-
 ### API
 
   - [tutor.card](#tutorcard)
@@ -233,6 +205,32 @@ tutor.types (err, types) ->
   #   "World"
   # ]
 ```
+
+### CLI
+
+`npm install tutor --global` will make the `tutor` command available globally.
+
+    $ tutor --help
+
+      Usage: tutor [options] [command]
+
+      Commands:
+
+        card <name>            output the named card's details
+        set [options] <name>   output one page of cards from the named set
+
+      Options:
+
+        -h, --help     output usage information
+        -V, --version  output the version number
+
+    $ tutor card 'Demonic Tutor'
+    Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
+
+    $ tutor set 'Homelands' --page 3
+    Forget {U}{U} Target player discards two cards, then draws as many cards as he or she discarded this way.
+    Funeral March {1}{B}{B} Enchant creature When enchanted creature leaves the battlefield, its controller sacrifices a creature.
+    ...
 
 ### Running the tests
 
