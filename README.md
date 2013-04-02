@@ -216,7 +216,7 @@ tutor.types (err, types) ->
 
       Commands:
 
-        card <name>            output the named card's details
+        card [options] <name|id> output the given card's details
         set [options] <name>   output one page of cards from the named set
 
       Options:
@@ -224,10 +224,64 @@ tutor.types (err, types) ->
         -h, --help     output usage information
         -V, --version  output the version number
 
+    $ tutor card --help
+
+      Usage: card [options] <name|id>
+
+      Options:
+
+        -h, --help                output usage information
+        -f, --format [formatter]  Use this output format. Options are: summary (default), json
+
+    $ tutor set --help
+
+      Usage: set [options] <name>
+
+      Options:
+
+        -h, --help           output usage information
+        -p, --page [number]  specify page number
+
     $ tutor card 'Demonic Tutor'
     Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
 
-    $ tutor set 'Homelands' --page 3
+    $ tutor card --name 'Demonic Tutor'
+    Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
+
+    $ tutor card 60
+    Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
+
+    $ tutor card --id 60
+    Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
+
+    $ tutor card 'Demonic Tutor' --format json
+    tutor card 'Demonic Tutor' --format json | python -mjson.tool | head -n 10
+    {
+        "community_rating": {
+            "rating": 4.714,
+            "votes": 229
+        },
+        "converted_mana_cost": 2,
+        "languages": {},
+        "legality": {
+            "Commander": "Legal",
+            "Legacy": "Banned",
+
+
+    $ tutor 60 --format json | python -mjson.tool | head -n 10
+    {
+        "artist": "Douglas Schuler",
+        "community_rating": {
+            "rating": 4.917,
+            "votes": 109
+        },
+        "converted_mana_cost": 2,
+        "expansion": "Limited Edition Alpha",
+        "languages": {},
+        "legality": {
+
+
+    $ tutor card set 'Homelands' --page 3
     Forget {U}{U} Target player discards two cards, then draws as many cards as he or she discarded this way.
     Funeral March {1}{B}{B} Enchant creature When enchanted creature leaves the battlefield, its controller sacrifices a creature.
     ...

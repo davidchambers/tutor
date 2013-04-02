@@ -21,10 +21,16 @@ program = require 'commander'
 program.version require('../package').version
 
 program
-  .command('card <name>')
-  .description("output the named card's details")
-  .action (name) ->
-    tutor.card {name}, formatters.card
+  .command('card <name|id>')
+  .description("output the given card's details")
+  .option('-f, --format [formatter]', 'Use this output format. Options are: summary (default), json', 'summary')
+  .action (name, options) ->
+
+    if /^\d+$/.test(name)
+      id = name
+      tutor.card {id}, formatters.card[options.format]
+    else
+      tutor.card {name}, formatters.card[options.format]
 
 program
   .command('set <name>')

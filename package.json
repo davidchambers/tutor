@@ -18,6 +18,10 @@
     "name": "Pablo Castellazzi",
     "email": "pablo.castellazzi@gmail.com",
     "web": "https://bitbucket.org/pcastellazzi"
+  }, {
+    "name": "Rob Dennis",
+    "email": "rdennis@gmail.com",
+    "web": "https://github.com/rdennis463"
   }],
   "main": "./lib/tutor",
   "bin": { "tutor" : "./bin/tutor" },

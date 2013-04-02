@@ -1,4 +1,4 @@
-.PHONY: all clean fixtures release setup test
+.PHONY: all clean fixtures release setup test testcli testcore
 
 bin = node_modules/.bin
 
@@ -33,4 +33,8 @@ setup:
 	@npm install
 
 test:
-	@$(bin)/mocha --compilers coffee:coffee-script test/tutor.coffee
+	@$(bin)/mocha --compilers coffee:coffee-script test/tutor.coffee --timeout 10000
+testcore:
+	@$(bin)/mocha --compilers coffee:coffee-script test/tutor.coffee --grep "tutor\.command" --invert
+testcli:
+	@$(bin)/mocha --compilers coffee:coffee-script test/tutor.coffee --timeout 10000 --grep "tutor\.command"
