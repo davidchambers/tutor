@@ -17,29 +17,20 @@ epipeFilter = (err) ->
 process.stdout.on 'error', epipeFilter
 
 program = require 'commander'
-assert = require 'assert'
 
 program.version require('../package').version
 
 program
   .command('card <name|id>')
-  .description('prints the information for a card based on name or id (if provided an integer number, id is assumed)')
+  .description("output the given card's details")
   .option('-f, --format [formatter]', 'Use this output format. Options are: summary (default), json', 'summary')
-  .option('--id', 'if set, interpret argument as the gatherer id', false)
-  .option('--name', 'if set, interpret argument as the card name', false)
   .action (name, options) ->
-    formatMap =
-      summary: formatters.cardSummary
-      json: formatters.cardJson
 
-    if options.id and options.name
-      throw "don't specify that we should search by both name AND id"
-
-    if options.id or (not options.name and /^\d+$/.test(name))
+    if /^\d+$/.test(name)
       id = name
-      tutor.card {id}, formatMap[options.format]
+      tutor.card {id}, formatters.card[options.format]
     else
-      tutor.card {name}, formatMap[options.format]
+      tutor.card {name}, formatters.card[options.format]
 
 program
   .command('set <name>')

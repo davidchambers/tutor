@@ -19,6 +19,7 @@ printFullCard = (card) ->
 printSet = (set) ->
   printCard card for card in set.cards
 
-exports.cardSummary = withCaution printCard
-exports.set         = withCaution printSet
-exports.cardJson    = withCaution printFullCard
+exports.set  = withCaution printSet
+exports.card =
+  summary: withCaution printCard
+  json: withCaution printFullCard

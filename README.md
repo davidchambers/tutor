@@ -257,12 +257,33 @@ tutor.types (err, types) ->
     Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
 
     $ tutor card 'Demonic Tutor' --format json
-    {"converted_mana_cost":2,"supertypes":[],"types":["Sorcery"],"subtypes":[],"rulings":[["2004-10-04","You pick a card on resolution."],["2004-10-04","You do not show the card you pick out of your library to your opponent."],["2004-10-04","This is not a draw."]],"name":"Demonic Tutor","mana_cost":"{1}{B}","text":"Search your library for a card and put that card into your hand. Then shuffle your library.","versions":{"60":{"expansion":"Limited Edition Alpha","rarity":"Uncommon"},"355":{"expansion":"Limited Edition Beta","rarity":"Uncommon"},"657":{"expansion":"Unlimited Edition","rarity":"Uncommon"},"1155":{"expansion":"Revised Edition","rarity":"Uncommon"},"193867":{"expansion":"Duel Decks: Divine vs. Demonic","rarity":"Uncommon"},"202628":{"expansion":"Masters Edition IV","rarity":"Rare"}},"community_rating":{"rating":4.713,"votes":225},"languages":{},"legality":{"Legacy":"Banned","Vintage":"Restricted","Commander":"Legal"}}
+    tutor card 'Demonic Tutor' --format json | python -mjson.tool | head -n 10
+    {
+        "community_rating": {
+            "rating": 4.714,
+            "votes": 229
+        },
+        "converted_mana_cost": 2,
+        "languages": {},
+        "legality": {
+            "Commander": "Legal",
+            "Legacy": "Banned",
 
-    $ tutor 60 --format json
-    {"converted_mana_cost":2,"supertypes":[],"types":["Sorcery"],"subtypes":[],"rulings":[["2004-10-04","You pick a card on resolution."],["2004-10-04","You do not show the card you pick out of your library to your opponent."],["2004-10-04","This is not a draw."]],"name":"Demonic Tutor","mana_cost":"{1}{B}","text":"Search your library for a card and put that card into your hand. Then shuffle your library.","expansion":"Limited Edition Alpha","rarity":"Uncommon","versions":{"60":{"expansion":"Limited Edition Alpha","rarity":"Uncommon"},"355":{"expansion":"Limited Edition Beta","rarity":"Uncommon"},"657":{"expansion":"Unlimited Edition","rarity":"Uncommon"},"1155":{"expansion":"Revised Edition","rarity":"Uncommon"},"193867":{"expansion":"Duel Decks: Divine vs. Demonic","rarity":"Uncommon"},"202628":{"expansion":"Masters Edition IV","rarity":"Rare"}},"artist":"Douglas Schuler","community_rating":{"rating":4.917,"votes":109},"languages":{},"legality":{"Legacy":"Banned","Vintage":"Restricted","Commander":"Legal"}}
 
-    $ tutor set 'Homelands' --page 3
+    $ tutor 60 --format json | python -mjson.tool | head -n 10
+    {
+        "artist": "Douglas Schuler",
+        "community_rating": {
+            "rating": 4.917,
+            "votes": 109
+        },
+        "converted_mana_cost": 2,
+        "expansion": "Limited Edition Alpha",
+        "languages": {},
+        "legality": {
+
+
+    $ tutor card set 'Homelands' --page 3
     Forget {U}{U} Target player discards two cards, then draws as many cards as he or she discarded this way.
     Funeral March {1}{B}{B} Enchant creature When enchanted creature leaves the battlefield, its controller sacrifices a creature.
     ...
