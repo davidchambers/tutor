@@ -232,8 +232,6 @@ tutor.types (err, types) ->
 
         -h, --help                output usage information
         -f, --format [formatter]  Use this output format. Options are: summary (default), json
-        --id                      if set, interpret argument as the gatherer id
-        --name                    if set, interpret argument as the card name
 
     $ tutor set --help
 
