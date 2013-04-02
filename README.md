@@ -216,7 +216,7 @@ tutor.types (err, types) ->
 
       Commands:
 
-        card [options] <name|id> prints the information for a card based on name or id (if provided an integer number, id is assumed)
+        card [options] <name|id> output the given card's details
         set [options] <name>   output one page of cards from the named set
 
       Options:
