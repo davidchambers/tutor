@@ -1,6 +1,6 @@
 {
   "name": "tutor",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Interface for Gatherer, the Magic: The Gathering card database",
   "repository": {
     "type": "git",
