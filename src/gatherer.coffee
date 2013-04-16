@@ -36,8 +36,9 @@ to_symbol = (alt) ->
   m and "#{to_symbol m[1]}/#{to_symbol m[2]}" or symbols[alt] or alt
 
 gatherer._get_text = (node) ->
-  node.find('img').each -> @replaceWith "{#{to_symbol @attr 'alt'}}"
-  node.text().trim()
+  clone = node.clone()
+  clone.find('img').each -> @replaceWith "{#{to_symbol @attr 'alt'}}"
+  clone.text().trim()
 
 identity = (value) -> value
 gatherer._get_rules_text = (node, get_text) ->

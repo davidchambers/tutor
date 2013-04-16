@@ -294,6 +294,12 @@ describe 'tutor.card', ->
         expansion: 'Magic 2011'
         rarity: 'Mythic Rare'
 
+  it 'extracts version from card with exactly one version', #51
+    card 'Cheap Ass', versions:
+      74220:
+        expansion: 'Unhinged'
+        rarity: 'Common'
+
   it 'extracts community rating',
     card 'Ajani Goldmane', (err, card) ->
       {rating, votes} = card.community_rating

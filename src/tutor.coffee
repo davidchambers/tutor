@@ -15,17 +15,18 @@ tutor.card = (details, callback) ->
     when 'number' then details = id: details
     when 'string' then details = name: details
 
-  card = languages = legality = null
+  card = languages = legality = versions = null
   get = (fn) -> (err, data) ->
     fn data
     if err
       callback err
       callback = ->
-    else if card? and languages? and legality?
+    else if card? and languages? and legality? and versions?
       card.languages = languages
       card.legality = legality
+      card.versions = versions
       callback null, card
 
   gatherer.card details, get (data) -> card = data
   gatherer.languages details, get (data) -> languages = data
-  gatherer.printings details, get (data) -> {legality} = data
+  gatherer.printings details, get (data) -> {legality, versions} = data
