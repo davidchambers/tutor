@@ -121,21 +121,15 @@ tutor.card 'Werewolf Ransacker', (err, card) ->
 
 ### tutor.set
 
-    tutor.set({name, page = 1}, callback(err, set))
+    tutor.set(name, callback(err, set))
 
-Scrape card details from the specified `page` of the set specified by `name`.
-The callback is passed an object with `page`, `pages`, and `cards` properties.
-For example:
+Scrape cards from the set specified by `name`. For example:
 
 ```coffeescript
-tutor.set name: 'Homelands', page: 2, (err, set) ->
-  console.log set.page
-  # => 2
-  console.log set.pages
-  # => 5
-  console.log set.cards.length
-  # => 25
-  console.log Object.keys(set.cards[0]).sort()
+tutor.set 'Homelands', (err, cards) ->
+  console.log cards.length
+  # => 115
+  console.log Object.keys(cards[0]).sort()
   # => [
   #   "converted_mana_cost",
   #   "expansion",
@@ -143,10 +137,12 @@ tutor.set name: 'Homelands', page: 2, (err, set) ->
   #   "image_url",
   #   "mana_cost",
   #   "name",
+  #   "power",
   #   "rarity",
   #   "subtypes",
   #   "supertypes",
   #   "text",
+  #   "toughness",
   #   "types",
   #   "versions"
   # ]
@@ -237,9 +233,9 @@ tutor.types (err, types) ->
         "languages": {},
         "legality": {
 
-    $ tutor set 'Homelands' --page 3 | head -n 2
-    Forget {U}{U} Target player discards two cards, then draws as many cards as he or she discarded this way.
-    Funeral March {1}{B}{B} Enchant creature When enchanted creature leaves the battlefield, its controller sacrifices a creature.
+    $ tutor set Alliances | head -n 2
+    Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block.
+    Agent of Stromgald {R} 1/1 {R}: Add {B} to your mana pool.
 
 ### Running the tests
 

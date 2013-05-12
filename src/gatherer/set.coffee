@@ -1,86 +1,112 @@
 gatherer    = require '../gatherer'
 load        = require '../load'
-pagination  = require '../pagination'
 request     = require '../request'
 supertypes  = require '../supertypes'
 
 
-module.exports = ({name, page}, callback) ->
-  page ?= 1
-  unless page > 0
-    callback new Error 'invalid page number'
-    return
-  url = 'http://gatherer.wizards.com/Pages/Search/Default.aspx'
-  url += "?set=[%22#{encodeURIComponent name}%22]&page=#{page - 1}"
+module.exports = (name, callback) ->
+  url = 'http://gatherer.wizards.com/Pages/Search/Default.aspx' +
+        "?output=spoiler&special=true&set=[%22#{encodeURIComponent name}%22]"
   request {url}, (err, res, body) ->
     return callback err if err?
     return callback new Error 'unexpected status code' unless res.statusCode is 200
-    try set = extract body catch err then return callback err
+    try set = extract body, name catch err then return callback err
     callback null, set
   return
 
-extract = (html) ->
+extract = (html, name) ->
 
   $ = load html
   t = (el) -> gatherer._get_text $ el
 
-  {selected, max} = pagination $ \
-    '#ctl00_ctl00_ctl00_MainContent_SubContent_topPagingControlsContainer'
+  cards = []
+  card = null
 
-  set = page: selected, pages: max, cards: []
+  $('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_searchResultsContainer')
+  .find('tr').each ->
+    [first, second] = @children()
+    key = t first
+    val = t second
+    return unless val
+    switch key
+      when 'Name'
+        cards.push card unless card is null
+        origin = 'http://gatherer.wizards.com'
+        [param] = /multiverseid=\d+/.exec $(second).find('a').attr('href')
+        card =
+          name: val
+          converted_mana_cost: 0
+          supertypes: []
+          types: []
+          subtypes: []
+          expansion: name
+          gatherer_url: "#{origin}/Pages/Card/Details.aspx?#{param}"
+          image_url: "#{origin}/Handlers/Image.ashx?#{param}&type=card"
+      when 'Cost:'
+        card.converted_mana_cost = to_converted_mana_cost card.mana_cost = val
+          .replace(/[^(/)](?![/)])/g, '($&)') # 1(G/W)(G/W) -> (1)(G/W)(G/W)
+          .replace(/[(]/g, '{')
+          .replace(/[)]/g, '}')
+      when 'Type:'
+        [types, subtypes] = /^([^\u2014]+?)(?:\s+\u2014\s+(.+))?$/.exec(val)[1..]
+        for type in types.split(/\s+/)
+          card[if type in supertypes then 'supertypes' else 'types'].push type
+        if subtypes
+          card.subtypes = subtypes.split(/\s+/)
+      when 'Rules Text:'
+        # Though "{" precedes each of consecutive hybrid mana symbols
+        # in rules text, only the last is followed by "}". For example:
+        #
+        #   {(r/w){(r/w){(r/w)}
+        card.text = val
+          .replace(/\n/g, '\n\n')
+          .replace(/(?:[{][(][2WUBRG][/][WUBRG][)])+[}]/gi, (match) -> match
+            .replace(/[{][(]/g, '{')
+            .replace(/[)][}]?/g, '}')
+            .toUpperCase())
+      when 'Color:'
+        card.color_indicator = val
+      when 'Pow/Tgh:'
+        pattern = ///^
+          [(]
+          ([^/]*(?:[{][^}]+[}])?) # power
+          /
+          ([^/]*(?:[{][^}]+[}])?) # toughness
+          [)]
+        $///
+        [power, toughness] = pattern.exec(val)[1..]
+        card.power = gatherer._to_stat power
+        card.toughness = gatherer._to_stat toughness
+      when 'Loyalty:'
+        card.loyalty = +/\d+/.exec(val)[0]
+      when 'Hand/Life:'
+        card.hand_modifier = +/Hand Modifier: ([-+]\d+)/.exec(val)[1]
+        card.life_modifier = +/Life Modifier: ([-+]\d+)/.exec(val)[1]
+      when 'Set/Rarity:'
+        card.versions = {}
+        for version in val.split(/,\s*/)
+          words = version.split(/\s+/)
+          rarity = words.pop()
+          if rarity is 'Rare' and words[words.length - 1] is 'Mythic'
+            rarity = 'Mythic Rare'
+            words.pop()
+          (card.versions[words.join(' ')] ?= []).push(rarity)
+        [card.rarity] = card.versions[name]
 
-  # Gatherer returns the last page of results for a specified page
-  # parameter beyond the upper bound.
-  match = $('#aspnetForm').attr('action').match(/page=(\d+)/)
-  unless match and ++match[1] is set.page
-    throw new Error 'page not found'
+  cards.push card
+  cards
 
-  $('.cardItem').each ->
-    set.cards.push card =
-      converted_mana_cost: 0
-      supertypes: []
-      types: []
-      subtypes: []
-    @find('div, span').each ->
-      switch @attr 'class'
-        when 'cardTitle'
-          gatherer._set card, 'name', t this
-        when 'manaCost'
-          gatherer._set card, 'mana_cost', t this
-        when 'convertedManaCost'
-          gatherer._set card, 'converted_mana_cost', +t this
-        when 'typeLine'
-          regex = ///^
-            ([^\u2014]+?)             # types
-            (?:\s+\u2014\s+(.+?))?    # subtypes
-            (?:\s+[(](?:              # "("
-              ([^/]+(?:[{][^}]+[}])?) # power
-              \s*/\s*                 # "/"
-              ([^/]+(?:[{][^}]+[}])?) # toughness
-              |                       # or...
-              (\d+)                   # loyalty
-            )[)])?                    # ")"
-          $///
-          [types, subtypes, power, toughness, loyalty] = regex.exec(t this)[1..]
-          for type in types.split(/\s+/)
-            card[if type in supertypes then 'supertypes' else 'types'].push type
-          gatherer._set card, 'subtypes', subtypes?.split(/\s+/) or []
-          gatherer._set card, 'power', gatherer._to_stat power
-          gatherer._set card, 'toughness', gatherer._to_stat toughness
-          gatherer._set card, 'loyalty', +loyalty
 
-    gatherer._set card, 'text', gatherer._get_rules_text @find('.rulesText'), t
+converted_mana_costs =
+  '{X}': 0, '{4}': 4, '{10}': 10, '{16}': 16, '{2/W}': 2,
+  '{Y}': 0, '{5}': 5, '{11}': 11, '{17}': 17, '{2/U}': 2,
+  '{Z}': 0, '{6}': 6, '{12}': 12, '{18}': 18, '{2/B}': 2,
+  '{0}': 0, '{7}': 7, '{13}': 13, '{19}': 19, '{2/R}': 2,
+  '{2}': 2, '{8}': 8, '{14}': 14, '{20}': 20, '{2/G}': 2,
+  '{3}': 3, '{9}': 9, '{15}': 15,
 
-    href = @find('.cardTitle').find('a').attr('href')
-    [param, id] = /multiverseid=(\d+)/.exec href
-    card.gatherer_url =
-      "http://gatherer.wizards.com/Pages/Card/Details.aspx?#{param}"
-    card.image_url =
-      "http://gatherer.wizards.com/Handlers/Image.ashx?#{param}&type=card"
-
-    card.versions = gatherer._get_versions @find('.setVersions').find('img')
-    {expansion, rarity} = card.versions[id]
-    card.expansion = expansion
-    card.rarity = rarity
-
-  set
+to_converted_mana_cost = (mana_cost) ->
+  cmc = 0
+  for symbol in mana_cost.split(/(?=[{])/)
+    cmc += converted_mana_costs[symbol] ? 1
+  cmc
