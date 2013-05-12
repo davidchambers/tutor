@@ -32,8 +32,7 @@ program
   .command('set <name>')
   .description('output one page of cards from the named set')
   .option('-f, --format [formatter]', '"json" or "summary"', 'summary')
-  .option('-p, --page [number]', 'specify page number', 1)
   .action (name, options) ->
-    tutor.set {name, page: options.page}, formatters.set[options.format]
+    tutor.set name, formatters.set[options.format]
 
 module.exports = program

@@ -134,12 +134,14 @@ module.exports.url = (path, rest...) ->
   params = {}
   params[k] = v for k, v of o for o in rest
   {id, name, page} = params
-  url = "http://gatherer.wizards.com/Pages/Card/#{path}"
-  url += if id? and name?
-    "?multiverseid=#{id}&part=#{encodeURIComponent name}"
+  query = {}
+  if id? and name?
+    query.multiverseid = id
+    query.part = name
   else if id?
-    "?multiverseid=#{id}"
+    query.multiverseid = id
   else
-    "?name=#{encodeURIComponent name}"
-  url += "&page=#{page - 1}" if page > 1
-  url
+    query.name = name
+  if page > 1
+    query.page = page - 1
+  gatherer.url "/Pages/Card/#{path}", query
