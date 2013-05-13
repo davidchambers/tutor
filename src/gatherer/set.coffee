@@ -7,7 +7,8 @@ ORIGIN = 'http://gatherer.wizards.com'
 
 
 module.exports = (name, callback) ->
-  url = "#{ORIGIN}/Pages/Search/Default.aspx?output=spoiler&set=[%22#{name}%22]"
+  url = "#{ORIGIN}/Pages/Search/Default.aspx" +
+    "?output=spoiler&special=true&set=[%22#{name}%22]"
   request {url}, (err, res, body) ->
     return callback err if err?
     return callback new Error 'unexpected status code' unless res.statusCode is 200
