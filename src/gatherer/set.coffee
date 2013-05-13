@@ -3,10 +3,12 @@ load        = require '../load'
 request     = require '../request'
 supertypes  = require '../supertypes'
 
+ORIGIN = 'http://gatherer.wizards.com'
+
 
 module.exports = (name, callback) ->
-  url = 'http://gatherer.wizards.com/Pages/Search/Default.aspx' +
-        "?output=spoiler&special=true&set=[%22#{encodeURIComponent name}%22]"
+  url = "#{ORIGIN}/Pages/Search/Default.aspx" +
+    "?output=spoiler&special=true&set=[%22#{name}%22]"
   request {url}, (err, res, body) ->
     return callback err if err?
     return callback new Error 'unexpected status code' unless res.statusCode is 200
@@ -22,16 +24,14 @@ extract = (html, name) ->
   cards = []
   card = null
 
-  $('#ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_searchResultsContainer')
-  .find('tr').each ->
+  $('.textspoiler tr').each ->
     [first, second] = @children()
     key = t first
     val = t second
     return unless val
-    switch key
+    switch key.replace ':', ''
       when 'Name'
         cards.push card unless card is null
-        origin = 'http://gatherer.wizards.com'
         [param] = /multiverseid=\d+/.exec $(second).find('a').attr('href')
         card =
           name: val
@@ -40,20 +40,20 @@ extract = (html, name) ->
           types: []
           subtypes: []
           expansion: name
-          gatherer_url: "#{origin}/Pages/Card/Details.aspx?#{param}"
-          image_url: "#{origin}/Handlers/Image.ashx?#{param}&type=card"
-      when 'Cost:'
+          gatherer_url: "#{ORIGIN}/Pages/Card/Details.aspx?#{param}"
+          image_url: "#{ORIGIN}/Handlers/Image.ashx?#{param}&type=card"
+      when 'Cost'
         card.converted_mana_cost = to_converted_mana_cost card.mana_cost = val
           .replace(/[^(/)](?![/)])/g, '($&)') # 1(G/W)(G/W) -> (1)(G/W)(G/W)
           .replace(/[(]/g, '{')
           .replace(/[)]/g, '}')
-      when 'Type:'
+      when 'Type'
         [types, subtypes] = /^([^\u2014]+?)(?:\s+\u2014\s+(.+))?$/.exec(val)[1..]
         for type in types.split(/\s+/)
           card[if type in supertypes then 'supertypes' else 'types'].push type
         if subtypes
           card.subtypes = subtypes.split(/\s+/)
-      when 'Rules Text:'
+      when 'Rules Text'
         # Though "{" precedes each of consecutive hybrid mana symbols
         # in rules text, only the last is followed by "}". For example:
         #
@@ -64,9 +64,9 @@ extract = (html, name) ->
             .replace(/[{][(]/g, '{')
             .replace(/[)][}]?/g, '}')
             .toUpperCase())
-      when 'Color:'
+      when 'Color'
         card.color_indicator = val
-      when 'Pow/Tgh:'
+      when 'Pow/Tgh'
         pattern = ///^
           [(]
           ([^/]*(?:[{][^}]+[}])?) # power
@@ -77,12 +77,12 @@ extract = (html, name) ->
         [power, toughness] = pattern.exec(val)[1..]
         card.power = gatherer._to_stat power
         card.toughness = gatherer._to_stat toughness
-      when 'Loyalty:'
+      when 'Loyalty'
         card.loyalty = +/\d+/.exec(val)[0]
-      when 'Hand/Life:'
+      when 'Hand/Life'
         card.hand_modifier = +/Hand Modifier: ([-+]\d+)/.exec(val)[1]
         card.life_modifier = +/Life Modifier: ([-+]\d+)/.exec(val)[1]
-      when 'Set/Rarity:'
+      when 'Set/Rarity'
         card.versions = {}
         for version in val.split(/,\s*/)
           words = version.split(/\s+/)
