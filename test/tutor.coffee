@@ -41,7 +41,7 @@ index = (fn, test) -> (done) ->
 set = (name, test) -> (done) ->
   path = "#{__dirname}/fixtures/sets/#{toSlug name}.html"
   if fs.existsSync path
-    wizards.get('/Pages/Search/Default.aspx?output=spoiler&special=true' +
+    wizards.get('/Pages/Search/Default.aspx?output=spoiler' +
                 "&set=[%22#{encodeURIComponent name}%22]")
            .replyWithFile(200, path)
   tutor.set name, (err, cards) ->
