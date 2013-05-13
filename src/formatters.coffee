@@ -13,12 +13,13 @@ printCard = (card) ->
   output += " #{card.text.replace(/[\n\r]+/g, ' ')}" if card.text
   console.log output
 
-printSet = (set) ->
-  printCard card for card in set.cards
+printSet = (cards) ->
+  printCard card for card in cards
 
 module.exports =
   card:
     json: withCaution (card) -> console.log JSON.stringify card
     summary: withCaution printCard
   set:
+    json: withCaution (cards) -> console.log JSON.stringify cards
     summary: withCaution printSet

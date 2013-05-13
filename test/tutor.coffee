@@ -7,10 +7,9 @@ gatherer  = require '../src/gatherer'
 tutor     = require '../src/tutor'
 
 
-origin = 'http://gatherer.wizards.com'
-wizards = nock origin
+wizards = nock gatherer.origin
 card_url = (args...) ->
-  gatherer.card.url(args...).substr(origin.length)
+  gatherer.card.url(args...).substr(gatherer.origin.length)
 
 lower = (text) -> text.toLowerCase()
 upper = (text) -> text.toUpperCase()
@@ -19,6 +18,9 @@ toSlug = (value) ->
   "#{value}".toLowerCase().replace(/[ ]/g, '-').replace(/[^\w-]/g, '')
 
 __ = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
+
+eq = (expected, actual) ->
+  assert.strictEqual expected, actual
 
 nonexistent = {}
 assert_equal = (expected) -> (err, actual) ->
@@ -35,16 +37,14 @@ index = (fn, test) -> (done) ->
     test err, data
     done()
 
-set = (params, test) -> (done) ->
-  {name, page} = params
-  page ?= 1
-  path = "#{__dirname}/fixtures/sets/#{toSlug name}~#{page}.html"
+set = (name, test) -> (done) ->
+  path = "#{__dirname}/fixtures/sets/#{toSlug name}.html"
   if fs.existsSync path
-    wizards
-      .get("/Pages/Search/Default.aspx?set=[%22#{encodeURIComponent name}%22]&page=#{page - 1}")
-      .replyWithFile(200, path)
-  tutor.set params, (err, set) ->
-    (if typeof test is 'function' then test else assert_equal test) err, set
+    wizards.get('/Pages/Search/Default.aspx?output=spoiler' +
+                "&set=%5B%22#{encodeURIComponent name}%22%5D&special=true")
+           .replyWithFile(200, path)
+  tutor.set name, (err, cards) ->
+    test err, cards
     done()
 
 card = (details, test) -> (done) ->
@@ -96,74 +96,157 @@ describe 'tutor.types', ->
 
 describe 'tutor.set', ->
 
-  it 'extracts first page of set',
-    set name: 'Homelands', (err, set) ->
-      assert.strictEqual set.page, 1
-      assert.strictEqual set.pages, 5
-      assert.strictEqual set.cards.length, 25
-      [card] = set.cards
-      assert.strictEqual card.name, 'Abbey Gargoyles'
-      assert.strictEqual card.mana_cost, '{2}{W}{W}{W}'
-      assert.strictEqual card.converted_mana_cost, 5
-      assert.deepEqual   card.supertypes, []
-      assert.deepEqual   card.types, ['Creature']
-      assert.deepEqual   card.subtypes, ['Gargoyle']
-      assert.strictEqual card.power, 3
-      assert.strictEqual card.toughness, 4
-      assert.strictEqual card.text, 'Flying, protection from red'
-      assert.strictEqual card.expansion, 'Homelands'
-      assert.strictEqual card.rarity, 'Uncommon'
-      assert.strictEqual card.gatherer_url,
-        'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=3010'
-      assert.strictEqual card.image_url,
-        'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=3010&type=card'
-      assert.deepEqual   card.versions,
-        3010:
-          expansion: 'Homelands'
-          rarity: 'Uncommon'
-        4098:
-          expansion: 'Fifth Edition'
-          rarity: 'Uncommon'
-        184585:
-          expansion: 'Masters Edition II'
-          rarity: 'Uncommon'
+  it 'extracts names',
+    set 'Lorwyn', (err, cards) ->
+      eq cards[2].name, 'Ajani Goldmane'
 
-  it 'extracts second page of set',
-    set name: 'Homelands', page: 2, {page: 2}
+  it 'extracts mana costs',
+    set 'Lorwyn', (err, cards) ->
+      eq cards[2].name, 'Ajani Goldmane'
+      eq cards[2].mana_cost, '{2}{W}{W}'
 
-  it 'coerces page number',
-    set name: 'Homelands', page: '2', {page: 2}
+  it 'extracts mana costs containing hybrid mana symbols',
+    set 'Eventide', (err, cards) ->
+      eq cards[25].name, 'Crackleburr'
+      eq cards[25].mana_cost, '{1}{U/R}{U/R}'
 
-  it 'provides an invalid page number error for non-numeric page',
-    set name: 'Homelands', page: 'two', (err) ->
-      assert err instanceof Error
-      assert.strictEqual err.message, 'invalid page number'
+  it 'extracts mana costs containing Phyrexian mana symbols',
+    set 'New Phyrexia', (err, cards) ->
+      eq cards[156].name, 'Vault Skirge'
+      eq cards[156].mana_cost, '{1}{B/P}'
 
-  it 'provides a page not found error for nonexistent page',
-    set name: 'Homelands', page: 99, (err) ->
-      assert err instanceof Error
-      assert.strictEqual err.message, 'page not found'
+  it 'includes mana costs discerningly',
+    set 'Future Sight', (err, cards) ->
+      eq cards[64].name, 'Horizon Canopy'
+      eq cards[64].hasOwnProperty('mana_cost'), no
+      eq cards[111].name, 'Pact of Negation'
+      eq cards[111].hasOwnProperty('mana_cost'), yes
 
-  it 'handles single-page sets', #38
-    set name: 'From the Vault: Dragons', (err, set) ->
-      assert.strictEqual set.page, 1
-      assert.strictEqual set.pages, 1
-      assert.strictEqual set.cards.length, 15
+  it 'calculates converted mana costs',
+    set 'Shadowmoor', (err, cards) ->
+      eq cards[72].name, 'Flame Javelin'
+      eq cards[72].mana_cost, '{2/R}{2/R}{2/R}'
+      eq cards[72].converted_mana_cost, 6
+
+  it 'extracts supertypes',
+    set 'Lorwyn', (err, cards) ->
+      eq cards[56].name, 'Doran, the Siege Tower'
+      eq cards[56].supertypes.length, 1
+      eq cards[56].supertypes[0], 'Legendary'
+
+  it 'extracts types',
+    set 'Lorwyn', (err, cards) ->
+      eq cards[56].name, 'Doran, the Siege Tower'
+      eq cards[56].types.length, 1
+      eq cards[56].types[0], 'Creature'
+
+  it 'extracts subtypes',
+    set 'Lorwyn', (err, cards) ->
+      eq cards[56].name, 'Doran, the Siege Tower'
+      eq cards[56].subtypes.length, 2
+      eq cards[56].subtypes[0], 'Treefolk'
+      eq cards[56].subtypes[1], 'Shaman'
+
+  it 'extracts rules text',
+    set 'Lorwyn', (err, cards) ->
+      eq cards[175].text, __ '''
+        Flying
+
+        When Mulldrifter enters the battlefield, draw two cards.
+
+        Evoke {2}{U} (You may cast this spell for its evoke cost.
+        If you do, it's sacrificed when it enters the battlefield.)
+      '''
+
+  it 'handles consecutive hybrid mana symbols',
+    set 'Eventide', (err, cards) ->
+      eq cards[54].text, __ '''
+        {R/W}: Figure of Destiny becomes a 2/2 Kithkin Spirit.
+
+        {R/W}{R/W}{R/W}: If Figure of Destiny is a Spirit, it becomes
+        a 4/4 Kithkin Spirit Warrior.
+
+        {R/W}{R/W}{R/W}{R/W}{R/W}{R/W}: If Figure of Destiny is a
+        Warrior, it becomes an 8/8 Kithkin Spirit Warrior Avatar
+        with flying and first strike.
+      '''
+
+  it 'extracts color indicators',
+    set 'Future Sight', (err, cards) ->
+      eq cards[34].name, 'Dryad Arbor'
+      eq cards[34].color_indicator, 'Green'
+
+  it 'includes color indicators discerningly',
+    set 'Lorwyn', (err, cards) ->
+      eq card.hasOwnProperty('color_indicator'), no for card in cards
+
+  it 'extracts stats',
+    set 'Lorwyn', (err, cards) ->
+      eq cards[192].name, 'Pestermite'
+      eq cards[192].power, 2
+      eq cards[192].toughness, 1
 
   it 'handles fractional stats', #39
-    set name: 'Unhinged', (err, set) ->
-      assquatch = set.cards[6]
-      bad_ass   = set.cards[10]
-      cheap_ass = set.cards[20]
-      assert.strictEqual assquatch.power, 3.5
-      assert.strictEqual assquatch.toughness, 3.5
-      assert.strictEqual bad_ass.power, 3.5
-      assert.strictEqual bad_ass.toughness, 1
-      assert.strictEqual cheap_ass.power, 1
-      assert.strictEqual cheap_ass.toughness, 3.5
+    set 'Unhinged', (err, cards) ->
+      eq cards[10].name, 'Bad Ass'
+      eq cards[10].power, 3.5
+      eq cards[10].toughness, 1
+      eq cards[20].name, 'Cheap Ass'
+      eq cards[20].power, 1
+      eq cards[20].toughness, 3.5
+      eq cards[67].name, 'Little Girl'
+      eq cards[67].power, 0.5
+      eq cards[67].toughness, 0.5
 
-  it 'handles sets with more than ten pages', #47
-    set name: 'Limited Edition Alpha', {page: 1, pages: 12}
+  it 'handles dynamic stats',
+    set 'Future Sight', (err, cards) ->
+      eq cards[161].name, 'Tarmogoyf'
+      eq cards[161].power, '*'
+      eq cards[161].toughness, '1+*'
+
+  it 'extracts loyalties',
+    set 'Lorwyn', (err, cards) ->
+      eq cards[2].name, 'Ajani Goldmane'
+      eq cards[2].loyalty, 4
+
+  it 'includes loyalties discerningly',
+    set 'Lorwyn', (err, cards) ->
+      eq cards[192].name, 'Pestermite'
+      eq cards[192].hasOwnProperty('loyalty'), no
+
+  it 'extracts hand modifiers',
+    set 'Vanguard', (err, cards) ->
+      eq cards[16].name, 'Eladamri'
+      eq cards[16].hand_modifier, -1
+
+  it 'extracts life modifiers',
+    set 'Vanguard', (err, cards) ->
+      eq cards[16].name, 'Eladamri'
+      eq cards[16].life_modifier, 15
+
+  it 'includes expansion',
+    set 'Lorwyn', (err, cards) ->
+      eq card.expansion, 'Lorwyn' for card in cards
+
+  it 'extracts rarities',
+    set 'New Phyrexia', (err, cards) ->
+      eq cards[7].name, 'Batterskull'
+      eq cards[7].rarity, 'Mythic Rare'
+      eq cards[9].name, 'Birthing Pod'
+      eq cards[9].rarity, 'Rare'
+      eq cards[34].name, 'Dismember'
+      eq cards[34].rarity, 'Uncommon'
+      eq cards[51].name, 'Gitaxian Probe'
+      eq cards[51].rarity, 'Common'
+      eq cards[67].name, 'Island'
+      eq cards[67].rarity, 'Land'
+
+  it 'extracts versions',
+    set 'Lorwyn', (err, cards) ->
+      eq cards[2].name, 'Ajani Goldmane'
+      eq cards[2].versions['Lorwyn'], 'Rare'
+      eq cards[2].versions['Magic 2010'], 'Mythic Rare'
+      eq cards[2].versions['Magic 2011'], 'Mythic Rare'
 
 
 describe 'tutor.card', ->
@@ -413,13 +496,17 @@ $ = (command, test) -> (done) ->
 
 describe '$ tutor set', ->
 
-  it 'prints first page of set',
-    $ 'tutor set Alliances | head -n 1',
-      "Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block."
+  it 'prints summary of cards in set',
+    $ 'tutor set Alliances | head -n 2', '''
+      Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block.
+      Agent of Stromgald {R} 1/1 {R}: Add {B} to your mana pool.
+    '''
 
-  it 'prints second page of set',
-    $ 'tutor set Alliances --page 2 | head -n 1',
-      'Elvish Ranger {2}{G} 4/1'
+  it 'prints JSON representation of cards in set',
+    $ 'tutor set Alliances --format json', (err, stdout) ->
+      cards = JSON.parse stdout
+      eq cards[0].name, 'Aesthir Glider'
+      eq cards[1].name, 'Agent of Stromgald'
 
 
 describe '$ tutor card', ->

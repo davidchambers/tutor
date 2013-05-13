@@ -5,6 +5,14 @@ symbols   = require './symbols'
 
 
 gatherer = module.exports
+gatherer.origin = 'http://gatherer.wizards.com'
+gatherer.url = (pathname, query = {}) ->
+  url = "#{gatherer.origin}#{pathname}"
+  keys = Object.keys(query).sort()
+  if keys.length
+    url += "?#{("#{encodeURIComponent key}=#{encodeURIComponent query[key]}" \
+                for key in keys).join('&')}"
+  url
 
 gatherer[name] = require "./gatherer/#{name}" for name in [
   'card'
@@ -14,7 +22,7 @@ gatherer[name] = require "./gatherer/#{name}" for name in [
 ]
 
 collect_options = (label) -> (callback) ->
-  request url: 'http://gatherer.wizards.com/Pages/Default.aspx', (err, res, body) ->
+  request url: gatherer.url('/Pages/Default.aspx'), (err, res, body) ->
     return callback err if err?
     return callback new Error 'unexpected status code' unless res.statusCode is 200
     try formats = extract body, label catch err then return callback err
