@@ -6,12 +6,10 @@ symbols   = require './symbols'
 
 gatherer = module.exports
 gatherer.origin = 'http://gatherer.wizards.com'
-gatherer.url = (pathname, query = {}) ->
-  url = "#{gatherer.origin}#{pathname}"
+gatherer.url = (url, query) ->
   keys = Object.keys(query).sort()
-  if keys.length
-    url += "?#{("#{encodeURIComponent key}=#{encodeURIComponent query[key]}" \
-                for key in keys).join('&')}"
+  url += "?#{("#{encodeURIComponent key}=#{encodeURIComponent query[key]}" \
+              for key in keys).join('&')}"
   url
 
 gatherer[name] = require "./gatherer/#{name}" for name in [
@@ -22,7 +20,7 @@ gatherer[name] = require "./gatherer/#{name}" for name in [
 ]
 
 collect_options = (label) -> (callback) ->
-  gatherer.request gatherer.url('/Pages/Default.aspx'), (err, body) ->
+  gatherer.request '/Pages/Default.aspx', (err, body) ->
     return callback err if err?
     try formats = extract body, label catch err then return callback err
     callback null, formats
@@ -67,7 +65,9 @@ gatherer._to_stat = (str) ->
   if num is num then num else str
 
 gatherer.request = (url, cb) ->
-  options = {url, followRedirect: no}
+  options =
+    url: gatherer.origin + url
+    followRedirect: no
   request options, (err, res, body) ->
     err ?= new Error 'unexpected status code' unless res.statusCode is 200
     cb err, body

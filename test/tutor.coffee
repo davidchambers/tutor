@@ -9,9 +9,9 @@ tutor     = require '../src/tutor'
 
 wizards = nock gatherer.origin
 card_url = (args...) ->
-  gatherer.card.url(args...).substr(gatherer.origin.length)
+  args[0] = args[0].replace(/./, upper) + '.aspx'
+  gatherer.card.url args...
 
-lower = (text) -> text.toLowerCase()
 upper = (text) -> text.toUpperCase()
 
 toSlug = (value) ->
@@ -57,12 +57,12 @@ card = (details, test) -> (done) ->
     parts.push toSlug details.name if 'id' of details and 'name' of details
     parts.push resource
     wizards
-      .get(card_url resource.replace(/./, upper) + '.aspx', details)
+      .get(card_url resource, details)
       .replyWithFile(200, "#{__dirname}/fixtures/cards/#{parts.join('~')}.html")
     if (pages = details._pages?[resource]) > 1
       for page in [2..pages]
         wizards
-          .get(card_url resource.replace(/./, upper) + '.aspx', details, {page})
+          .get(card_url resource, details, {page})
           .replyWithFile(200, "#{__dirname}/fixtures/cards/#{parts.join('~')}~#{page}.html")
 
   tutor.card details, (err, card) ->
