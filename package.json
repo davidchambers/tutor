@@ -22,6 +22,10 @@
     "name": "Rob Dennis",
     "email": "rdennis@gmail.com",
     "web": "https://github.com/rdennis463"
+  }, {
+    "name": "James Campos",
+    "email": "james.r.campos@gmail.com",
+    "web": "http://aeosynth.github.io"
   }],
   "main": "./lib/tutor",
   "bin": { "tutor" : "./bin/tutor" },
