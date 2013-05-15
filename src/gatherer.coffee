@@ -11,7 +11,7 @@ gatherer.origin = 'http://gatherer.wizards.com'
 gatherer.url = (url, query) ->
   keys = Object.keys(query).sort()
   sorted = {}
-  (sorted[key] = query[key] for key in keys)
+  sorted[key] = query[key] for key in keys
   "#{url}?#{querystring.stringify sorted}"
 
 gatherer[name] = require "./gatherer/#{name}" for name in [
