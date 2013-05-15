@@ -1,3 +1,5 @@
+querystring = require 'querystring'
+
 entities  = require './entities'
 load      = require './load'
 request   = require './request'
@@ -8,9 +10,9 @@ gatherer = module.exports
 gatherer.origin = 'http://gatherer.wizards.com'
 gatherer.url = (url, query) ->
   keys = Object.keys(query).sort()
-  url += "?#{("#{encodeURIComponent key}=#{encodeURIComponent query[key]}" \
-              for key in keys).join('&')}"
-  url
+  sorted = {}
+  (sorted[key] = query[key] for key in keys)
+  "#{url}?#{querystring.stringify sorted}"
 
 gatherer[name] = require "./gatherer/#{name}" for name in [
   'card'
