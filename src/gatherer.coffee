@@ -66,3 +66,7 @@ gatherer._set = (obj, key, value) ->
 gatherer._to_stat = (str) ->
   num = +str?.replace('{1/2}', '.5')
   if num is num then num else str
+
+gatherer.request = (url, cb) ->
+  options = {url, followRedirect: no}
+  request options, cb
