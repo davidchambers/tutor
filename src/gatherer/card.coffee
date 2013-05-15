@@ -8,8 +8,7 @@ module.exports = (details, callback) ->
     callback new Error 'invalid which property (valid values are "a" and "b")'
 
   url = gatherer.card.url 'Details.aspx', details
-  gatherer.request url, (err, res, body) ->
-    err ?= new Error 'unexpected status code' unless res.statusCode is 200
+  gatherer.request url, (err, body) ->
     if err then callback err else callback null, extract body, details
   return
 

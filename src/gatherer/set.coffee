@@ -6,9 +6,8 @@ supertypes  = require '../supertypes'
 module.exports = (name, callback) ->
   url = gatherer.url('/Pages/Search/Default.aspx',
                      output: 'spoiler', special: true, set: "[\"#{name}\"]")
-  gatherer.request url, (err, res, body) ->
+  gatherer.request url, (err, body) ->
     return callback err if err?
-    return callback new Error 'unexpected status code' unless res.statusCode is 200
     try set = extract body, name catch err then return callback err
     callback null, set
   return

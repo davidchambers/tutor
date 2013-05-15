@@ -4,8 +4,7 @@ load      = require '../load'
 
 module.exports = (details, callback) ->
   url = gatherer.card.url 'Printings.aspx', details
-  gatherer.request url, (err, res, body) ->
-    err ?= new Error 'unexpected status code' unless res.statusCode is 200
+  gatherer.request url, (err, body) ->
     if err then callback err else callback null, extract body
   return
 
