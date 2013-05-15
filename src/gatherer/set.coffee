@@ -4,12 +4,12 @@ supertypes  = require '../supertypes'
 
 
 module.exports = (name, callback) ->
-  url = gatherer.url('/Pages/Search/Default.aspx',
-                     output: 'spoiler', special: true, set: "[\"#{name}\"]")
+  url = gatherer.url '/Pages/Search/Default.aspx',
+                     output: 'spoiler', special: true, set: "[\"#{name}\"]"
   gatherer.request url, (err, body) ->
     return callback err if err?
-    try set = extract body, name catch err then return callback err
-    callback null, set
+    try set = extract body, name catch err
+    callback err, set
   return
 
 extract = (html, name) ->
