@@ -1,6 +1,5 @@
 gatherer    = require '../gatherer'
 load        = require '../load'
-request     = require '../request'
 supertypes  = require '../supertypes'
 
 
@@ -8,9 +7,8 @@ module.exports = (details, callback) ->
   if 'which' of details and details.which not in ['a', 'b']
     callback new Error 'invalid which property (valid values are "a" and "b")'
 
-  url = gatherer.card.url 'Details.aspx', details
-  request {url, followRedirect: no}, (err, res, body) ->
-    err ?= new Error 'unexpected status code' unless res.statusCode is 200
+  query = gatherer.card.query details
+  gatherer.request 'Pages/Card/Details.aspx', query, (err, body) ->
     if err then callback err else callback null, extract body, details
   return
 
@@ -130,18 +128,15 @@ extract = (html, details) ->
 
   card
 
-module.exports.url = (path, rest...) ->
-  params = {}
-  params[k] = v for k, v of o for o in rest
-  {id, name, page} = params
+module.exports.query = (details) ->
   query = {}
-  if id? and name?
+  {id, name, page} = details
+  if id
     query.multiverseid = id
+  if id and name
     query.part = name
-  else if id?
-    query.multiverseid = id
-  else
+  else if name
     query.name = name
   if page > 1
     query.page = page - 1
-  gatherer.url "/Pages/Card/#{path}", query
+  query

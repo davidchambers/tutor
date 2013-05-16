@@ -1,17 +1,14 @@
 gatherer    = require '../gatherer'
 load        = require '../load'
-request     = require '../request'
 supertypes  = require '../supertypes'
 
 
 module.exports = (name, callback) ->
-  url = gatherer.url('/Pages/Search/Default.aspx',
-                     output: 'spoiler', special: true, set: "[\"#{name}\"]")
-  request {url}, (err, res, body) ->
-    return callback err if err?
-    return callback new Error 'unexpected status code' unless res.statusCode is 200
-    try set = extract body, name catch err then return callback err
-    callback null, set
+  query = output: 'spoiler', special: true, set: "[\"#{name}\"]"
+  gatherer.request 'Pages/Search/Default.aspx', query, (err, body) ->
+    return callback err if err
+    try set = extract body, name catch err
+    callback err, set
   return
 
 extract = (html, name) ->

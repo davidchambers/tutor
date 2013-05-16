@@ -1,17 +1,31 @@
 assert    = require 'assert'
 {exec}    = require 'child_process'
 fs        = require 'fs'
+qs        = require 'querystring'
+url       = require 'url'
 
 nock      = require 'nock'
 gatherer  = require '../src/gatherer'
 tutor     = require '../src/tutor'
 
 
-wizards = nock gatherer.origin
-card_url = (args...) ->
-  gatherer.card.url(args...).substr(gatherer.origin.length)
+sortQuery = (o) ->
+  ("#{encodeURIComponent key}=#{encodeURIComponent o[key]}"\
+    for key in Object.keys(o).sort()).join '&'
 
-lower = (text) -> text.toLowerCase()
+wizards = nock(gatherer.origin).filteringPath (path) ->
+  {pathname, query} = url.parse path
+  path = pathname
+  if query = sortQuery qs.parse query
+    path += "?#{query}"
+  path
+
+card_url = (path, details, page) ->
+  path = path.replace(/./, upper) + '.aspx'
+  details.page = page
+  query = sortQuery gatherer.card.query details
+  "/Pages/Card/#{path}?#{query}"
+
 upper = (text) -> text.toUpperCase()
 
 toSlug = (value) ->
@@ -57,12 +71,12 @@ card = (details, test) -> (done) ->
     parts.push toSlug details.name if 'id' of details and 'name' of details
     parts.push resource
     wizards
-      .get(card_url resource.replace(/./, upper) + '.aspx', details)
+      .get(card_url resource, details)
       .replyWithFile(200, "#{__dirname}/fixtures/cards/#{parts.join('~')}.html")
     if (pages = details._pages?[resource]) > 1
       for page in [2..pages]
         wizards
-          .get(card_url resource.replace(/./, upper) + '.aspx', details, {page})
+          .get(card_url resource, details, page)
           .replyWithFile(200, "#{__dirname}/fixtures/cards/#{parts.join('~')}~#{page}.html")
 
   tutor.card details, (err, card) ->

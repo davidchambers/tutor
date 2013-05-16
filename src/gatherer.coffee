@@ -1,18 +1,12 @@
+request   = require 'request'
+
 entities  = require './entities'
 load      = require './load'
-request   = require './request'
 symbols   = require './symbols'
 
 
 gatherer = module.exports
 gatherer.origin = 'http://gatherer.wizards.com'
-gatherer.url = (pathname, query = {}) ->
-  url = "#{gatherer.origin}#{pathname}"
-  keys = Object.keys(query).sort()
-  if keys.length
-    url += "?#{("#{encodeURIComponent key}=#{encodeURIComponent query[key]}" \
-                for key in keys).join('&')}"
-  url
 
 gatherer[name] = require "./gatherer/#{name}" for name in [
   'card'
@@ -22,11 +16,10 @@ gatherer[name] = require "./gatherer/#{name}" for name in [
 ]
 
 collect_options = (label) -> (callback) ->
-  request url: gatherer.url('/Pages/Default.aspx'), (err, res, body) ->
-    return callback err if err?
-    return callback new Error 'unexpected status code' unless res.statusCode is 200
-    try formats = extract body, label catch err then return callback err
-    callback null, formats
+  gatherer.request 'Pages/Default.aspx', (err, body) ->
+    return callback err if err
+    try formats = extract body, label catch err
+    callback err, formats
   return
 
 extract = (html, label) ->
@@ -66,3 +59,16 @@ gatherer._set = (obj, key, value) ->
 gatherer._to_stat = (str) ->
   num = +str?.replace('{1/2}', '.5')
   if num is num then num else str
+
+gatherer.request = (path, query, cb) ->
+  options =
+    url: "#{gatherer.origin}/#{path}"
+    followRedirect: no
+  if cb
+    options.qs = query
+  else
+    cb = query
+  request options, (err, res, body) ->
+    if !err and res.statusCode isnt 200
+      err = new Error 'unexpected status code'
+    cb err, body

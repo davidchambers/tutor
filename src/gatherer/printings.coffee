@@ -1,12 +1,10 @@
 gatherer  = require '../gatherer'
 load      = require '../load'
-request   = require '../request'
 
 
 module.exports = (details, callback) ->
-  url = gatherer.card.url 'Printings.aspx', details
-  request {url, followRedirect: no}, (err, res, body) ->
-    err ?= new Error 'unexpected status code' unless res.statusCode is 200
+  query = gatherer.card.query details
+  gatherer.request 'Pages/Card/Printings.aspx', query, (err, body) ->
     if err then callback err else callback null, extract body
   return
 

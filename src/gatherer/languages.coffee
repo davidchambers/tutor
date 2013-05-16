@@ -2,7 +2,6 @@ gatherer    = require '../gatherer'
 languages   = require '../languages'
 load        = require '../load'
 pagination  = require '../pagination'
-request     = require '../request'
 
 
 module.exports = (details, callback) ->
@@ -24,10 +23,9 @@ module.exports = (details, callback) ->
   return
 
 fetch = (page, details, callback) ->
-  url = gatherer.card.url 'Languages.aspx', details, {page}
-  request {url, followRedirect: no}, (err, res, body) ->
-    err ?= new Error 'unexpected status code' unless res.statusCode is 200
-    if err then callback err else callback null, body
+  details.page = page
+  query = gatherer.card.query details
+  gatherer.request 'Pages/Card/Languages.aspx', query, callback
 
 extract = (html) ->
   $ = load html
