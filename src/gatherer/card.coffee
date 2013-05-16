@@ -7,8 +7,7 @@ module.exports = (details, callback) ->
   if 'which' of details and details.which not in ['a', 'b']
     callback new Error 'invalid which property (valid values are "a" and "b")'
 
-  url = gatherer.card.url 'Details.aspx', details
-  gatherer.request url, (err, body) ->
+  gatherer.request 'Details.aspx', details, (err, body) ->
     if err then callback err else callback null, extract body, details
   return
 
@@ -127,19 +126,3 @@ extract = (html, details) ->
   set 'community_rating', rating: +rating, votes: +votes
 
   card
-
-module.exports.url = (path, rest...) ->
-  params = {}
-  params[k] = v for k, v of o for o in rest
-  {id, name, page} = params
-  query = {}
-  if id? and name?
-    query.multiverseid = id
-    query.part = name
-  else if id?
-    query.multiverseid = id
-  else
-    query.name = name
-  if page > 1
-    query.page = page - 1
-  gatherer.url "/Pages/Card/#{path}", query

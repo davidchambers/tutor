@@ -23,8 +23,8 @@ module.exports = (details, callback) ->
   return
 
 fetch = (page, details, callback) ->
-  url = gatherer.card.url 'Languages.aspx', details, {page}
-  gatherer.request url, callback
+  details.page = page
+  gatherer.request 'Languages.aspx', details, callback
 
 extract = (html) ->
   $ = load html

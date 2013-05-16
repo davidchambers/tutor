@@ -1,16 +1,29 @@
 assert    = require 'assert'
 {exec}    = require 'child_process'
 fs        = require 'fs'
+qs        = require 'querystring'
+url       = require 'url'
 
 nock      = require 'nock'
 gatherer  = require '../src/gatherer'
 tutor     = require '../src/tutor'
 
 
-wizards = nock gatherer.origin
-card_url = (args...) ->
-  args[0] = args[0].replace(/./, upper) + '.aspx'
-  gatherer.card.url args...
+sort = (o) ->
+  sorted = {}
+  sorted[key] = o[key] for key in Object.keys(o).sort()
+  sorted
+
+wizards = nock(gatherer.origin).filteringPath (path) ->
+  {pathname, query} = url.parse path
+  query = sort qs.parse query
+  url.format {pathname, query}
+
+card_url = (path, details, page) ->
+  path = path.replace(/./, upper) + '.aspx'
+  details.page = page
+  query = sort gatherer.query details
+  "/Pages/Card/#{path}?#{qs.stringify query}"
 
 upper = (text) -> text.toUpperCase()
 
@@ -62,7 +75,7 @@ card = (details, test) -> (done) ->
     if (pages = details._pages?[resource]) > 1
       for page in [2..pages]
         wizards
-          .get(card_url resource, details, {page})
+          .get(card_url resource, details, page)
           .replyWithFile(200, "#{__dirname}/fixtures/cards/#{parts.join('~')}~#{page}.html")
 
   tutor.card details, (err, card) ->

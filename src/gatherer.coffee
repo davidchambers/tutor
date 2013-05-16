@@ -1,5 +1,3 @@
-querystring = require 'querystring'
-
 entities  = require './entities'
 load      = require './load'
 request   = require './request'
@@ -8,10 +6,6 @@ symbols   = require './symbols'
 
 gatherer = module.exports
 gatherer.origin = 'http://gatherer.wizards.com'
-gatherer.url = (url, query) ->
-  sorted = {}
-  sorted[key] = query[key] for key in Object.keys(query).sort()
-  "#{url}?#{querystring.stringify sorted}"
 
 gatherer[name] = require "./gatherer/#{name}" for name in [
   'card'
@@ -65,11 +59,32 @@ gatherer._to_stat = (str) ->
   num = +str?.replace('{1/2}', '.5')
   if num is num then num else str
 
-gatherer.request = (url, cb) ->
-  options =
-    url: gatherer.origin + url
-    followRedirect: no
+gatherer.request = (url, details, cb) ->
+  options = followRedirect: no
+  if cb
+    if details.special
+      options.url = gatherer.origin + url
+      options.qs = details
+    else
+      options.url = "#{gatherer.origin}/Pages/Card/#{url}"
+      options.qs = gatherer.query details
+  else
+    options.url = gatherer.origin + url
+    cb = details
   request options, (err, res, body) ->
     if !err and res.statusCode isnt 200
       err = new Error 'unexpected status code'
     cb err, body
+
+gatherer.query = (details) ->
+  query = {}
+  {id, name, page} = details
+  if id
+    query.multiverseid = id
+  if id and name
+    query.part = name
+  else if name
+    query.name = name
+  if page > 1
+    query.page = page - 1
+  query
