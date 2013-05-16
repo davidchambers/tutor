@@ -15,7 +15,7 @@ gatherer[name] = require "./gatherer/#{name}" for name in [
 ]
 
 collect_options = (label) -> (callback) ->
-  gatherer.request '/Pages/Default.aspx', (err, body) ->
+  gatherer.request 'Default.aspx', (err, body) ->
     return callback err if err?
     try formats = extract body, label catch err then return callback err
     callback null, formats
@@ -59,17 +59,16 @@ gatherer._to_stat = (str) ->
   num = +str?.replace('{1/2}', '.5')
   if num is num then num else str
 
-gatherer.request = (url, details, cb) ->
-  options = followRedirect: no
+gatherer.request = (path, details, cb) ->
+  options =
+    url: "#{gatherer.origin}/Pages/#{path}"
+    followRedirect: no
   if cb
     if details.special
-      options.url = gatherer.origin + url
       options.qs = details
     else
-      options.url = "#{gatherer.origin}/Pages/Card/#{url}"
       options.qs = gatherer.query details
   else
-    options.url = gatherer.origin + url
     cb = details
   request options, (err, res, body) ->
     if !err and res.statusCode isnt 200
