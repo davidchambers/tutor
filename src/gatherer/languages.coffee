@@ -25,7 +25,7 @@ module.exports = (details, callback) ->
 fetch = (page, details, callback) ->
   details.page = page
   query = gatherer.card.query details
-  gatherer.request 'Card/Languages.aspx', query, callback
+  gatherer.request 'Pages/Card/Languages.aspx', query, callback
 
 extract = (html) ->
   $ = load html

@@ -15,7 +15,7 @@ gatherer[name] = require "./gatherer/#{name}" for name in [
 ]
 
 collect_options = (label) -> (callback) ->
-  gatherer.request 'Default.aspx', (err, body) ->
+  gatherer.request 'Pages/Default.aspx', (err, body) ->
     return callback err if err?
     try formats = extract body, label catch err then return callback err
     callback null, formats
@@ -61,7 +61,7 @@ gatherer._to_stat = (str) ->
 
 gatherer.request = (path, query, cb) ->
   options =
-    url: "#{gatherer.origin}/Pages/#{path}"
+    url: "#{gatherer.origin}/#{path}"
     followRedirect: no
   if cb
     options.qs = query

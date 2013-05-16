@@ -8,7 +8,7 @@ module.exports = (details, callback) ->
     callback new Error 'invalid which property (valid values are "a" and "b")'
 
   query = gatherer.card.query details
-  gatherer.request 'Card/Details.aspx', query, (err, body) ->
+  gatherer.request 'Pages/Card/Details.aspx', query, (err, body) ->
     if err then callback err else callback null, extract body, details
   return
 

@@ -4,7 +4,7 @@ load      = require '../load'
 
 module.exports = (details, callback) ->
   query = gatherer.card.query details
-  gatherer.request 'Card/Printings.aspx', query, (err, body) ->
+  gatherer.request 'Pages/Card/Printings.aspx', query, (err, body) ->
     if err then callback err else callback null, extract body
   return
 
