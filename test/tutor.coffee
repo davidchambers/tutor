@@ -9,21 +9,22 @@ gatherer  = require '../src/gatherer'
 tutor     = require '../src/tutor'
 
 
-sort = (o) ->
-  sorted = {}
-  sorted[key] = o[key] for key in Object.keys(o).sort()
-  sorted
+sortQuery = (o) ->
+  ("#{encodeURIComponent key}=#{encodeURIComponent o[key]}"\
+    for key in Object.keys(o).sort()).join '&'
 
 wizards = nock(gatherer.origin).filteringPath (path) ->
   {pathname, query} = url.parse path
-  query = sort qs.parse query
-  url.format {pathname, query}
+  path = pathname
+  if query = sortQuery qs.parse query
+    path += "?#{query}"
+  path
 
 card_url = (path, details, page) ->
   path = path.replace(/./, upper) + '.aspx'
   details.page = page
-  query = sort gatherer.card.query details
-  "/Pages/Card/#{path}?#{qs.stringify query}"
+  query = sortQuery gatherer.card.query details
+  "/Pages/Card/#{path}?#{query}"
 
 upper = (text) -> text.toUpperCase()
 
