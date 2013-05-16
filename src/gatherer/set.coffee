@@ -4,9 +4,9 @@ supertypes  = require '../supertypes'
 
 
 module.exports = (name, callback) ->
-  details = output: 'spoiler', special: true, set: "[\"#{name}\"]"
-  gatherer.request 'Pages/Search/Default.aspx', details, (err, body) ->
-    return callback err if err?
+  query = output: 'spoiler', special: true, set: "[\"#{name}\"]"
+  gatherer.request 'Pages/Search/Default.aspx', query, (err, body) ->
+    return callback err if err
     try set = extract body, name catch err
     callback err, set
   return

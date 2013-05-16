@@ -16,9 +16,9 @@ gatherer[name] = require "./gatherer/#{name}" for name in [
 
 collect_options = (label) -> (callback) ->
   gatherer.request 'Pages/Default.aspx', (err, body) ->
-    return callback err if err?
-    try formats = extract body, label catch err then return callback err
-    callback null, formats
+    return callback err if err
+    try formats = extract body, label catch err
+    callback err, formats
   return
 
 extract = (html, label) ->
