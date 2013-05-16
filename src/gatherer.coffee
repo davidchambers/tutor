@@ -1,6 +1,7 @@
+request   = require 'request'
+
 entities  = require './entities'
 load      = require './load'
-request   = require './request'
 symbols   = require './symbols'
 
 
