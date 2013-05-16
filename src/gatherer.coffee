@@ -59,31 +59,15 @@ gatherer._to_stat = (str) ->
   num = +str?.replace('{1/2}', '.5')
   if num is num then num else str
 
-gatherer.request = (path, details, cb) ->
+gatherer.request = (path, query, cb) ->
   options =
     url: "#{gatherer.origin}/Pages/#{path}"
     followRedirect: no
   if cb
-    if details.special
-      options.qs = details
-    else
-      options.qs = gatherer.query details
+    options.qs = query
   else
-    cb = details
+    cb = query
   request options, (err, res, body) ->
     if !err and res.statusCode isnt 200
       err = new Error 'unexpected status code'
     cb err, body
-
-gatherer.query = (details) ->
-  query = {}
-  {id, name, page} = details
-  if id
-    query.multiverseid = id
-  if id and name
-    query.part = name
-  else if name
-    query.name = name
-  if page > 1
-    query.page = page - 1
-  query

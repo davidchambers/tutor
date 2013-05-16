@@ -22,7 +22,7 @@ wizards = nock(gatherer.origin).filteringPath (path) ->
 card_url = (path, details, page) ->
   path = path.replace(/./, upper) + '.aspx'
   details.page = page
-  query = sort gatherer.query details
+  query = sort gatherer.card.query details
   "/Pages/Card/#{path}?#{qs.stringify query}"
 
 upper = (text) -> text.toUpperCase()
