@@ -70,5 +70,6 @@ gatherer.request = (url, cb) ->
     url: gatherer.origin + url
     followRedirect: no
   request options, (err, res, body) ->
-    err ?= new Error 'unexpected status code' unless res.statusCode is 200
+    if !err and res.statusCode isnt 200
+      err = new Error 'unexpected status code'
     cb err, body
