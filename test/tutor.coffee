@@ -522,3 +522,11 @@ describe '$ tutor card', ->
   it 'prints JSON representation of card specified by id',
     $ 'tutor card 987 --format json', (err, stdout) ->
       assert.strictEqual JSON.parse(stdout).artist, 'Brian Snoddy'
+
+  it 'prints correct name of 2nd side of card',
+    $ 'tutor card \'Werewolf Ransacker\' --format json', (err, stdout) ->
+      assert.strictEqual JSON.parse(stdout).name, 'Werewolf Ransacker'
+  
+  it 'ignores case of card names',
+    $ 'tutor card \'ravager of the fells\' --format json', (err,stdout) ->
+      assert.strictEqual JSON.parse(stdout).name, 'Ravager of the Fells'
