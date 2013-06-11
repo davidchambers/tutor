@@ -478,6 +478,9 @@ describe 'tutor.card', ->
   it 'parses back face of double-faced card specified by name',
     card 'Werewolf Ransacker', name: 'Werewolf Ransacker'
 
+  it 'parses back face of double-faced card specified by lower-case name', #57
+    card 'werewolf ransacker', name: 'Werewolf Ransacker'
+
   it 'parses front face of double-faced card specified by id',
     card 262675, name: 'Afflicted Deserter'
 
