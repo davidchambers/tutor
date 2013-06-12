@@ -478,7 +478,7 @@ describe 'tutor.card', ->
   it 'parses back face of double-faced card specified by name',
     card 'Werewolf Ransacker', name: 'Werewolf Ransacker'
 
-  it 'parses back face of double-faced card specified by case-insensitive name',
+  it 'parses back face of double-faced card specified by lower-case name',
     card 'werewolf ransacker', name: 'Werewolf Ransacker'
 
   it 'parses front face of double-faced card specified by id',
@@ -531,5 +531,5 @@ describe '$ tutor card', ->
       assert.strictEqual JSON.parse(stdout).name, 'Werewolf Ransacker'
   
   it 'ignores case of card names',
-    $ 'tutor card \'ravager of the fells\' --format json', (err,stdout) ->
+    $ 'tutor card "ravager of the fells" --format json', (err,stdout) ->
       assert.strictEqual JSON.parse(stdout).name, 'Ravager of the Fells'
