@@ -45,7 +45,7 @@ extract = (html, details) ->
         # Double-faced cards.
         verbose and (details.id of get_versions(right) and
                      details.id not of get_versions(left)) or
-        not verbose and details.name is t $(right).find('.value').first())
+        not verbose and details.name.toLowerCase() is (t $(right).find('.value').first()).toLowerCase())
       left
     else
       right
