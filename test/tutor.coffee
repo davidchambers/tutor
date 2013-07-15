@@ -497,6 +497,39 @@ $ = (command, test) -> (done) ->
     done()
 
 
+describe '$ tutor formats', ->
+
+  it 'prints formats',
+    $ 'tutor formats', (err, stdout) ->
+      assert 'Tempest Block' in stdout.split('\n')
+
+  it 'prints JSON representation of formats',
+    $ 'tutor formats --format json', (err, stdout) ->
+      assert 'Tempest Block' in JSON.parse stdout
+
+
+describe '$ tutor sets', ->
+
+  it 'prints sets',
+    $ 'tutor sets', (err, stdout) ->
+      assert 'Stronghold' in stdout.split('\n')
+
+  it 'prints JSON representation of sets',
+    $ 'tutor sets --format json', (err, stdout) ->
+      assert 'Stronghold' in JSON.parse stdout
+
+
+describe '$ tutor types', ->
+
+  it 'prints types',
+    $ 'tutor types', (err, stdout) ->
+      assert 'Enchantment' in stdout.split('\n')
+
+  it 'prints JSON representation of types',
+    $ 'tutor types --format json', (err, stdout) ->
+      assert 'Enchantment' in JSON.parse stdout
+
+
 describe '$ tutor set', ->
 
   it 'prints summary of cards in set',
