@@ -20,6 +20,12 @@ program = require 'commander'
 
 program.version require('../package').version
 
+['formats', 'sets', 'types'].forEach (resource) -> program
+  .command(resource)
+  .option('-f, --format [formatter]', '"json" or "summary"', 'summary')
+  .action (options) ->
+    tutor[resource] formatters[resource][options.format]
+
 program
   .command('card <name|id>')
   .description("output the given card's details")
