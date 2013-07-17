@@ -236,6 +236,9 @@ tutor.types (err, types) ->
     $ tutor set Alliances | head -n 2
     Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block.
     Agent of Stromgald {R} 1/1 {R}: Add {B} to your mana pool.
+    
+#### Example of using the CLI from other applications:
+[Link to Wiki](https://github.com/davidchambers/tutor/wiki/Interact-with-the-CLI-from-other-applications)
 
 ### Running the tests
 
