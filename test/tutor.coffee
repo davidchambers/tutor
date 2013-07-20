@@ -393,17 +393,20 @@ describe 'tutor.card', ->
       assert votes % 1 is 0,            'votes must be an integer'
 
   it 'extracts rulings',
-    card 'Ajani Goldmane', rulings: [
-      ['2007-10-01', __ '''
+    card 'Ajani Goldmane', (err, card) ->
+      assert.strictEqual card.rulings[0].length, 2
+      assert.strictEqual card.rulings[0][0], '2007-10-01'
+      assert.strictEqual card.rulings[0][1], __ '''
         The vigilance granted to a creature by the second ability
         remains until the end of the turn even if the +1/+1 counter
         is removed.
-      ''']
-      ['2007-10-01', __ '''
+      '''
+      assert.strictEqual card.rulings[1].length, 2
+      assert.strictEqual card.rulings[1][0], '2007-10-01'
+      assert.strictEqual card.rulings[1][1], __ '''
         The power and toughness of the Avatar created by the third
         ability will change as your life total changes.
-      ''']
-    ]
+      '''
 
   it 'extracts rulings for back face of double-faced card',
     card 'Werewolf Ransacker', (err, card) ->
