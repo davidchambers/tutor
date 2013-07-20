@@ -1,6 +1,7 @@
 assert    = require 'assert'
 {exec}    = require 'child_process'
 fs        = require 'fs'
+url       = require 'url'
 
 nock      = require 'nock'
 gatherer  = require '../src/gatherer'
@@ -38,11 +39,9 @@ index = (fn, test) -> (done) ->
     done()
 
 set = (name, test) -> (done) ->
-  path = "#{__dirname}/fixtures/sets/#{toSlug name}.html"
-  if fs.existsSync path
-    wizards.get('/Pages/Search/Default.aspx?action=advanced&output=spoiler' +
-                "&set=%5B%22#{encodeURIComponent name}%22%5D&special=true")
-           .replyWithFile(200, path)
+  path = "#{__dirname}/fixtures/sets/#{toSlug name}"
+  wizards.get(url.parse(fs.readFileSync path, 'utf8').path)
+         .replyWithFile(200, "#{path}.html")
   tutor.set name, (err, cards) ->
     test err, cards
     done()
