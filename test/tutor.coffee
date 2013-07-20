@@ -42,6 +42,8 @@ set = (name, test) -> (done) ->
   path = "#{__dirname}/fixtures/sets/#{toSlug name}"
   wizards.get(url.parse(fs.readFileSync path, 'utf8').path)
          .replyWithFile(200, "#{path}.html")
+  wizards.get(url.parse(fs.readFileSync "#{path}~basics", 'utf8').path)
+         .replyWithFile(200, "#{path}~basics.html")
   tutor.set name, (err, cards) ->
     test err, cards
     done()
@@ -111,8 +113,8 @@ describe 'tutor.set', ->
 
   it 'extracts mana costs containing Phyrexian mana symbols',
     set 'New Phyrexia', (err, cards) ->
-      eq cards[156].name, 'Vault Skirge'
-      eq cards[156].mana_cost, '{1}{B/P}'
+      eq cards[161].name, 'Vault Skirge'
+      eq cards[161].mana_cost, '{1}{B/P}'
 
   it 'includes mana costs discerningly',
     set 'Future Sight', (err, cards) ->
@@ -148,7 +150,7 @@ describe 'tutor.set', ->
 
   it 'extracts rules text',
     set 'Lorwyn', (err, cards) ->
-      eq cards[175].text, __ '''
+      eq cards[184].text, __ '''
         Flying
 
         When Mulldrifter enters the battlefield, draw two cards.
@@ -181,9 +183,9 @@ describe 'tutor.set', ->
 
   it 'extracts stats',
     set 'Lorwyn', (err, cards) ->
-      eq cards[192].name, 'Pestermite'
-      eq cards[192].power, 2
-      eq cards[192].toughness, 1
+      eq cards[201].name, 'Pestermite'
+      eq cards[201].power, 2
+      eq cards[201].toughness, 1
 
   it 'handles fractional stats', #39
     set 'Unhinged', (err, cards) ->
@@ -210,8 +212,8 @@ describe 'tutor.set', ->
 
   it 'includes loyalties discerningly',
     set 'Lorwyn', (err, cards) ->
-      eq cards[192].name, 'Pestermite'
-      eq cards[192].hasOwnProperty('loyalty'), no
+      eq cards[201].name, 'Pestermite'
+      eq cards[201].hasOwnProperty('loyalty'), no
 
   it 'extracts hand modifiers',
     set 'Vanguard', (err, cards) ->
@@ -235,10 +237,10 @@ describe 'tutor.set', ->
       eq cards[9].rarity, 'Rare'
       eq cards[34].name, 'Dismember'
       eq cards[34].rarity, 'Uncommon'
-      eq cards[51].name, 'Gitaxian Probe'
-      eq cards[51].rarity, 'Common'
-      eq cards[67].name, 'Island'
-      eq cards[67].rarity, 'Land'
+      eq cards[52].name, 'Gitaxian Probe'
+      eq cards[52].rarity, 'Common'
+      eq cards[68].name, 'Island'
+      eq cards[68].rarity, 'Land'
 
   it 'extracts versions',
     set 'Lorwyn', (err, cards) ->
@@ -246,6 +248,22 @@ describe 'tutor.set', ->
       eq cards[2].versions['Lorwyn'], 'Rare'
       eq cards[2].versions['Magic 2010'], 'Mythic Rare'
       eq cards[2].versions['Magic 2011'], 'Mythic Rare'
+
+  it 'includes all versions of each basic land', #66
+    set 'Lorwyn', (err, cards) ->
+      eq cards.length, 301
+      eq cards[202].name, 'Plains'
+      eq cards[203].name, 'Plains'
+      eq cards[204].name, 'Plains'
+      eq cards[205].name, 'Plains'
+      eq cards[202].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143620'
+      eq cards[203].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143621'
+      eq cards[204].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143622'
+      eq cards[205].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143630'
+      eq cards[202].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143620&type=card'
+      eq cards[203].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143621&type=card'
+      eq cards[204].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143622&type=card'
+      eq cards[205].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143630&type=card'
 
 
 describe 'tutor.card', ->

@@ -1,18 +1,64 @@
+url         = require 'url'
+
 gatherer    = require '../gatherer'
 load        = require '../load'
 supertypes  = require '../supertypes'
 
 
 module.exports = (name, callback) ->
-  url = gatherer.url '/Pages/Search/Default.aspx',
+  ctx = {}
+  withParser = (parse) -> (err, data) ->
+    if err?
+      callback err
+      callback = ->
+      return
+    try
+      parse ctx, data
+    catch err
+      callback err
+      callback = ->
+      return
+
+    # Once both requests have succeeded, loop through the set's cards
+    # in reverse order. Each time a basic land is encountered, remove
+    # it from the array and insert all the set's versions of the card
+    # -- sorted by Gatherer id -- in its place.
+    if 'set' of ctx and 'basics' of ctx
+      idx = ctx.set.length
+      while idx--
+        card = ctx.set[idx]
+        if card.name of ctx.basics
+          match = /multiverseid=(\d+)/.exec card.gatherer_url
+          clones = for id in ctx.basics[card.name]
+            clone = {}
+            clone[key] = value for key, value of card
+            clone.gatherer_url = card.gatherer_url.replace match[1], id
+            clone.image_url = card.image_url.replace match[1], id
+            clone
+          clones.sort (a, b) ->
+            if a.gatherer_url < b.gatherer_url then -1 else 1
+          ctx.set.splice idx, 1, clones...
+      callback null, ctx.set
+
+  gatherer.request gatherer.url('/Pages/Search/Default.aspx',
     action: 'advanced'
     output: 'spoiler'
     special: true
     set: "[\"#{name}\"]"
-  gatherer.request url, (err, body) ->
-    return callback err if err?
-    try set = extract body, name catch err then return callback err
-    callback null, set
+  ), withParser (ctx, body) ->
+    ctx.set = extract body, name
+
+  gatherer.request gatherer.url('/Pages/Search/Default.aspx',
+    set: "[\"#{name}\"]"
+    type: '+["Basic"]+["Land"]'
+  ), withParser (ctx, body) ->
+    ctx.basics = {}
+    load(body)('.cardItem').each ->
+      ids = ctx.basics[@find('.cardTitle').text().trim()] = []
+      @find('.setVersions').find('a').filter ->
+        if @children("img[alt^='#{name}']").length
+          ids.push +url.parse(@attr('href'), yes).query.multiverseid
+
   return
 
 extract = (html, name) ->
