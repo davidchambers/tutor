@@ -1,3 +1,5 @@
+Q         = require 'q'
+
 gatherer  = require './gatherer'
 
 
@@ -11,23 +13,24 @@ tutor[name] = gatherer[name] for name in [
 ]
 
 tutor.card = (details, callback) ->
-  switch typeof details
-    when 'number' then details = id: details
-    when 'string' then details = name: details
+  switch Object::toString.call details
+    when '[object Number]' then details = id: details
+    when '[object String]' then details = name: details
 
-  card = languages = legality = versions = null
-  get = (success) -> (err, data) ->
-    if err
-      callback err
-      callback = ->
-      return
-    success data
-    if card? and languages? and legality? and versions?
-      card.languages = languages
-      card.legality = legality
-      card.versions = versions
-      callback null, card
+  d1 = Q.defer()
+  gatherer.card details, d1.makeNodeResolver()
 
-  gatherer.card details, get (data) -> card = data
-  gatherer.languages details, get (data) -> languages = data
-  gatherer.printings details, get (data) -> {legality, versions} = data
+  d2 = Q.defer()
+  gatherer.languages details, d2.makeNodeResolver()
+
+  d3 = Q.defer()
+  gatherer.printings details, d3.makeNodeResolver()
+
+  Q.all([d1.promise, d2.promise, d3.promise])
+  .then(([card, languages, {legality, versions}]) ->
+    card.languages = languages
+    card.legality = legality
+    card.versions = versions
+    callback null, card
+  )
+  .catch(callback)

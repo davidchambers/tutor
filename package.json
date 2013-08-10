@@ -33,6 +33,7 @@
     "cheerio": "0.10.x",
     "commander": "1.1.x",
     "entities": "0.1.x",
+    "q": "0.9.x",
     "request": "2.12.x"
   },
   "devDependencies": {
