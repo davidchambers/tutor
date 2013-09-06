@@ -595,6 +595,12 @@ describe '$ tutor set', ->
       eq cards[0].name, 'Aesthir Glider'
       eq cards[1].name, 'Agent of Stromgald'
 
+  it 'handles a set that redirects for basic land',
+    $ 'tutor set "Arabian Nights" --format json', (err, stdout) ->
+      cards = JSON.parse stdout
+      eq cards[0].name, "Abu Ja'far"
+      eq cards[55].name, "Mountain"
+
 
 describe '$ tutor card', ->
 
