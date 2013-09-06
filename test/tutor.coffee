@@ -507,6 +507,37 @@ describe 'tutor.card', ->
   it 'parses back face of double-faced card specified by id',
     card 262698, name: 'Werewolf Ransacker'
 
+  it 'allows accents to be omitted', (done) -> #52
+    redirects = (from, to) -> wizards.get(from).reply(302, '', 'Location': to)
+
+    redirects '/Pages/Card/Details.aspx?name=Juzam%20Djinn',
+              '/Pages/Search/Default.aspx?name=+[Juzam Djinn]'
+
+    redirects '/Pages/Card/Languages.aspx?name=Juzam%20Djinn',
+              '/Pages/Search/Default.aspx?name=+[Juzam Djinn]'
+
+    redirects '/Pages/Card/Printings.aspx?name=Juzam%20Djinn',
+              '/Pages/Search/Default.aspx?name=+[Juzam Djinn]'
+
+    redirects '/Pages/Search/Default.aspx?name=+[Juzam%20Djinn]',
+              '/Pages/Card/Details.aspx?multiverseid=159132'
+
+    redirects '/Pages/Search/Default.aspx?name=+[Juzam%20Djinn]',
+              '/Pages/Card/Details.aspx?multiverseid=159132'
+
+    redirects '/Pages/Search/Default.aspx?name=+[Juzam%20Djinn]',
+              '/Pages/Card/Details.aspx?multiverseid=159132'
+
+    for resource in ['details', 'details', 'details', 'languages', 'printings']
+      wizards
+        .get("/Pages/Card/#{resource.replace /./, upper}.aspx?multiverseid=159132")
+        .replyWithFile(200, "#{__dirname}/fixtures/cards/159132~#{resource}.html")
+
+    tutor.card 'Juzam Djinn', (err, card) ->
+      assert.strictEqual err, null
+      assert.strictEqual card.name, 'Juzám Djinn'
+      done()
+
 
 $ = (command, test) -> (done) ->
   exec "bin/#{command}", (err, stdout, stderr) ->
