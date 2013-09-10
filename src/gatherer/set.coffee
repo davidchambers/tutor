@@ -83,10 +83,9 @@ extract = (html, name) ->
           gatherer_url: "#{gatherer.origin}/Pages/Card/Details.aspx?#{param}"
           image_url: "#{gatherer.origin}/Handlers/Image.ashx?#{param}&type=card"
       when 'Cost:'
-        card.converted_mana_cost = to_converted_mana_cost card.mana_cost = val
-          .replace(/[^(/)](?![/)])/g, '($&)') # 1(G/W)(G/W) -> (1)(G/W)(G/W)
-          .replace(/[(]/g, '{')
-          .replace(/[)]/g, '}')
+        # 1(G/W)(G/W) -> {1}{G/W}{G/W} | 11 -> {11}
+        card.mana_cost = "{#{val.match(/// ./. | \d+ | [^()] ///g).join('}{')}}"
+        card.converted_mana_cost = to_converted_mana_cost card.mana_cost
       when 'Type:'
         [types, subtypes] = /^([^\u2014]+?)(?:\s+\u2014\s+(.+))?$/.exec(val)[1..]
         for type in types.split(/\s+/)

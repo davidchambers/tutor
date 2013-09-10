@@ -116,6 +116,11 @@ describe 'tutor.set', ->
       eq cards[161].name, 'Vault Skirge'
       eq cards[161].mana_cost, '{1}{B/P}'
 
+  it 'extracts mana costs containing double-digit mana symbols', #71
+    set 'Rise of the Eldrazi', (err, cards) ->
+      eq cards[231].name, 'Ulamog, the Infinite Gyre'
+      eq cards[231].mana_cost, '{11}'
+
   it 'includes mana costs discerningly',
     set 'Future Sight', (err, cards) ->
       eq cards[64].name, 'Horizon Canopy'
