@@ -129,7 +129,7 @@ describe 'tutor.set', ->
       eq cards[72].mana_cost, '{2/R}{2/R}{2/R}'
       eq cards[72].converted_mana_cost, 6
 
-  it 'calculates converted mana costs for double-digit colorless cost',
+  it 'calculates converted mana costs for double-digit colorless cost', #71
     set 'Rise of the Eldrazi', (err, cards) ->
       eq cards[231].name, 'Ulamog, the Infinite Gyre'
       eq cards[231].mana_cost, '{11}'
