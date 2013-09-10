@@ -84,7 +84,7 @@ extract = (html, name) ->
           image_url: "#{gatherer.origin}/Handlers/Image.ashx?#{param}&type=card"
       when 'Cost:'
         card.converted_mana_cost = to_converted_mana_cost card.mana_cost = val
-          .replace(/[^(/)](?![/)])/g, '($&)') # 1(G/W)(G/W) -> (1)(G/W)(G/W)
+          .replace(/(?:\d+|[^\d(/)])(?![/)])i/g, '($&)') # 1(G/W)(G/W) -> (1)(G/W)(G/W) | 11 -> (11)
           .replace(/[(]/g, '{')
           .replace(/[)]/g, '}')
       when 'Type:'
