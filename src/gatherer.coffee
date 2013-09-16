@@ -30,7 +30,7 @@ gatherer.request = (args...) ->
     else if res.statusCode isnt 200
       callback new Error 'unexpected status code'
     else
-      callback null, body
+      callback null, res, body
 
 gatherer[name] = require "./gatherer/#{name}" for name in [
   'card'
@@ -40,7 +40,7 @@ gatherer[name] = require "./gatherer/#{name}" for name in [
 ]
 
 collect_options = (label) -> (callback) ->
-  gatherer.request gatherer.url('/Pages/Default.aspx'), (err, body) ->
+  gatherer.request gatherer.url('/Pages/Default.aspx'), (err, res, body) ->
     return callback err if err?
     try formats = extract body, label catch err then return callback err
     callback null, formats
