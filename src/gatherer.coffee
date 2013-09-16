@@ -16,11 +16,11 @@ gatherer.url = (pathname, query = {}) ->
   url
 
 gatherer.request = (url, callback) ->
-  request {url, followRedirect: no}, (err, res, body) ->
+  request {url}, (err, res, body) ->
     if err?
       callback err
-    else if res.statusCode isnt 200
-      callback new Error 'unexpected status code'
+#    else if res.request.uri.pathname not in ['/Pages/Card/Details.aspx',]
+#      callback new Error 'item not found'
     else
       callback null, body
 
