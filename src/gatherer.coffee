@@ -15,8 +15,16 @@ gatherer.url = (pathname, query = {}) ->
                 for key in keys).join('&')}"
   url
 
-gatherer.request = (url, callback) ->
-  request {url, followRedirect: no}, (err, res, body) ->
+gatherer.request = (args...) ->
+  if args.length >= 3
+    [uri, options, callback] = args
+  else if Object::toString.call(args[0]) is '[object String]'
+    [uri, callback] = args
+    options = {uri}
+  else
+    [options, callback] = args
+
+  request options, (err, res, body) ->
     if err?
       callback err
     else if res.statusCode isnt 200
