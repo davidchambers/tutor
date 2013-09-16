@@ -15,14 +15,22 @@ gatherer.url = (pathname, query = {}) ->
                 for key in keys).join('&')}"
   url
 
-gatherer.request = (url, callback) ->
-  request {url, followRedirect: no}, (err, res, body) ->
+gatherer.request = (args...) ->
+  if args.length >= 3
+    [uri, options, callback] = args
+  else if Object::toString.call(args[0]) is '[object String]'
+    [uri, callback] = args
+    options = {uri}
+  else
+    [options, callback] = args
+
+  request options, (err, res, body) ->
     if err?
       callback err
     else if res.statusCode isnt 200
       callback new Error 'unexpected status code'
     else
-      callback null, body
+      callback null, res, body
 
 gatherer[name] = require "./gatherer/#{name}" for name in [
   'card'
@@ -32,7 +40,7 @@ gatherer[name] = require "./gatherer/#{name}" for name in [
 ]
 
 collect_options = (label) -> (callback) ->
-  gatherer.request gatherer.url('/Pages/Default.aspx'), (err, body) ->
+  gatherer.request gatherer.url('/Pages/Default.aspx'), (err, res, body) ->
     return callback err if err?
     try formats = extract body, label catch err then return callback err
     callback null, formats
