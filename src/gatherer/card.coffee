@@ -6,6 +6,7 @@ supertypes  = require '../supertypes'
 module.exports = (details, callback) ->
   if 'which' of details and details.which not in ['a', 'b']
     callback new Error 'invalid which property (valid values are "a" and "b")'
+
   gatherer.request gatherer.card.url('Details.aspx', details), (err, body) ->
     if err then callback err else callback null, extract body, details
   return
@@ -130,7 +131,7 @@ extract = (html, details) ->
     set 'gatherer_url', "#{gatherer.origin}/Pages/Card/Details.aspx?multiverseid=#{details.id}"
   else
     # encodeURIComponent notably misses single quote, which messes up cards like "Gideon's Lawkeeper"
-    encodedName = encodeURIComponent(details.name).replace("'", "%27")
+    encodedName = encodeURIComponent(details.name).replace(/'/g, "%27")
     set 'image_url', "#{gatherer.origin}/Handlers/Image.ashx?type=card&name=#{encodedName}"
     set 'gatherer_url', "#{gatherer.origin}/Pages/Card/Details.aspx?name=#{encodedName}"
   card
