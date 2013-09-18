@@ -5,9 +5,7 @@ pagination  = require '../pagination'
 
 
 module.exports = (details, callback) ->
-  $$ = (fn) ->
-    (err, rest...) ->
-      if err then callback err else fn rest...
+  $$ = (fn) -> (err, res, body) -> if err then callback err else fn body
 
   fetch 1, details, $$ (html) ->
     {max} = pagination load(html) \

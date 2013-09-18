@@ -7,7 +7,7 @@ module.exports = (details, callback) ->
   if 'which' of details and details.which not in ['a', 'b']
     callback new Error 'invalid which property (valid values are "a" and "b")'
 
-  gatherer.request gatherer.card.url('Details.aspx', details), (err, body) ->
+  gatherer.request gatherer.card.url('Details.aspx', details), (err, res, body) ->
     if err then callback err else callback null, extract body, details
   return
 

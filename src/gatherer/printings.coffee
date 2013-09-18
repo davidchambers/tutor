@@ -3,7 +3,7 @@ load      = require '../load'
 
 
 module.exports = (details, callback) ->
-  gatherer.request gatherer.card.url('Printings.aspx', details), (err, body) ->
+  gatherer.request gatherer.card.url('Printings.aspx', details), (err, res, body) ->
     if err then callback err else callback null, extract body
   return
 
