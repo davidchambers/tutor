@@ -126,6 +126,14 @@ extract = (html, details) ->
     .exec($('.textRating').text().replace(/\s+/g, ''))[1..]
   set 'community_rating', rating: +rating, votes: +votes
 
+  if verbose
+    set 'image_url', "#{gatherer.origin}/Handlers/Image.ashx?type=card&multiverseid=#{details.id}"
+    set 'gatherer_url', "#{gatherer.origin}/Pages/Card/Details.aspx?multiverseid=#{details.id}"
+  else
+    # encodeURIComponent notably misses single quote, which messes up cards like "Gideon's Lawkeeper"
+    encodedName = encodeURIComponent(details.name).replace(/'/g, '%27')
+    set 'image_url', "#{gatherer.origin}/Handlers/Image.ashx?type=card&name=#{encodedName}"
+    set 'gatherer_url', "#{gatherer.origin}/Pages/Card/Details.aspx?name=#{encodedName}"
   card
 
 module.exports.url = (path, rest...) ->
