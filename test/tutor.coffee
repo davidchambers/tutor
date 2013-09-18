@@ -186,6 +186,11 @@ describe 'tutor.set', ->
     set 'Lorwyn', (err, cards) ->
       eq card.hasOwnProperty('color_indicator'), no for card in cards
 
+  it 'extracts image_url and gatherer_url', #73
+    set 'Lorwyn', (err, cards) ->
+      eq card.hasOwnProperty('image_url'), yes for card in cards
+      eq card.hasOwnProperty('gatherer_url'), yes for card in cards
+
   it 'extracts stats',
     set 'Lorwyn', (err, cards) ->
       eq cards[201].name, 'Pestermite'
@@ -366,11 +371,21 @@ describe 'tutor.card', ->
   it 'extracts expansion from card identified by id',
     card 2960, expansion: 'Homelands'
 
+  it 'extracts an image_url and gatherer_url for a card identified by name', #73
+    card 'Braids, Cabal Minion',
+      image_url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=Braids%2C%20Cabal%20Minion',
+      gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Braids%2C%20Cabal%20Minion'
+
   it 'ignores expansion of card identified by name',
     card 'Hill Giant', expansion: nonexistent
 
   it 'extracts rarity from card identified by id',
     card 2960, rarity: 'Rare'
+
+  it 'extracts an image_url and gatherer_url from card identified by id', #73
+    card 2960,
+      image_url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=2960',
+      gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2960'
 
   it 'ignores rarity of card identified by name',
     card 'Hill Giant', rarity: nonexistent
