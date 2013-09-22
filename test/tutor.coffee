@@ -527,6 +527,48 @@ describe 'tutor.card', ->
   it 'parses back face of double-faced card specified by id',
     card 262698, name: 'Werewolf Ransacker'
 
+  it 'allows accents to be omitted', (done) -> #52
+    # tutor.card("Juzam Djinn")
+    #
+    #                 1           2                        3
+    #                   languages
+    #                  /         \
+    #                 /           \
+    #                /             \
+    #     tutor.card --- details --- search (Juzam Djinn) ==> details (159132)
+    #                \             /
+    #                 \           /
+    #                  \         /
+    #                   printings
+    #
+    #  1. tutor.card("Juzam Djinn") produces three HTTP requests:
+    #
+    #     - GET /Pages/Card/Details.aspx?name=Juzam%20Djinn
+    #     - GET /Pages/Card/Languages.aspx?name=Juzam%20Djinn
+    #     - GET /Pages/Card/Printings.aspx?name=Juzam%20Djinn
+    #
+    #  2. Each of these requests is redirected to
+    #     /Pages/Search/Default.aspx?name=+[Juzam%20Djinn]
+    #
+    #  3. In turn, each of *these* requests is redirected to
+    #     /Pages/Card/Details.aspx?multiverseid=159132
+    #
+    for resource in ['details', 'languages', 'printings']
+      wizards
+        .get(card_url "#{resource.replace /./, upper}.aspx", name: 'Juzam Djinn')
+        .reply(302, '', 'Location': '/Pages/Search/Default.aspx?name=+[Juzam Djinn]')
+        .get('/Pages/Search/Default.aspx?name=+[Juzam%20Djinn]')
+        .reply(302, '', 'Location': '/Pages/Card/Details.aspx?multiverseid=159132')
+        .get(card_url 'Details.aspx', id: 159132)
+        .replyWithFile(200, "#{__dirname}/fixtures/cards/159132~details.html")
+        .get(card_url "#{resource.replace /./, upper}.aspx", name: 'Juzám Djinn')
+        .replyWithFile(200, "#{__dirname}/fixtures/cards/juzam-djinn~#{resource}.html")
+
+    tutor.card 'Juzam Djinn', (err, card) ->
+      assert.strictEqual err, null
+      assert.strictEqual card.name, 'Juzám Djinn'
+      done()
+
 
 $ = (command, test) -> (done) ->
   exec "bin/#{command}", (err, stdout, stderr) ->

@@ -28,9 +28,18 @@ tutor.card = (details, callback) ->
 
   Q.all([d1.promise, d2.promise, d3.promise])
   .then(([card, languages, {legality, versions}]) ->
-    card.languages = languages
-    card.legality = legality
-    card.versions = versions
-    callback null, card
+    # If card.name and details.name differ, requests were redirected
+    # (e.g. "Juzam Djinn" => "Juzám Djinn"). Resend requests with the
+    # correct name to get languages, legality, and versions.
+    if 'name' of details and card.name isnt details.name
+      clone = {}
+      clone[key] = value for key, value of details
+      clone.name = card.name
+      tutor.card clone, callback
+    else
+      card.languages = languages
+      card.legality = legality
+      card.versions = versions
+      callback null, card
   )
   .catch(callback)
