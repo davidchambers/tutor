@@ -18,6 +18,8 @@ gatherer.url = (pathname, query = {}) ->
 gatherer.request = (args...) ->
   if args.length >= 3
     [uri, options, callback] = args
+    options = JSON.parse JSON.stringify options
+    options.uri = uri
   else if Object::toString.call(args[0]) is '[object String]'
     [uri, callback] = args
     options = {uri}
