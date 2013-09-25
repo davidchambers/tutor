@@ -26,11 +26,26 @@ module.exports = (name, callback) ->
   Q.all([d1.promise, d2.promise])
   .then(([body1, body2]) ->
     basics = {}
-    load(body2)('.cardItem').each ->
-      ids = basics[@find('.cardTitle').text().trim()] = []
-      @find('.setVersions').find('a').filter ->
-        if @children("img[alt^='#{name}']").length
-          ids.push +url.parse(@attr('href'), yes).query.multiverseid
+
+    # > pattern.exec "Arabian Nights (Common)"
+    # ["Arabian Nights", "Arabian Nights"]
+    # > pattern.exec "Premium Deck Series: Fire and Lightning (Land)"
+    # ["Premium Deck Series: Fire and Lightning", "Fire and Lightning"]
+    pattern = /^(?:[^:]+: )?(.+)(?= [(]\w+[)]$)/
+    ids = ($container) ->
+      set = {}
+      $container.find('img').each ->
+        if (match = pattern.exec @attr('alt'))? and name in match
+          set[url.parse(@parent().attr('href'), yes).query.multiverseid] = 1
+      (+id for id of set)
+
+    # For sets with exactly one basic land, the "basic lands" search
+    # request is redirected. This is explained in more detail in #69.
+    $ = load body2
+    if ($items = $('.cardItem')).length then $items.each ->
+      basics[@find('.cardTitle').text().trim()] = ids @find('.setVersions')
+    else
+      basics[$('.contentTitle').text().trim()] = ids $('.cardDetails')
 
     # Loop through the set's cards in reverse order. Each time a basic
     # land is encountered, remove it from the array and insert all the
