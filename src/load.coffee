@@ -1,2 +1,2 @@
-if typeof window is 'undefined'
+if typeof process isnt 'undefined'
   module.exports = require('cheerio').load
