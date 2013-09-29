@@ -626,6 +626,21 @@ describe '$ tutor set', ->
       eq cards[0].name, 'Aesthir Glider'
       eq cards[1].name, 'Agent of Stromgald'
 
+  it 'handles sets with (one version of) exactly one basic land', #69
+    $ 'tutor set "Arabian Nights" --format json', (err, stdout) ->
+      cards = JSON.parse stdout
+      eq cards.length, 78
+      eq cards[55].name, 'Mountain'
+
+  it 'handles sets with (multiple versions of) exactly one basic land', #69
+    $ 'tutor set "Fire and Lightning" --format json', (err, stdout) ->
+      cards = JSON.parse stdout
+      eq cards.length, 34
+      eq cards[22].name, 'Mountain'
+      eq cards[23].name, 'Mountain'
+      eq cards[24].name, 'Mountain'
+      eq cards[25].name, 'Mountain'
+
 
 describe '$ tutor card', ->
 
