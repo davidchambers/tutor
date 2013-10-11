@@ -64,7 +64,7 @@ module.exports = (name, callback) ->
           clone
         clones.sort (a, b) ->
           if a.gatherer_url < b.gatherer_url then -1 else 1
-        set.splice idx, 1, clones...
+        set[idx..idx] = clones
     callback null, set
   )
   .catch(callback)
