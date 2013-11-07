@@ -6,27 +6,13 @@
     "type": "git",
     "url": "git://github.com/davidchambers/tutor.git"
   },
-  "contributors": [{
-    "name": "David Chambers",
-    "email": "dc@hashify.me",
-    "web": "http://davidchambersdesign.com"
-  }, {
-    "name": "Nick Novitski",
-    "email": "nicknovitski@gmail.com",
-    "web": "http://www.nicknovitski.com"
-  }, {
-    "name": "Pablo Castellazzi",
-    "email": "pablo.castellazzi@gmail.com",
-    "web": "https://bitbucket.org/pcastellazzi"
-  }, {
-    "name": "Rob Dennis",
-    "email": "rdennis@gmail.com",
-    "web": "https://github.com/rdennis463"
-  }, {
-    "name": "James Campos",
-    "email": "james.r.campos@gmail.com",
-    "web": "http://aeosynth.github.io"
-  }],
+  "contributors": [
+    "David Chambers <dc@davidchambers.me>",
+    "Nick Novitski <nicknovitski@gmail.com> (http://www.nicknovitski.com)",
+    "Pablo Castellazzi <pablo.castellazzi@gmail.com> (https://bitbucket.org/pcastellazzi)",
+    "Rob Dennis <rdennis@gmail.com> (https://github.com/robdennis)",
+    "James Campos <james.r.campos@gmail.com> (http://aeosynth.github.io)"
+  ],
   "main": "./lib/tutor",
   "bin": { "tutor" : "./bin/tutor" },
   "dependencies": {
