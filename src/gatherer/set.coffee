@@ -23,8 +23,8 @@ module.exports = (name, callback) ->
     type: '+["Basic"]+["Land"]'
   ), d2.makeNodeResolver()
 
-  Q.all([d1.promise, d2.promise])
-  .then(([body1, body2]) ->
+  Q.all [d1.promise, d2.promise]
+  .then ([body1, body2]) ->
     basics = {}
 
     # > pattern.exec "Arabian Nights (Common)"
@@ -66,8 +66,8 @@ module.exports = (name, callback) ->
           if a.gatherer_url < b.gatherer_url then -1 else 1
         set[idx..idx] = clones
     callback null, set
-  )
-  .catch(callback)
+
+  .catch callback
 
   return
 
@@ -102,7 +102,7 @@ extract = (html, name) ->
         card.mana_cost = "{#{val.match(/// ./. | \d+ | [^()] ///g).join('}{')}}"
         card.converted_mana_cost = to_converted_mana_cost card.mana_cost
       when 'Type:'
-        [types, subtypes] = /^([^\u2014]+?)(?:\s+\u2014\s+(.+))?$/.exec(val)[1..]
+        [..., types, subtypes] = /^([^\u2014]+?)(?:\s+\u2014\s+(.+))?$/.exec val
         for type in types.split(/\s+/)
           card[if type in supertypes then 'supertypes' else 'types'].push type
         if subtypes
@@ -113,11 +113,12 @@ extract = (html, name) ->
         #
         #   {(r/w){(r/w){(r/w)}
         card.text = val
-          .replace(/\n/g, '\n\n')
-          .replace(/(?:[{][(][2WUBRG][/][WUBRG][)])+[}]/gi, (match) -> match
-            .replace(/[{][(]/g, '{')
-            .replace(/[)][}]?/g, '}')
-            .toUpperCase())
+        .replace /\n/g, '\n\n'
+        .replace /(?:[{][(][2WUBRG][/][WUBRG][)])+[}]/gi, (match) ->
+          match
+          .replace /[{][(]/g, '{'
+          .replace /[)][}]?/g, '}'
+          .toUpperCase()
       when 'Color:'
         card.color_indicator = val
       when 'Pow/Tgh:'
@@ -128,7 +129,7 @@ extract = (html, name) ->
           ([^/]*(?:[{][^}]+[}])?) # toughness
           [)]
         $///
-        [power, toughness] = pattern.exec(val)[1..]
+        [..., power, toughness] = pattern.exec val
         card.power = gatherer._to_stat power
         card.toughness = gatherer._to_stat toughness
       when 'Loyalty:'

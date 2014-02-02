@@ -24,7 +24,7 @@ extract = (html) ->
   iter $("#{prefix}_PrintingsList_listRepeater_ctl00_cardTitle").parent().parent(),
     (row, [name, symbol, expansion, block]) ->
       [id] = /\d+$/.exec row.find('a').attr('href')
-      [match, rarity] = /[(](.+)[)]/.exec row.find('img').attr('alt')
+      [..., rarity] = /[(](.+)[)]/.exec row.find('img').attr('alt')
       data.versions[id] = {expansion, rarity}
 
   iter $("#{prefix}_LegalityList_listRepeater_ctl00_ConditionTableData").parent(),

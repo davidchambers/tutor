@@ -20,25 +20,26 @@ program = require 'commander'
 
 program.version require('../package').version
 
-['formats', 'sets', 'types'].forEach (resource) -> program
-  .command(resource)
-  .option('-f, --format [formatter]', '"json" or "summary"', 'summary')
+['formats', 'sets', 'types'].forEach (resource) ->
+  program
+  .command resource
+  .option '-f, --format [formatter]', '"json" or "summary"', 'summary'
   .action (options) ->
     tutor[resource] formatters[resource][options.format]
 
 program
-  .command('card <name|id>')
-  .description("output the given card's details")
-  .option('-f, --format [formatter]', '"json" or "summary"', 'summary')
-  .action (value, options) ->
-    tutor.card (if +value is +value then +value else value),
-               formatters.card[options.format]
+.command 'card <name|id>'
+.description "output the given card's details"
+.option '-f, --format [formatter]', '"json" or "summary"', 'summary'
+.action (value, options) ->
+  tutor.card (if +value is +value then +value else value),
+             formatters.card[options.format]
 
 program
-  .command('set <name>')
-  .description('output one page of cards from the named set')
-  .option('-f, --format [formatter]', '"json" or "summary"', 'summary')
-  .action (name, options) ->
-    tutor.set name, formatters.set[options.format]
+.command 'set <name>'
+.description 'output one page of cards from the named set'
+.option '-f, --format [formatter]', '"json" or "summary"', 'summary'
+.action (name, options) ->
+  tutor.set name, formatters.set[options.format]
 
 module.exports = program

@@ -66,7 +66,7 @@ extract = (html, details) ->
         set 'converted_mana_cost', +t1 this
 
       when 'Types:'
-        [types, subtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec(t1 this)[1..]
+        [..., types, subtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec t1 this
         for type in types.split(/\s+/)
           card[if type in supertypes then 'supertypes' else 'types'].push type
         set 'subtypes', subtypes?.split(/\s+/)
@@ -94,7 +94,7 @@ extract = (html, details) ->
         set 'watermark', t1 this
 
       when 'P/T:'
-        [power, toughness] = ///^(.+?)\s+/\s+(.+)$///.exec(t1 this)[1..]
+        [..., power, toughness] = ///^(.+?)\s+/\s+(.+)$///.exec t1 this
         set 'power', gatherer._to_stat power
         set 'toughness', gatherer._to_stat toughness
 
@@ -121,9 +121,9 @@ extract = (html, details) ->
       when 'All Sets:'
         set 'versions', gatherer._get_versions @next().find('img')
 
-  [rating, votes] =
+  [..., rating, votes] =
     ///^Community Rating:(\d(?:[.]\d+)?)/5[(](\d+)votes?[)]$///
-    .exec($('.textRating').text().replace(/\s+/g, ''))[1..]
+    .exec $('.textRating').text().replace(/\s+/g, '')
   set 'community_rating', rating: +rating, votes: +votes
 
   if verbose
