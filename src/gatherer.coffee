@@ -74,7 +74,7 @@ gatherer._get_rules_text = (node, get_text) ->
 gatherer._get_versions = (image_nodes) ->
   versions = {}
   image_nodes.each ->
-    [expansion, rarity] = /^(.*\S)\s+[(](.+)[)]$/.exec(@attr('alt'))[1..]
+    [..., expansion, rarity] = /^(.*\S)\s+[(](.+)[)]$/.exec @attr('alt')
     expansion = entities.decode expansion
     versions[/\d+$/.exec @parent().attr('href')] = {expansion, rarity}
   versions

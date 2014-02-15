@@ -18,8 +18,6 @@ upper = (text) -> text.toUpperCase()
 toSlug = (value) ->
   "#{value}".toLowerCase().replace(/[ ]/g, '-').replace(/[^\w-]/g, '')
 
-__ = (text) -> text.replace(/([^\n])\n(?!\n)/g, '$1 ')
-
 eq = (expected, actual) ->
   assert.strictEqual expected, actual
 
@@ -155,25 +153,25 @@ describe 'tutor.set', ->
 
   it 'extracts rules text',
     set 'Lorwyn', (err, cards) ->
-      eq cards[184].text, __ '''
+      eq cards[184].text, '''
         Flying
 
         When Mulldrifter enters the battlefield, draw two cards.
 
-        Evoke {2}{U} (You may cast this spell for its evoke cost.
+        Evoke {2}{U} (You may cast this spell for its evoke cost. \
         If you do, it's sacrificed when it enters the battlefield.)
       '''
 
   it 'handles consecutive hybrid mana symbols',
     set 'Eventide', (err, cards) ->
-      eq cards[54].text, __ '''
+      eq cards[54].text, '''
         {R/W}: Figure of Destiny becomes a 2/2 Kithkin Spirit.
 
-        {R/W}{R/W}{R/W}: If Figure of Destiny is a Spirit, it becomes
+        {R/W}{R/W}{R/W}: If Figure of Destiny is a Spirit, it becomes \
         a 4/4 Kithkin Spirit Warrior.
 
-        {R/W}{R/W}{R/W}{R/W}{R/W}{R/W}: If Figure of Destiny is a
-        Warrior, it becomes an 8/8 Kithkin Spirit Warrior Avatar
+        {R/W}{R/W}{R/W}{R/W}{R/W}{R/W}: If Figure of Destiny is a \
+        Warrior, it becomes an 8/8 Kithkin Spirit Warrior Avatar \
         with flying and first strike.
       '''
 
@@ -306,25 +304,25 @@ describe 'tutor.card', ->
     card 'Diamond Faerie', subtypes: ['Faerie']
 
   it 'extracts rules text',
-    card 'Braids, Cabal Minion', text: __ '''
-      At the beginning of each player's upkeep, that player sacrifices
+    card 'Braids, Cabal Minion', text: '''
+      At the beginning of each player's upkeep, that player sacrifices \
       an artifact, creature, or land.
     '''
 
   it 'recognizes tap and untap symbols',
-    card 'Crackleburr', text: __ '''
-      {U/R}{U/R}, {T}, Tap two untapped red creatures you control:
+    card 'Crackleburr', text: '''
+      {U/R}{U/R}, {T}, Tap two untapped red creatures you control: \
       Crackleburr deals 3 damage to target creature or player.
 
-      {U/R}{U/R}, {Q}, Untap two tapped blue creatures you control:
-      Return target creature to its owner's hand.
+      {U/R}{U/R}, {Q}, Untap two tapped blue creatures you control: \
+      Return target creature to its owner's hand. \
       ({Q} is the untap symbol.)
     '''
 
   it 'extracts flavor text from card identified by id',
     card 2960,
-      flavor_text: __ '''
-        Joskun and the other Constables serve with passion,
+      flavor_text: '''
+        Joskun and the other Constables serve with passion, \
         if not with grace.
       '''
       flavor_text_attribution: 'Devin, Faerie Noble'
@@ -433,15 +431,15 @@ describe 'tutor.card', ->
     card 'Ajani Goldmane', (err, card) ->
       assert.strictEqual card.rulings[0].length, 2
       assert.strictEqual card.rulings[0][0], '2007-10-01'
-      assert.strictEqual card.rulings[0][1], __ '''
-        The vigilance granted to a creature by the second ability
-        remains until the end of the turn even if the +1/+1 counter
+      assert.strictEqual card.rulings[0][1], '''
+        The vigilance granted to a creature by the second ability \
+        remains until the end of the turn even if the +1/+1 counter \
         is removed.
       '''
       assert.strictEqual card.rulings[1].length, 2
       assert.strictEqual card.rulings[1][0], '2007-10-01'
-      assert.strictEqual card.rulings[1][1], __ '''
-        The power and toughness of the Avatar created by the third
+      assert.strictEqual card.rulings[1][1], '''
+        The power and toughness of the Avatar created by the third \
         ability will change as your life total changes.
       '''
 

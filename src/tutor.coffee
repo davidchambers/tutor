@@ -26,8 +26,8 @@ tutor.card = (details, callback) ->
   d3 = Q.defer()
   gatherer.printings details, d3.makeNodeResolver()
 
-  Q.all([d1.promise, d2.promise, d3.promise])
-  .then(([card, languages, {legality, versions}]) ->
+  Q.all [d1.promise, d2.promise, d3.promise]
+  .then ([card, languages, {legality, versions}]) ->
     # If card.name and details.name differ, requests were redirected
     # (e.g. "Juzam Djinn" => "Juzám Djinn"). Resend requests with the
     # correct name to get languages, legality, and versions.
@@ -41,5 +41,4 @@ tutor.card = (details, callback) ->
       card.legality = legality
       card.versions = versions
       callback null, card
-  )
-  .catch(callback)
+  .catch callback

@@ -33,7 +33,7 @@ setup:
 	@npm install
 
 test: all
-	@$(bin)/mocha --compilers coffee:coffee-script --grep '^\$$' --invert
+	@$(bin)/mocha --compilers coffee:coffee-script/register --grep '^\$$' --invert --timeout 5000
 
 testcli: all
-	@$(bin)/mocha --compilers coffee:coffee-script --grep '^\$$' --timeout 10000
+	@$(bin)/mocha --compilers coffee:coffee-script/register --grep '^\$$' --timeout 10000
