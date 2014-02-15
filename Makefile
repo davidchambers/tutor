@@ -2,9 +2,12 @@
 
 bin = node_modules/.bin
 
-all: $(shell find src/*.coffee src/**/*.coffee | sed -e 's/^src/lib/' -e 's/coffee$$/js/')
+JS_FILES = $(patsubst src/%.coffee,lib/%.js,$(shell find src -type f))
+FIXTURES = $(patsubst %,%.html,$(shell find test/fixtures -type f -not -name '*.html'))
 
-fixtures: test/fixtures/index.html $(shell find test/fixtures/**/* -regex '[^.]*' -exec echo {}.html \;)
+all: $(JS_FILES)
+
+fixtures: $(FIXTURES)
 
 lib/%.js: src/%.coffee
 	@mkdir -p $(@D)
@@ -15,8 +18,8 @@ test/fixtures/%.html: test/fixtures/%
 
 clean:
 	@rm -rf node_modules
-	@rm -rf test/fixtures
-	@git checkout -- lib test/fixtures
+	@rm -f $(JS_FILES)
+	@rm -f $(FIXTURES)
 
 release:
 ifndef VERSION
