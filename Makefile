@@ -9,22 +9,22 @@ FIXTURES = $(patsubst %,%.html,$(shell find test/fixtures -type f -not -name '*.
 all: $(JS_FILES)
 
 lib/%.js: src/%.coffee
-	@mkdir -p $(@D)
-	@cat $< | $(COFFEE) --compile --stdio > $@
+	mkdir -p $(@D)
+	cat $< | $(COFFEE) --compile --stdio > $@
 
 
 .PHONY: fixtures
 fixtures: $(FIXTURES)
 
 test/fixtures/%.html: test/fixtures/%
-	@curl "$(shell cat $<)" --output $@ --silent
+	curl "$(shell cat $<)" --output $@ --silent
 
 
 .PHONY: clean
 clean:
-	@rm -rf node_modules
-	@rm -f $(JS_FILES)
-	@rm -f $(FIXTURES)
+	rm -rf node_modules
+	rm -f $(JS_FILES)
+	rm -f $(FIXTURES)
 
 
 .PHONY: release
@@ -32,24 +32,24 @@ release:
 ifndef VERSION
 	$(error VERSION not set)
 endif
-	@rm -rf lib
-	@make
-	@sed -i '' 's/"version": "[^"]*"/"version": "$(VERSION)"/' package.json
-	@git commit --all --message $(VERSION)
-	@git tag $(VERSION)
+	rm -rf lib
+	make
+	sed -i '' 's/"version": "[^"]*"/"version": "$(VERSION)"/' package.json
+	git commit --all --message $(VERSION)
+	git tag $(VERSION)
 	@echo 'remember to run `npm publish`'
 
 
 .PHONY: setup
 setup:
-	@npm install
+	npm install
 
 
 .PHONY: test
 test: all
-	@$(MOCHA) --grep '^\$$' --invert --timeout 5000
+	$(MOCHA) --grep '^\$$' --invert --timeout 5000
 
 
 .PHONY: testcli
 testcli: all
-	@$(MOCHA) --grep '^\$$' --timeout 10000
+	$(MOCHA) --grep '^\$$' --timeout 10000
