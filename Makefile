@@ -1,4 +1,5 @@
-bin = node_modules/.bin
+COFFEE = node_modules/.bin/coffee
+MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script/register
 
 JS_FILES = $(patsubst src/%.coffee,lib/%.js,$(shell find src -type f))
 FIXTURES = $(patsubst %,%.html,$(shell find test/fixtures -type f -not -name '*.html'))
@@ -9,7 +10,7 @@ all: $(JS_FILES)
 
 lib/%.js: src/%.coffee
 	@mkdir -p $(@D)
-	@cat $< | $(bin)/coffee --compile --stdio > $@
+	@cat $< | $(COFFEE) --compile --stdio > $@
 
 
 .PHONY: fixtures
@@ -46,9 +47,9 @@ setup:
 
 .PHONY: test
 test: all
-	@$(bin)/mocha --compilers coffee:coffee-script/register --grep '^\$$' --invert --timeout 5000
+	@$(MOCHA) --grep '^\$$' --invert --timeout 5000
 
 
 .PHONY: testcli
 testcli: all
-	@$(bin)/mocha --compilers coffee:coffee-script/register --grep '^\$$' --timeout 10000
+	@$(MOCHA) --grep '^\$$' --timeout 10000
