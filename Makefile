@@ -26,16 +26,22 @@ clean:
 	rm -f $(FIXTURES)
 
 
+.PHONY: release-patch release-minor release-major
+VERSION = $(shell node -p 'require("./package.json").version')
+release-patch: NEXT_VERSION = $(shell node -p 'require("semver").inc("$(VERSION)", "patch")')
+release-minor: NEXT_VERSION = $(shell node -p 'require("semver").inc("$(VERSION)", "minor")')
+release-major: NEXT_VERSION = $(shell node -p 'require("semver").inc("$(VERSION)", "major")')
+release-patch: release
+release-minor: release
+release-major: release
+
 .PHONY: release
 release:
-ifndef VERSION
-	$(error VERSION not set)
-endif
 	rm -rf lib
 	make
-	sed -i '' 's/"version": "[^"]*"/"version": "$(VERSION)"/' package.json
-	git commit --all --message $(VERSION)
-	git tag $(VERSION)
+	sed -i '' 's/"version": "[^"]*"/"version": "$(NEXT_VERSION)"/' package.json
+	git commit --all --message $(NEXT_VERSION)
+	git tag $(NEXT_VERSION)
 	@echo 'remember to run `npm publish`'
 
 

@@ -26,6 +26,7 @@
     "coffee-script": "1.7.x",
     "mocha": "1.8.x",
     "nock": "0.16.x",
+    "semver": "2.2.x",
     "should": "1.2.x"
   }
 }
