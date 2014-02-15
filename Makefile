@@ -22,7 +22,6 @@ test/fixtures/%.html: test/fixtures/%
 
 .PHONY: clean
 clean:
-	rm -rf node_modules
 	rm -f $(JS_FILES)
 	rm -f $(FIXTURES)
 
