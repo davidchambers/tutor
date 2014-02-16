@@ -9,8 +9,7 @@ FIXTURES = $(patsubst %,%.html,$(shell find test/fixtures -type f -not -name '*.
 all: $(JS_FILES)
 
 lib/%.js: src/%.coffee
-	mkdir -p $(@D)
-	cat $< | $(COFFEE) --compile --stdio > $@
+	$(COFFEE) --compile --output $(@D) $<
 
 
 .PHONY: fixtures
