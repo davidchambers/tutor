@@ -16,7 +16,7 @@ lib/%.js: src/%.coffee
 fixtures: $(FIXTURES)
 
 test/fixtures/%.html: test/fixtures/%
-	curl "$(shell cat $<)" --output $@ --silent
+	xargs curl --silent <$< >$@
 
 
 .PHONY: clean
