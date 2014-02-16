@@ -20,7 +20,7 @@
     "commander": "2.1.x",
     "entities": "0.3.x",
     "q": "1.0.x",
-    "request": "2.12.x"
+    "request": "2.33.x"
   },
   "devDependencies": {
     "coffee-script": "1.7.x",
