@@ -1,3 +1,5 @@
+cheerio   = require 'cheerio'
+
 gatherer  = require '../gatherer'
 load      = require '../load'
 
@@ -9,7 +11,7 @@ module.exports = (details, callback) ->
 
 iter = (row, fn) ->
   while row.hasClass 'cardItem'
-    fn row, row.children().map -> gatherer._get_text this
+    fn row, row.children().toArray().map(cheerio).map(gatherer._get_text)
     break if row.next() is row
     row = row.next()
 

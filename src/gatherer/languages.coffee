@@ -1,3 +1,5 @@
+cheerio     = require 'cheerio'
+
 gatherer    = require '../gatherer'
 languages   = require '../languages'
 load        = require '../load'
@@ -26,8 +28,8 @@ fetch = (page, details, callback) ->
 
 extract = (html) ->
   $ = load html
-  $('tr.cardItem').map ->
-    [trans_card_name, language] = @children()
+  $('tr.cardItem').toArray().map(cheerio).map ($tr) ->
+    [trans_card_name, language] = $tr.children()
     $name = $(trans_card_name)
     code = languages[$(language).text().trim()]
     name = $name.text().trim()

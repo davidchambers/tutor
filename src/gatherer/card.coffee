@@ -83,7 +83,7 @@ extract = (html, details) ->
           $el.remove()
 
         pattern = /^["\u00AB\u201E\u300C]\s*(.+?)\s*["\u00BB\u300D]([.]?)$/
-        text = $flavor.children().map(-> t this).join('\n')
+        text = $flavor.children().toArray().map(t).join('\n')
         text = match[1] + match[2] if match and match = pattern.exec text
         set 'flavor_text', text
 
