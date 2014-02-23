@@ -10,20 +10,20 @@ FIXTURES = $(patsubst %,%.html,$(shell find test/fixtures -type f -not -name '*.
 all: $(JS_FILES)
 
 lib/%.js: src/%.coffee
-	$(COFFEE) --compile --output $(@D) $<
+	$(COFFEE) --compile --output $(@D) -- $<
 
 
 .PHONY: fixtures
 fixtures: $(FIXTURES)
 
 test/fixtures/%.html: test/fixtures/%
-	xargs curl --silent <$< >$@
+	xargs curl --silent -- <$< >$@
 
 
 .PHONY: clean
 clean:
-	rm -f $(JS_FILES)
-	rm -f $(FIXTURES)
+	rm -f -- $(JS_FILES)
+	rm -f -- $(FIXTURES)
 
 
 .PHONY: release-patch release-minor release-major
