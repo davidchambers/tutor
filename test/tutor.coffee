@@ -4,8 +4,8 @@ fs        = require 'fs'
 url       = require 'url'
 
 nock      = require 'nock'
-gatherer  = require '../src/gatherer'
-tutor     = require '../src/tutor'
+gatherer  = require '../lib/gatherer'
+tutor     = require '..'
 
 
 wizards = nock gatherer.origin
