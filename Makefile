@@ -51,10 +51,10 @@ setup:
 
 
 .PHONY: test
-test: all
+test:
 	$(MOCHA) --grep '^\$$' --invert --timeout 5000
 
 
 .PHONY: testcli
-testcli: all
+testcli:
 	$(MOCHA) --grep '^\$$' --timeout 10000
