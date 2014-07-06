@@ -22,8 +22,8 @@ test/fixtures/%.html: test/fixtures/%
 
 .PHONY: clean
 clean:
-	rm -f -- $(JS_FILES)
-	rm -f -- $(FIXTURES)
+	@rm -f -- $(JS_FILES)
+	@rm -f -- $(FIXTURES)
 
 
 .PHONY: release-patch release-minor release-major

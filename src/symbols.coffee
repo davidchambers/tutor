@@ -1,4 +1,7 @@
-exports[value] = key for key, value of {
+_ = require 'underscore'
+
+
+module.exports = _.invert
   'W': 'White'
   'U': 'Blue'
   'B': 'Black'
@@ -14,4 +17,3 @@ exports[value] = key for key, value of {
   'B/P': 'Phyrexian Black'
   'R/P': 'Phyrexian Red'
   'G/P': 'Phyrexian Green'
-}

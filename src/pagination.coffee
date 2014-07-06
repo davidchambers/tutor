@@ -1,15 +1,16 @@
 cheerio   = require 'cheerio'
+_         = require 'underscore'
+url       = require 'url'
 
 gatherer  = require './gatherer'
-url       = require './url'
 
 
 module.exports = ($container) ->
   $links = $container.children('a')
   $selected = $links.filter('[style="text-decoration:underline;"]')
-  numbers = $links.toArray().map(cheerio).map ($link) ->
-    +url.parse($link.attr('href'), yes).query.page + 1
+  numbers = _.map $links, (el) ->
+    +url.parse(cheerio(el).attr('href'), yes).query.page + 1
 
-  min: Math.min 1, numbers...
-  max: Math.max 1, numbers...
+  min: _.min [1, numbers...]
+  max: _.max [1, numbers...]
   selected: if $selected.length then +gatherer._get_text($selected) else 1

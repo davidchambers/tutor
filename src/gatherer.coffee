@@ -1,7 +1,8 @@
+cheerio   = require 'cheerio'
+entities  = require 'entities'
 request   = require 'request'
+_         = require 'underscore'
 
-entities  = require './entities'
-load      = require './load'
 symbols   = require './symbols'
 
 
@@ -9,7 +10,7 @@ gatherer = module.exports
 gatherer.origin = 'http://gatherer.wizards.com'
 gatherer.url = (pathname, query = {}) ->
   url = "#{gatherer.origin}#{pathname}"
-  keys = Object.keys(query).sort()
+  keys = _.keys(query).sort()
   if keys.length
     url += "?#{("#{encodeURIComponent key}=#{encodeURIComponent query[key]}" \
                 for key in keys).join('&')}"
@@ -20,7 +21,7 @@ gatherer.request = (args...) ->
     [uri, options, callback] = args
     options = JSON.parse JSON.stringify options
     options.uri = uri
-  else if Object::toString.call(args[0]) is '[object String]'
+  else if _.isString args[0]
     [uri, callback] = args
     options = {uri}
   else
@@ -43,13 +44,14 @@ gatherer[name] = require "./gatherer/#{name}" for name in [
 
 collect_options = (label) -> (callback) ->
   gatherer.request gatherer.url('/Pages/Default.aspx'), (err, res, body) ->
-    return callback err if err?
-    try formats = extract body, label catch err then return callback err
-    callback null, formats
+    if err?
+      callback err
+    else
+      callback null, extract cheerio.load(body), label
+    return
   return
 
-extract = (html, label) ->
-  $ = load html
+extract = ($, label) ->
   id = "#ctl00_ctl00_MainContent_Content_SearchControls_#{label}AddText"
   values = ($(o).attr('value') for o in $(id).children())
   values = (entities.decode v for v in values when v)
@@ -64,24 +66,27 @@ to_symbol = (alt) ->
 
 gatherer._get_text = (node) ->
   clone = node.clone()
-  clone.find('img').each -> @replaceWith "{#{to_symbol @attr 'alt'}}"
+  _.each clone.find('img'), (el) ->
+    $el = cheerio el
+    $el.replaceWith "{#{to_symbol $el.attr 'alt'}}"
   clone.text().trim()
 
-identity = (value) -> value
 gatherer._get_rules_text = (node, get_text) ->
-  node.children().toArray().map(get_text).filter(identity).join('\n\n')
+  _.map(node.children(), get_text).filter(Boolean).join('\n\n')
 
 gatherer._get_versions = (image_nodes) ->
-  versions = {}
-  image_nodes.each ->
-    [..., expansion, rarity] = /^(.*\S)\s+[(](.+)[)]$/.exec @attr('alt')
-    expansion = entities.decode expansion
-    versions[/\d+$/.exec @parent().attr('href')] = {expansion, rarity}
-  versions
+  _.object _.map image_nodes, (el) ->
+    $el = cheerio el
+    key = /\d+$/.exec $el.parent().attr('href')
+    match = /^(.*) [(](.*?)[)]$/.exec $el.attr('alt')
+    value =
+      expansion: entities.decode match[1]
+      rarity: match[2]
+    [key, value]
 
 gatherer._set = (obj, key, value) ->
-  obj[key] = value unless value is undefined or value isnt value
+  obj[key] = value unless value is undefined or _.isNaN value
 
 gatherer._to_stat = (str) ->
   num = +str?.replace('{1/2}', '.5')
-  if num is num then num else str
+  if _.isNaN num then str else num
