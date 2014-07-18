@@ -1,6 +1,6 @@
 {
   "name": "tutor",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Interface for Gatherer, the Magic: The Gathering card database",
   "repository": {
     "type": "git",
@@ -14,7 +14,9 @@
     "James Campos <james.r.campos@gmail.com> (http://aeosynth.github.io)"
   ],
   "main": "./lib/tutor",
-  "bin": { "tutor" : "./bin/tutor" },
+  "bin": {
+    "tutor": "./bin/tutor"
+  },
   "engines": {
     "node": ">=0.10.0"
   },
