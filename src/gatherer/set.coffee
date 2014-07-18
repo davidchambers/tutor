@@ -36,7 +36,7 @@ module.exports = (name, callback) ->
       gatherer.request gatherer.url(
         '/Pages/Search/Default.aspx'
         _.extend output: 'standard', page: "#{page}", common_params
-      ), deferred.makeNodeResolver()
+      ), deferred.makeNodeResolver yes
       deferred.promise
     .then (xs) ->
       for [res] in xs
