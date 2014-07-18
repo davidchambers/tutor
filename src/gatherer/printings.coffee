@@ -1,22 +1,21 @@
 cheerio   = require 'cheerio'
+_         = require 'underscore'
 
 gatherer  = require '../gatherer'
-load      = require '../load'
 
 
 module.exports = (details, callback) ->
   gatherer.request gatherer.card.url('Printings.aspx', details), (err, res, body) ->
-    if err then callback err else callback null, extract body
+    if err then callback err else callback null, extract cheerio.load body
   return
 
 iter = (row, fn) ->
   while row.hasClass 'cardItem'
-    fn row, row.children().toArray().map(cheerio).map(gatherer._get_text)
+    fn row, _.map row.children(), _.compose gatherer._get_text, cheerio
     break if row.next() is row
     row = row.next()
 
-extract = (html) ->
-  $ = load html
+extract = ($) ->
   data =
     legality: {}
     versions: {}

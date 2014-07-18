@@ -4,68 +4,89 @@ fs        = require 'fs'
 url       = require 'url'
 
 nock      = require 'nock'
+Q         = require 'q'
+_         = require 'underscore'
+
 gatherer  = require '../lib/gatherer'
 tutor     = require '..'
 
 
-wizards = nock gatherer.origin
 card_url = (args...) ->
   gatherer.card.url(args...).substr(gatherer.origin.length)
 
-lower = (text) -> text.toLowerCase()
-upper = (text) -> text.toUpperCase()
+capitalize = (text) -> text.replace /./, (chr) -> chr.toUpperCase()
 
 toSlug = (value) ->
   "#{value}".toLowerCase().replace(/[ ]/g, '-').replace(/[^\w-]/g, '')
 
-eq = (expected, actual) ->
-  assert.strictEqual expected, actual
-
-nonexistent = {}
-assert_equal = (expected) -> (err, actual) ->
-  for own prop, value of expected
-    if value isnt nonexistent
-      assert.deepEqual actual[prop], value
-    else if Object::hasOwnProperty.call actual, prop
-      throw new Error "unexpected \"#{prop}\" property"
+eq = assert.strictEqual
 
 index = (fn, test) -> (done) ->
-  wizards.get('/Pages/Default.aspx')
-         .replyWithFile(200, __dirname + '/fixtures/index.html')
+  scope = nock gatherer.origin
+    .get '/Pages/Default.aspx'
+    .replyWithFile 200, "#{__dirname}/fixtures/index.html"
+
   fn (err, data) ->
     test err, data
+    scope.done()
     done()
+
+page_ranges =
+  'Apocalypse':           [0..5]
+  'Eventide':             [0..7]
+  'Future Sight':         [0..7]
+  'Lorwyn':               [0..11]
+  'New Phyrexia':         [0..6]
+  'Rise of the Eldrazi':  [0..9]
+  'Saviors of Kamigawa':  [0..6]
+  'Shadowmoor':           [0..11]
+  'Unhinged':             [0..5]
+  'Vanguard':             [0..4]
 
 set = (name, test) -> (done) ->
-  path = "#{__dirname}/fixtures/sets/#{toSlug name}"
-  wizards.get(url.parse(fs.readFileSync path, 'utf8').path)
-         .replyWithFile(200, "#{path}.html")
-  wizards.get(url.parse(fs.readFileSync "#{path}~basics", 'utf8').path)
-         .replyWithFile(200, "#{path}~basics.html")
-  tutor.set name, (err, cards) ->
-    test err, cards
-    done()
+  filenames = _.map ['checklist', page_ranges[name]...], (suffix) ->
+    "#{__dirname}/fixtures/sets/#{toSlug name}~#{suffix}"
+
+  promises = _.map filenames, (filename) ->
+    deferred = Q.defer()
+    fs.readFile filename, 'utf8', deferred.makeNodeResolver()
+    deferred.promise
+
+  Q.all promises
+  .done (bodies) ->
+    scope = nock gatherer.origin
+    _.each _.zip(filenames, bodies), ([filename, body]) ->
+      scope
+        .get url.parse(body).path
+        .replyWithFile 200, "#{filename}.html"
+
+    tutor.set name, (err, cards) ->
+      test err, cards
+      scope.done()
+      done()
 
 card = (details, test) -> (done) ->
-  switch typeof details
-    when 'number' then details = id: details
-    when 'string' then details = name: details
+  switch
+    when _.isNumber details then details = id: details
+    when _.isString details then details = name: details
 
+  scope = nock gatherer.origin
   for resource in ['details', 'languages', 'printings']
     parts = [toSlug details.id ? details.name]
     parts.push toSlug details.name if 'id' of details and 'name' of details
     parts.push resource
-    wizards
-      .get(card_url resource.replace(/./, upper) + '.aspx', details)
-      .replyWithFile(200, "#{__dirname}/fixtures/cards/#{parts.join('~')}.html")
+    scope
+      .get card_url "#{capitalize resource}.aspx", details
+      .replyWithFile 200, "#{__dirname}/fixtures/cards/#{parts.join('~')}.html"
     if (pages = details._pages?[resource]) > 1
       for page in [2..pages]
-        wizards
-          .get(card_url resource.replace(/./, upper) + '.aspx', details, {page})
-          .replyWithFile(200, "#{__dirname}/fixtures/cards/#{parts.join('~')}~#{page}.html")
+        scope
+          .get card_url "#{capitalize resource}.aspx", details, {page}
+          .replyWithFile 200, "#{__dirname}/fixtures/cards/#{parts.join('~')}~#{page}.html"
 
   tutor.card details, (err, card) ->
-    (if typeof test is 'function' then test else assert_equal test) err, card
+    test err, card
+    scope.done()
     done()
 
 
@@ -73,79 +94,92 @@ describe 'tutor.formats', ->
 
   it 'provides an array of format names',
     index tutor.formats, (err, formatNames) ->
-      assert formatNames instanceof Array
-      assert 'Invasion Block' in formatNames
+      eq err, null
+      assert _.isArray formatNames
+      assert _.contains formatNames, 'Invasion Block'
 
 
 describe 'tutor.sets', ->
 
   it 'provides an array of set names',
     index tutor.sets, (err, setNames) ->
-      assert setNames instanceof Array
-      assert 'Arabian Nights' in setNames
+      eq err, null
+      assert _.isArray setNames
+      assert _.contains setNames, 'Arabian Nights'
 
 
 describe 'tutor.types', ->
 
   it 'provides an array of types',
     index tutor.types, (err, types) ->
-      assert types instanceof Array
-      assert 'Land' in types
+      eq err, null
+      assert _.isArray types
+      assert _.contains types, 'Land'
 
 
 describe 'tutor.set', ->
 
   it 'extracts names',
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq cards[2].name, 'Ajani Goldmane'
 
   it 'extracts mana costs',
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq cards[2].name, 'Ajani Goldmane'
       eq cards[2].mana_cost, '{2}{W}{W}'
 
   it 'extracts mana costs containing hybrid mana symbols',
     set 'Eventide', (err, cards) ->
+      eq err, null
       eq cards[25].name, 'Crackleburr'
       eq cards[25].mana_cost, '{1}{U/R}{U/R}'
 
   it 'extracts mana costs containing Phyrexian mana symbols',
     set 'New Phyrexia', (err, cards) ->
+      eq err, null
       eq cards[161].name, 'Vault Skirge'
       eq cards[161].mana_cost, '{1}{B/P}'
 
   it 'extracts mana costs containing double-digit mana symbols', #71
     set 'Rise of the Eldrazi', (err, cards) ->
+      eq err, null
       eq cards[231].name, 'Ulamog, the Infinite Gyre'
       eq cards[231].mana_cost, '{11}'
 
   it 'includes mana costs discerningly',
     set 'Future Sight', (err, cards) ->
+      eq err, null
       eq cards[64].name, 'Horizon Canopy'
-      eq cards[64].hasOwnProperty('mana_cost'), no
+      assert not _.has cards[64], 'mana_cost'
       eq cards[111].name, 'Pact of Negation'
-      eq cards[111].hasOwnProperty('mana_cost'), yes
+      assert _.has cards[111], 'mana_cost'
 
   it 'calculates converted mana costs',
     set 'Shadowmoor', (err, cards) ->
+      eq err, null
       eq cards[72].name, 'Flame Javelin'
       eq cards[72].mana_cost, '{2/R}{2/R}{2/R}'
       eq cards[72].converted_mana_cost, 6
 
   it 'extracts supertypes',
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq cards[56].name, 'Doran, the Siege Tower'
       eq cards[56].supertypes.length, 1
       eq cards[56].supertypes[0], 'Legendary'
 
   it 'extracts types',
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq cards[56].name, 'Doran, the Siege Tower'
       eq cards[56].types.length, 1
       eq cards[56].types[0], 'Creature'
 
   it 'extracts subtypes',
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq cards[56].name, 'Doran, the Siege Tower'
       eq cards[56].subtypes.length, 2
       eq cards[56].subtypes[0], 'Treefolk'
@@ -153,6 +187,7 @@ describe 'tutor.set', ->
 
   it 'extracts rules text',
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq cards[184].text, '''
         Flying
 
@@ -164,39 +199,48 @@ describe 'tutor.set', ->
 
   it 'handles consecutive hybrid mana symbols',
     set 'Eventide', (err, cards) ->
+      eq err, null
       eq cards[54].text, '''
-        {R/W}: Figure of Destiny becomes a 2/2 Kithkin Spirit.
+        {R/W}: Figure of Destiny becomes a Kithkin Spirit with base \
+        power and toughness 2/2.
 
         {R/W}{R/W}{R/W}: If Figure of Destiny is a Spirit, it becomes \
-        a 4/4 Kithkin Spirit Warrior.
+        a Kithkin Spirit Warrior with base power and toughness 4/4.
 
         {R/W}{R/W}{R/W}{R/W}{R/W}{R/W}: If Figure of Destiny is a \
-        Warrior, it becomes an 8/8 Kithkin Spirit Warrior Avatar \
-        with flying and first strike.
+        Warrior, it becomes a Kithkin Spirit Warrior Avatar with base \
+        power and toughness 8/8, flying, and first strike.
       '''
 
   it 'extracts color indicators',
     set 'Future Sight', (err, cards) ->
+      eq err, null
       eq cards[34].name, 'Dryad Arbor'
       eq cards[34].color_indicator, 'Green'
 
   it 'includes color indicators discerningly',
     set 'Lorwyn', (err, cards) ->
-      eq card.hasOwnProperty('color_indicator'), no for card in cards
+      eq err, null
+      for card in cards
+        assert not _.has card, 'color_indicator'
 
   it 'extracts image_url and gatherer_url', #73
     set 'Lorwyn', (err, cards) ->
-      eq card.hasOwnProperty('image_url'), yes for card in cards
-      eq card.hasOwnProperty('gatherer_url'), yes for card in cards
+      eq err, null
+      for card in cards
+        assert _.has card, 'image_url'
+        assert _.has card, 'gatherer_url'
 
   it 'extracts stats',
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq cards[201].name, 'Pestermite'
       eq cards[201].power, 2
       eq cards[201].toughness, 1
 
   it 'handles fractional stats', #39
     set 'Unhinged', (err, cards) ->
+      eq err, null
       eq cards[10].name, 'Bad Ass'
       eq cards[10].power, 3.5
       eq cards[10].toughness, 1
@@ -209,36 +253,43 @@ describe 'tutor.set', ->
 
   it 'handles dynamic stats',
     set 'Future Sight', (err, cards) ->
+      eq err, null
       eq cards[161].name, 'Tarmogoyf'
       eq cards[161].power, '*'
       eq cards[161].toughness, '1+*'
 
   it 'extracts loyalties',
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq cards[2].name, 'Ajani Goldmane'
       eq cards[2].loyalty, 4
 
   it 'includes loyalties discerningly',
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq cards[201].name, 'Pestermite'
-      eq cards[201].hasOwnProperty('loyalty'), no
+      assert not _.has cards[201], 'loyalty'
 
   it 'extracts hand modifiers',
     set 'Vanguard', (err, cards) ->
-      eq cards[16].name, 'Eladamri'
-      eq cards[16].hand_modifier, -1
+      eq err, null
+      eq cards[17].name, 'Eladamri'
+      eq cards[17].hand_modifier, -1
 
   it 'extracts life modifiers',
     set 'Vanguard', (err, cards) ->
-      eq cards[16].name, 'Eladamri'
-      eq cards[16].life_modifier, 15
+      eq err, null
+      eq cards[17].name, 'Eladamri'
+      eq cards[17].life_modifier, 15
 
   it 'includes expansion',
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq card.expansion, 'Lorwyn' for card in cards
 
   it 'extracts rarities',
     set 'New Phyrexia', (err, cards) ->
+      eq err, null
       eq cards[7].name, 'Batterskull'
       eq cards[7].rarity, 'Mythic Rare'
       eq cards[9].name, 'Birthing Pod'
@@ -252,6 +303,7 @@ describe 'tutor.set', ->
 
   it 'extracts versions',
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq cards[2].name, 'Ajani Goldmane'
       eq cards[2].versions['Lorwyn'], 'Rare'
       eq cards[2].versions['Magic 2010'], 'Mythic Rare'
@@ -259,6 +311,7 @@ describe 'tutor.set', ->
 
   it 'includes all versions of each basic land', #66
     set 'Lorwyn', (err, cards) ->
+      eq err, null
       eq cards.length, 301
       eq cards[202].name, 'Plains'
       eq cards[203].name, 'Plains'
@@ -273,153 +326,238 @@ describe 'tutor.set', ->
       eq cards[204].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143622&type=card'
       eq cards[205].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143630&type=card'
 
+  it 'handles split cards', #86
+    set 'Apocalypse', (err, cards) ->
+      eq err, null
+      eq cards[48].name, 'Fire'
+      eq cards[65].name, 'Ice'
+
+  it 'handles flip cards', #86
+    set 'Saviors of Kamigawa', (err, cards) ->
+      eq err, null
+      eq cards[37].name, 'Erayo, Soratami Ascendant'
+      eq cards[38].name, "Erayo's Essence"
+
 
 describe 'tutor.card', ->
 
   it 'extracts name',
-    card 'Hill Giant', name: 'Hill Giant'
+    card 'Hill Giant', (err, card) ->
+      eq err, null
+      eq card.name, 'Hill Giant'
 
   it 'extracts mana cost',
-    card 'Hill Giant', mana_cost: '{3}{R}'
+    card 'Hill Giant', (err, card) ->
+      eq err, null
+      eq card.mana_cost, '{3}{R}'
 
   it 'extracts mana cost containing hybrid mana symbols',
-    card 'Crackleburr', mana_cost: '{1}{U/R}{U/R}'
+    card 'Crackleburr', (err, card) ->
+      eq err, null
+      eq card.mana_cost, '{1}{U/R}{U/R}'
 
   it 'extracts mana cost containing Phyrexian mana symbols',
-    card 'Vault Skirge', mana_cost: '{1}{B/P}'
+    card 'Vault Skirge', (err, card) ->
+      eq err, null
+      eq card.mana_cost, '{1}{B/P}'
 
   it 'includes mana cost only if present',
-    card 'Ancestral Vision', mana_cost: nonexistent
+    card 'Ancestral Vision', (err, card) ->
+      eq err, null
+      assert not _.has card, 'mana_cost'
 
   it 'extracts converted mana cost',
-    card 'Hill Giant', converted_mana_cost: 4
+    card 'Hill Giant', (err, card) ->
+      eq err, null
+      eq card.converted_mana_cost, 4
 
   it 'extracts supertypes',
-    card 'Diamond Faerie', supertypes: ['Snow']
+    card 'Diamond Faerie', (err, card) ->
+      eq err, null
+      assert.deepEqual card.supertypes, ['Snow']
 
   it 'extracts types',
-    card 'Diamond Faerie', types: ['Creature']
+    card 'Diamond Faerie', (err, card) ->
+      eq err, null
+      assert.deepEqual card.types, ['Creature']
 
   it 'extracts subtypes',
-    card 'Diamond Faerie', subtypes: ['Faerie']
+    card 'Diamond Faerie', (err, card) ->
+      eq err, null
+      assert.deepEqual card.subtypes, ['Faerie']
 
   it 'extracts rules text',
-    card 'Braids, Cabal Minion', text: '''
-      At the beginning of each player's upkeep, that player sacrifices \
-      an artifact, creature, or land.
-    '''
+    card 'Braids, Cabal Minion', (err, card) ->
+      eq err, null
+      eq card.text, '''
+        At the beginning of each player's upkeep, that player sacrifices \
+        an artifact, creature, or land.
+      '''
 
   it 'recognizes tap and untap symbols',
-    card 'Crackleburr', text: '''
-      {U/R}{U/R}, {T}, Tap two untapped red creatures you control: \
-      Crackleburr deals 3 damage to target creature or player.
+    card 'Crackleburr', (err, card) ->
+      eq err, null
+      eq card.text, '''
+        {U/R}{U/R}, {T}, Tap two untapped red creatures you control: \
+        Crackleburr deals 3 damage to target creature or player.
 
-      {U/R}{U/R}, {Q}, Untap two tapped blue creatures you control: \
-      Return target creature to its owner's hand. \
-      ({Q} is the untap symbol.)
-    '''
+        {U/R}{U/R}, {Q}, Untap two tapped blue creatures you control: \
+        Return target creature to its owner's hand. \
+        ({Q} is the untap symbol.)
+      '''
 
   it 'extracts flavor text from card identified by id',
-    card 2960,
-      flavor_text: '''
+    card 2960, (err, card) ->
+      eq err, null
+      eq card.flavor_text, '''
         Joskun and the other Constables serve with passion, \
         if not with grace.
       '''
-      flavor_text_attribution: 'Devin, Faerie Noble'
+      eq card.flavor_text_attribution, 'Devin, Faerie Noble'
 
   it 'ignores flavor text of card identified by name',
-    card 'Hill Giant', flavor_text: nonexistent
+    card 'Hill Giant', (err, card) ->
+      eq err, null
+      assert not _.has card, 'flavor_text'
 
   it 'extracts color indicator',
-    card 'Ancestral Vision', mana_cost: nonexistent, color_indicator: 'Blue'
+    card 'Ancestral Vision', (err, card) ->
+      eq err, null
+      eq card.color_indicator, 'Blue'
+      assert not _.has card, 'mana_cost'
 
   it 'includes color indicator only if present',
-    card 'Hill Giant', color_indicator: nonexistent
+    card 'Hill Giant', (err, card) ->
+      eq err, null
+      assert not _.has card, 'color_indicator'
 
   it 'extracts watermark',
-    card 'Vault Skirge', watermark: 'Phyrexian'
+    card 'Vault Skirge', (err, card) ->
+      eq err, null
+      eq card.watermark, 'Phyrexian'
 
   it 'extracts power',
-    card 'Hill Giant', power: 3
+    card 'Hill Giant', (err, card) ->
+      eq err, null
+      eq card.power, 3
 
   it 'extracts decimal power',
-    card 'Cardpecker', power: 1.5
+    card 'Cardpecker', (err, card) ->
+      eq err, null
+      eq card.power, 1.5
 
   it 'extracts toughness',
-    card 'Hill Giant', toughness: 3
+    card 'Hill Giant', (err, card) ->
+      eq err, null
+      eq card.toughness, 3
 
   it 'extracts decimal toughness',
-    card 'Cheap Ass', toughness: 3.5
+    card 'Cheap Ass', (err, card) ->
+      eq err, null
+      eq card.toughness, 3.5
 
   it 'extracts dynamic toughness',
-    card 2960, toughness: '1+*'
+    card 2960, (err, card) ->
+      eq err, null
+      eq card.toughness, '1+*'
 
   it 'extracts loyalty',
-    card 'Ajani Goldmane', loyalty: 4
+    card 'Ajani Goldmane', (err, card) ->
+      eq err, null
+      eq card.loyalty, 4
 
   it 'includes loyalty only if present',
-    card 'Hill Giant', loyalty: nonexistent
+    card 'Hill Giant', (err, card) ->
+      eq err, null
+      assert not _.has card, 'loyalty'
 
   it 'extracts hand modifier',
-    card 'Akroma, Angel of Wrath Avatar', hand_modifier: 1
+    card 'Akroma, Angel of Wrath Avatar', (err, card) ->
+      eq err, null
+      eq card.hand_modifier, 1
 
   it 'extracts life modifier',
-    card 'Akroma, Angel of Wrath Avatar', life_modifier: 7
+    card 'Akroma, Angel of Wrath Avatar', (err, card) ->
+      eq err, null
+      eq card.life_modifier, 7
 
   it 'extracts expansion from card identified by id',
-    card 2960, expansion: 'Homelands'
+    card 2960, (err, card) ->
+      eq err, null
+      eq card.expansion, 'Homelands'
 
   it 'extracts an image_url and gatherer_url for a card identified by name', #73
-    card 'Braids, Cabal Minion',
-      image_url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=Braids%2C%20Cabal%20Minion',
-      gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Braids%2C%20Cabal%20Minion'
+    card 'Braids, Cabal Minion', (err, card) ->
+      eq err, null
+      eq card.image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=Braids%2C%20Cabal%20Minion'
+      eq card.gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Braids%2C%20Cabal%20Minion'
 
   it 'ignores expansion of card identified by name',
-    card 'Hill Giant', expansion: nonexistent
+    card 'Hill Giant', (err, card) ->
+      eq err, null
+      assert not _.has card, 'expansion'
 
   it 'extracts rarity from card identified by id',
-    card 2960, rarity: 'Rare'
+    card 2960, (err, card) ->
+      eq err, null
+      eq card.rarity, 'Rare'
 
   it 'extracts an image_url and gatherer_url from card identified by id', #73
-    card 2960,
-      image_url: 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=2960',
-      gatherer_url: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2960'
+    card 2960, (err, card) ->
+      eq err, null
+      eq card.image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=2960'
+      eq card.gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2960'
 
   it 'ignores rarity of card identified by name',
-    card 'Hill Giant', rarity: nonexistent
+    card 'Hill Giant', (err, card) ->
+      eq err, null
+      assert not _.has card, 'rarity'
 
   it 'extracts number from card identified by id',
-    card 262698, number: '81b'
+    card 262698, (err, card) ->
+      eq err, null
+      eq card.number, '81b'
 
   it 'ignores number of card identified by name',
-    card 'Ancestral Vision', number: nonexistent
+    card 'Ancestral Vision', (err, card) ->
+      eq err, null
+      assert not _.has card, 'number'
 
   it 'extracts artist from card identified by id',
-    card 2960, artist: 'Dan Frazier'
+    card 2960, (err, card) ->
+      eq err, null
+      eq card.artist, 'Dan Frazier'
 
   it 'ignores artist of card identified by name',
-    card 'Hill Giant', artist: nonexistent
+    card 'Hill Giant', (err, card) ->
+      eq err, null
+      assert not _.has card, 'artist'
 
   it 'extracts versions',
-    card 'Ajani Goldmane', versions:
-      140233:
-        expansion: 'Lorwyn'
-        rarity: 'Rare'
-      191239:
-        expansion: 'Magic 2010'
-        rarity: 'Mythic Rare'
-      205957:
-        expansion: 'Magic 2011'
-        rarity: 'Mythic Rare'
+    card 'Ajani Goldmane', (err, card) ->
+      eq err, null
+      assert.deepEqual card.versions,
+        140233:
+          expansion: 'Lorwyn'
+          rarity: 'Rare'
+        191239:
+          expansion: 'Magic 2010'
+          rarity: 'Mythic Rare'
+        205957:
+          expansion: 'Magic 2011'
+          rarity: 'Mythic Rare'
 
   it 'extracts version from card with exactly one version', #51
-    card 'Cheap Ass', versions:
-      74220:
-        expansion: 'Unhinged'
-        rarity: 'Common'
+    card 'Cheap Ass', (err, card) ->
+      eq err, null
+      assert.deepEqual card.versions,
+        74220:
+          expansion: 'Unhinged'
+          rarity: 'Common'
 
   it 'extracts community rating',
     card 'Ajani Goldmane', (err, card) ->
+      eq err, null
       {rating, votes} = card.community_rating
       assert typeof rating is 'number', 'rating must be a number'
       assert 0 <= rating <= 5,          'rating must be between 0 and 5'
@@ -429,31 +567,33 @@ describe 'tutor.card', ->
 
   it 'extracts rulings',
     card 'Ajani Goldmane', (err, card) ->
-      assert.strictEqual card.rulings[0].length, 2
-      assert.strictEqual card.rulings[0][0], '2007-10-01'
-      assert.strictEqual card.rulings[0][1], '''
+      eq err, null
+      eq card.rulings[0].length, 2
+      eq card.rulings[0][0], '2007-10-01'
+      eq card.rulings[0][1], '''
         The vigilance granted to a creature by the second ability \
         remains until the end of the turn even if the +1/+1 counter \
         is removed.
       '''
-      assert.strictEqual card.rulings[1].length, 2
-      assert.strictEqual card.rulings[1][0], '2007-10-01'
-      assert.strictEqual card.rulings[1][1], '''
+      eq card.rulings[1].length, 2
+      eq card.rulings[1][0], '2007-10-01'
+      eq card.rulings[1][1], '''
         The power and toughness of the Avatar created by the third \
         ability will change as your life total changes.
       '''
 
   it 'extracts rulings for back face of double-faced card',
     card 'Werewolf Ransacker', (err, card) ->
+      eq err, null
       assert card.rulings.length
 
-  assert_languages_equal = (expected) ->
-    (err, card) ->
-      codes = Object.keys(expected).sort()
-      assert.deepEqual Object.keys(card.languages).sort(), codes
-      for code in codes
-        assert.strictEqual card.languages[code].name, expected[code].name
-        assert.deepEqual   card.languages[code].ids,  expected[code].ids
+  assert_languages_equal = (expected) -> (err, card) ->
+    eq err, null
+    codes = _.keys(expected).sort()
+    assert.deepEqual _.keys(card.languages).sort(), codes
+    _.each card.languages, (value, code) ->
+      eq value.name, expected[code].name
+      assert.deepEqual value.ids, expected[code].ids
 
   it 'extracts languages',
     card 262698, assert_languages_equal
@@ -483,47 +623,74 @@ describe 'tutor.card', ->
 
   it 'extracts legality info',
     card 'Braids, Cabal Minion', (err, card) ->
-      assert.strictEqual card.legality['Commander'], 'Special: Banned as Commander'
-      assert.strictEqual card.legality['Prismatic'], 'Legal'
+      eq err, null
+      eq card.legality['Commander'], 'Special: Banned as Commander'
+      eq card.legality['Prismatic'], 'Legal'
 
   it 'parses left side of split card specified by name',
-    card 'Fire', name: 'Fire'
+    card 'Fire', (err, card) ->
+      eq err, null
+      eq card.name, 'Fire'
 
   it 'parses right side of split card specified by name',
-    card 'Ice', name: 'Ice'
+    card 'Ice', (err, card) ->
+      eq err, null
+      eq card.name, 'Ice'
 
   it 'parses left side of split card specified by id',
-    card id: 27165, name: 'Fire', {name: 'Fire'}
+    card id: 27165, name: 'Fire', (err, card) ->
+      eq err, null
+      eq card.name, 'Fire'
 
   it 'parses right side of split card specified by id',
-    card id: 27165, name: 'Ice', {name: 'Ice'}
+    card id: 27165, name: 'Ice', (err, card) ->
+      eq err, null
+      eq card.name, 'Ice'
 
   it 'parses top half of flip card specified by name',
-    card 'Jushi Apprentice', name: 'Jushi Apprentice'
+    card 'Jushi Apprentice', (err, card) ->
+      eq err, null
+      eq card.name, 'Jushi Apprentice'
 
   it 'parses bottom half of flip card specified by name',
-    card 'Tomoya the Revealer', name: 'Tomoya the Revealer'
+    card 'Tomoya the Revealer', (err, card) ->
+      eq err, null
+      eq card.name, 'Tomoya the Revealer'
 
   it 'parses top half of flip card specified by id',
-    card 247175, name: 'Nezumi Graverobber'
+    card 247175, (err, card) ->
+      eq err, null
+      eq card.name, 'Nezumi Graverobber'
 
   it 'parses bottom half of flip card specified by id',
-    card id: 247175, which: 'b', {name: 'Nighteyes the Desecrator'}
+    card id: 247175, which: 'b', (err, card) ->
+      eq err, null
+      eq card.name, 'Nighteyes the Desecrator'
 
   it 'parses front face of double-faced card specified by name',
-    card 'Afflicted Deserter', name: 'Afflicted Deserter'
+    card 'Afflicted Deserter', (err, card) ->
+      eq err, null
+      eq card.name, 'Afflicted Deserter'
 
   it 'parses back face of double-faced card specified by name',
-    card 'Werewolf Ransacker', name: 'Werewolf Ransacker'
+    card 'Werewolf Ransacker', (err, card) ->
+      eq err, null
+      eq card.name, 'Werewolf Ransacker'
 
   it 'parses back face of double-faced card specified by lower-case name', #57
-    card 'werewolf ransacker', name: 'Werewolf Ransacker'
+    card 'werewolf ransacker', (err, card) ->
+      eq err, null
+      eq card.name, 'Werewolf Ransacker'
 
   it 'parses front face of double-faced card specified by id',
-    card 262675, name: 'Afflicted Deserter'
+    card 262675, (err, card) ->
+      eq err, null
+      eq card.name, 'Afflicted Deserter'
 
   it 'parses back face of double-faced card specified by id',
-    card 262698, name: 'Werewolf Ransacker'
+    card 262698, (err, card) ->
+      eq err, null
+      eq card.name, 'Werewolf Ransacker'
 
   it 'allows accents to be omitted', (done) -> #52
     # tutor.card("Juzam Djinn")
@@ -551,29 +718,28 @@ describe 'tutor.card', ->
     #  3. In turn, each of *these* requests is redirected to
     #     /Pages/Card/Details.aspx?multiverseid=159132
     #
+    scope = nock gatherer.origin
     for resource in ['details', 'languages', 'printings']
-      wizards
-        .get(card_url "#{resource.replace /./, upper}.aspx", name: 'Juzam Djinn')
-        .reply(302, '', 'Location': '/Pages/Search/Default.aspx?name=+[Juzam Djinn]')
-        .get('/Pages/Search/Default.aspx?name=+[Juzam%20Djinn]')
-        .reply(302, '', 'Location': '/Pages/Card/Details.aspx?multiverseid=159132')
-        .get(card_url 'Details.aspx', id: 159132)
-        .replyWithFile(200, "#{__dirname}/fixtures/cards/159132~details.html")
-        .get(card_url "#{resource.replace /./, upper}.aspx", name: 'Juzám Djinn')
-        .replyWithFile(200, "#{__dirname}/fixtures/cards/juzam-djinn~#{resource}.html")
+      scope
+        .get card_url "#{capitalize resource}.aspx", name: 'Juzam Djinn'
+        .reply 302, '', 'Location': '/Pages/Search/Default.aspx?name=+[Juzam Djinn]'
+        .get '/Pages/Search/Default.aspx?name=+[Juzam%20Djinn]'
+        .reply 302, '', 'Location': '/Pages/Card/Details.aspx?multiverseid=159132'
+        .get card_url 'Details.aspx', id: 159132
+        .replyWithFile 200, "#{__dirname}/fixtures/cards/159132~details.html"
+        .get card_url "#{capitalize resource}.aspx", name: 'Juzám Djinn'
+        .replyWithFile 200, "#{__dirname}/fixtures/cards/juzam-djinn~#{resource}.html"
 
     tutor.card 'Juzam Djinn', (err, card) ->
-      assert.strictEqual err, null
-      assert.strictEqual card.name, 'Juzám Djinn'
+      eq err, null
+      eq card.name, 'Juzám Djinn'
+      scope.done()
       done()
 
 
 $ = (command, test) -> (done) ->
   exec "bin/#{command}", (err, stdout, stderr) ->
-    if typeof test is 'string'
-      assert.strictEqual stdout, "#{test}\n"
-    else
-      test err, stdout, stderr
+    test err, stdout, stderr
     done()
 
 
@@ -581,10 +747,12 @@ describe '$ tutor formats', ->
 
   it 'prints formats',
     $ 'tutor formats', (err, stdout) ->
+      eq err, null
       assert 'Tempest Block' in stdout.split('\n')
 
   it 'prints JSON representation of formats',
     $ 'tutor formats --format json', (err, stdout) ->
+      eq err, null
       assert 'Tempest Block' in JSON.parse stdout
 
 
@@ -592,10 +760,12 @@ describe '$ tutor sets', ->
 
   it 'prints sets',
     $ 'tutor sets', (err, stdout) ->
+      eq err, null
       assert 'Stronghold' in stdout.split('\n')
 
   it 'prints JSON representation of sets',
     $ 'tutor sets --format json', (err, stdout) ->
+      eq err, null
       assert 'Stronghold' in JSON.parse stdout
 
 
@@ -603,35 +773,45 @@ describe '$ tutor types', ->
 
   it 'prints types',
     $ 'tutor types', (err, stdout) ->
+      eq err, null
       assert 'Enchantment' in stdout.split('\n')
 
   it 'prints JSON representation of types',
     $ 'tutor types --format json', (err, stdout) ->
+      eq err, null
       assert 'Enchantment' in JSON.parse stdout
 
 
 describe '$ tutor set', ->
 
   it 'prints summary of cards in set',
-    $ 'tutor set Alliances | head -n 2', '''
-      Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block.
-      Agent of Stromgald {R} 1/1 {R}: Add {B} to your mana pool.
-    '''
+    $ 'tutor set Alliances | head -n 3', (err, stdout) ->
+      eq err, null
+      eq stdout, '''
+        Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block.
+        Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block.
+        Agent of Stromgald {R} 1/1 {R}: Add {B} to your mana pool.
+
+      '''
 
   it 'prints JSON representation of cards in set',
     $ 'tutor set Alliances --format json', (err, stdout) ->
+      eq err, null
       cards = JSON.parse stdout
       eq cards[0].name, 'Aesthir Glider'
-      eq cards[1].name, 'Agent of Stromgald'
+      eq cards[1].name, 'Aesthir Glider'
+      eq cards[2].name, 'Agent of Stromgald'
 
   it 'handles sets with (one version of) exactly one basic land', #69
     $ 'tutor set "Arabian Nights" --format json', (err, stdout) ->
+      eq err, null
       cards = JSON.parse stdout
-      eq cards.length, 78
-      eq cards[55].name, 'Mountain'
+      eq cards.length, 92
+      eq cards[62].name, 'Mountain'
 
   it 'handles sets with (multiple versions of) exactly one basic land', #69
-    $ 'tutor set "Fire and Lightning" --format json', (err, stdout) ->
+    $ 'tutor set "Premium Deck Series: Fire and Lightning" --format json', (err, stdout) ->
+      eq err, null
       cards = JSON.parse stdout
       eq cards.length, 34
       eq cards[22].name, 'Mountain'
@@ -643,13 +823,16 @@ describe '$ tutor set', ->
 describe '$ tutor card', ->
 
   it 'prints summary of card',
-    $ 'tutor card Braingeyser',
-      'Braingeyser {X}{U}{U} Target player draws X cards.'
+    $ 'tutor card Braingeyser', (err, stdout) ->
+      eq err, null
+      eq stdout, 'Braingeyser {X}{U}{U} Target player draws X cards.\n'
 
   it 'prints JSON representation of card specified by name',
     $ 'tutor card Fireball --format json', (err, stdout) ->
-      assert.strictEqual JSON.parse(stdout).name, 'Fireball'
+      eq err, null
+      eq JSON.parse(stdout).name, 'Fireball'
 
   it 'prints JSON representation of card specified by id',
     $ 'tutor card 987 --format json', (err, stdout) ->
-      assert.strictEqual JSON.parse(stdout).artist, 'Brian Snoddy'
+      eq err, null
+      eq JSON.parse(stdout).artist, 'Brian Snoddy'

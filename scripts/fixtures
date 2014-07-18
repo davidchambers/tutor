@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -e
+
+ORIGIN=http://gatherer.wizards.com
+PATHNAME=/Pages/Search/Default.aspx
+
+slugify() {
+  echo "$1" | tr ' ' - | tr [:upper:] [:lower:]
+}
+
+uriencode() {
+  node -p "encodeURIComponent('$(sed "s/'/\\\'/g" <<<"$1")')"
+}
+
+mkurlfile() {
+  echo "${ORIGIN}${PATHNAME}?advanced=true&output=standard&page=$2&set=%5B%22$(uriencode "$1")%22%5D&special=true" \
+    >"test/fixtures/sets/$(slugify "$1")~$2"
+}
+
+mkurlfiles() {
+  local idx
+  echo "${ORIGIN}${PATHNAME}?advanced=true&output=checklist&set=%5B%22$(uriencode "$1")%22%5D&special=true" \
+    >"test/fixtures/sets/$(slugify "$1")~checklist"
+  for idx in $(seq 0 "$2") ; do
+    mkurlfile "$1" $idx
+  done
+}
+
+mkurlfiles 'Apocalypse' 5
+mkurlfiles 'Eventide' 7
+mkurlfiles 'Future Sight' 7
+mkurlfiles 'Lorwyn' 11
+mkurlfiles 'New Phyrexia' 6
+mkurlfiles 'Rise of the Eldrazi' 9
+mkurlfiles 'Saviors of Kamigawa' 6
+mkurlfiles 'Shadowmoor' 11
+mkurlfiles 'Unhinged' 5
+mkurlfiles 'Vanguard' 4

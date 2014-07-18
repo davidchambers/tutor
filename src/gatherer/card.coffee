@@ -1,5 +1,7 @@
+cheerio     = require 'cheerio'
+_           = require 'underscore'
+
 gatherer    = require '../gatherer'
-load        = require '../load'
 supertypes  = require '../supertypes'
 
 
@@ -8,13 +10,16 @@ module.exports = (details, callback) ->
     callback new Error 'invalid which property (valid values are "a" and "b")'
 
   gatherer.request gatherer.card.url('Details.aspx', details), (err, res, body) ->
-    if err then callback err else callback null, extract body, details
+    if err?
+      callback err
+    else
+      callback null, extract cheerio.load(body), details
+    return
   return
 
-extract = (html, details) ->
+extract = ($, details) ->
   verbose = 'id' of details
 
-  $ = load html
   t = (el) -> gatherer._get_text $(el)
   t1 = (el) -> gatherer._get_text $(el).next()
 
@@ -23,103 +28,113 @@ extract = (html, details) ->
     supertypes: []
     types: []
     subtypes: []
-    rulings: []
+    rulings: _.map $('.discussion').find('tr.post'), (el) ->
+      [date, ruling] = $(el).children()
+      [m, d, y] = $(date).text().trim().split('/')
+      pad = (s) -> "0#{s}".substr(-2)
+      ["#{y}-#{pad m}-#{pad d}", $(ruling).text().trim().replace(/[ ]{2,}/g, ' ')]
 
   set = gatherer._set.bind null, card
 
-  for el in $('.cardDetails').find('tr.post')
-    [date, ruling] = $(el).children()
-    [m, d, y] = t(date).split('/')
-    m = '0' + m if m.length is 1
-    d = '0' + d if d.length is 1
-    card.rulings.push ["#{y}-#{m}-#{d}", t(ruling).replace(/[ ]{2,}/g, ' ')]
-
-  get_versions = (el) ->
-    expansion = $(el).find('.label').filter(-> t(this) is 'Expansion:').next()
-    gatherer._get_versions expansion.find('img')
+  get_versions = _.compose gatherer._get_versions, (el) ->
+    $(el)
+    .find '.label'
+    .filter (idx, el) -> $(el).text().trim() is 'Expansion:'
+    .next()
+    .find 'img'
 
   # Delete the irrelevant column.
   $(do ->
     [left, right] = $('.cardComponentContainer')
-    if (details.which is 'b' or
-        # Double-faced cards.
-        verbose and (details.id of get_versions(right) and
-                     details.id not of get_versions(left)) or
-        not verbose and (details.name.toLowerCase() is
-                         t($(right).find('.value').first()).toLowerCase()))
+    if details.which is 'b'
+      left
+    # Double-faced cards.
+    else if verbose and (details.id of get_versions(right) and
+                         details.id not of get_versions(left))
+      left
+    else if not verbose and \
+      $(right)
+        .find '.label'
+        .filter (idx, el) -> $(el).text().trim() is 'Card Name:'
+        .next()
+        .text()
+        .trim()
+        .toLowerCase() is details.name.toLowerCase()
       left
     else
       right
   ).remove()
 
   $('.label').each ->
+    $el = $ this
 
-    switch t this
+    switch $el.text().trim()
 
       when 'Card Name:'
-        set 'name', t1 this
+        set 'name', $el.next().text().trim()
 
       when 'Mana Cost:'
-        set 'mana_cost', t1 this
+        set 'mana_cost', gatherer._get_text $el.next()
 
       when 'Converted Mana Cost:'
-        set 'converted_mana_cost', +t1 this
+        set 'converted_mana_cost', +t1 $el
 
       when 'Types:'
-        [..., types, subtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec t1 this
+        [..., types, subtypes] = /^(.+?)(?:\s+\u2014\s+(.+))?$/.exec t1 $el
         for type in types.split(/\s+/)
           card[if type in supertypes then 'supertypes' else 'types'].push type
         set 'subtypes', subtypes?.split(/\s+/)
 
       when 'Card Text:'
-        set 'text', gatherer._get_rules_text @next(), t
+        set 'text', gatherer._get_rules_text $el.next(), t
 
       when 'Flavor Text:'
         break unless verbose
-        $flavor = $(this).next()
+        $flavor = $el.next()
         $el = $flavor.children().last()
-        if match = /^(\u2014|\u2015\u2015|\uFF5E)\s*(.+)$/.exec t $el
+        match = /^(\u2014|\u2015\u2015|\uFF5E)\s*(.+)$/.exec $el.text().trim()
+        if match?
           set 'flavor_text_attribution', match[2]
           $el.remove()
 
         pattern = /^["\u00AB\u201E\u300C]\s*(.+?)\s*["\u00BB\u300D]([.]?)$/
-        text = $flavor.children().toArray().map(t).join('\n')
+        text = _.map($flavor.children(), t).join('\n')
         text = match[1] + match[2] if match and match = pattern.exec text
         set 'flavor_text', text
 
       when 'Color Indicator:'
-        set 'color_indicator', t1 this
+        set 'color_indicator', t1 $el
 
       when 'Watermark:'
-        set 'watermark', t1 this
+        set 'watermark', t1 $el
 
       when 'P/T:'
-        [..., power, toughness] = ///^(.+?)\s+/\s+(.+)$///.exec t1 this
+        [..., power, toughness] = ///^(.+?)\s+/\s+(.+)$///.exec t1 $el
         set 'power', gatherer._to_stat power
         set 'toughness', gatherer._to_stat toughness
 
       when 'Loyalty:'
-        set 'loyalty', +t1 this
+        set 'loyalty', +t1 $el
 
       when 'Hand/Life:'
-        text = t1 this
+        text = t1 $el
         set 'hand_modifier', +text.match(/Hand Modifier: ([+-]\d+)/)[1]
         set 'life_modifier', +text.match(/Life Modifier: ([+-]\d+)/)[1]
 
       when 'Expansion:'
-        set 'expansion', t $(this).next().find('a:last-child') if verbose
+        set 'expansion', $el.next().find('a:last-child').text().trim() if verbose
 
       when 'Rarity:'
-        set 'rarity', t1 this if verbose
+        set 'rarity', t1 $el if verbose
 
       when 'Card Number:'
-        set 'number', gatherer._to_stat t1 this if verbose
+        set 'number', gatherer._to_stat t1 $el if verbose
 
       when 'Artist:'
-        set 'artist', t1 this if verbose
+        set 'artist', t1 $el if verbose
 
       when 'All Sets:'
-        set 'versions', gatherer._get_versions @next().find('img')
+        set 'versions', gatherer._get_versions $el.next().find('img')
 
   [..., rating, votes] =
     ///^Community Rating:(\d(?:[.]\d+)?)/5[(](\d+)votes?[)]$///
