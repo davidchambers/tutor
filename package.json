@@ -30,6 +30,6 @@
     "coffee-script": "1.7.x",
     "mocha": "1.17.x",
     "nock": "0.42.x",
-    "semver": "2.2.x"
+    "xyz": "0.4.x"
   }
 }

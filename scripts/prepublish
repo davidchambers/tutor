@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+
+LIB=$(find src -name '*.coffee' -exec sh -c 'sed "s:^src/\(.*\)\.coffee$:lib/\1.js:" <<<"{}"' \;)
+
+rm -f                                   -- $LIB
+make                                    -- $LIB
+git update-index --no-assume-unchanged  -- $LIB
+git add                                 -- $LIB
+git update-index --assume-unchanged     -- $LIB
