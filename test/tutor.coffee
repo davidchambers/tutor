@@ -624,7 +624,7 @@ describe 'tutor.card', ->
   it 'extracts legality info',
     card 'Braids, Cabal Minion', (err, card) ->
       eq err, null
-      eq card.legality['Commander'], 'Special: Banned as Commander'
+      eq card.legality['Commander'], 'Banned'
       eq card.legality['Prismatic'], 'Legal'
 
   it 'parses left side of split card specified by name',
