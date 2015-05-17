@@ -736,6 +736,12 @@ describe 'tutor.card', ->
       scope.done()
       done()
 
+  it 'responds with "no results" given non-existent card name', #90
+    card 'fizzbuzzldspla', (err, card) ->
+      eq err.constructor, Error
+      eq err.message, 'no results'
+      eq card, undefined
+
 
 $ = (command, test) -> (done) ->
   exec "bin/#{command}", (err, stdout, stderr) ->
