@@ -32,19 +32,19 @@ index = (fn, test) -> (done) ->
     done()
 
 page_ranges =
-  'Apocalypse':           [0..5]
-  'Eventide':             [0..7]
-  'Future Sight':         [0..7]
-  'Lorwyn':               [0..11]
-  'New Phyrexia':         [0..6]
-  'Rise of the Eldrazi':  [0..9]
-  'Saviors of Kamigawa':  [0..6]
-  'Shadowmoor':           [0..11]
-  'Unhinged':             [0..5]
-  'Vanguard':             [0..4]
+  'Apocalypse':           [0..1]
+  'Eventide':             [0..1]
+  'Future Sight':         [0..1]
+  'Lorwyn':               [0..2]
+  'New Phyrexia':         [0..1]
+  'Rise of the Eldrazi':  [0..2]
+  'Saviors of Kamigawa':  [0..1]
+  'Shadowmoor':           [0..2]
+  'Unhinged':             [0..1]
+  'Vanguard':             [0..1]
 
 set = (name, test) -> (done) ->
-  filenames = _.map ['checklist', page_ranges[name]...], (suffix) ->
+  filenames = _.map page_ranges[name], (suffix) ->
     "#{__dirname}/fixtures/sets/#{toSlug name}~#{suffix}"
 
   promises = _.map filenames, (filename) ->
@@ -122,73 +122,73 @@ describe 'tutor.set', ->
   it 'extracts names',
     set 'Lorwyn', (err, cards) ->
       eq err, null
-      eq cards[2].name, 'Ajani Goldmane'
+      eq cards[0].name, 'Ajani Goldmane'
 
   it 'extracts mana costs',
     set 'Lorwyn', (err, cards) ->
       eq err, null
-      eq cards[2].name, 'Ajani Goldmane'
-      eq cards[2].mana_cost, '{2}{W}{W}'
+      eq cards[0].name, 'Ajani Goldmane'
+      eq cards[0].mana_cost, '{2}{W}{W}'
 
   it 'extracts mana costs containing hybrid mana symbols',
     set 'Eventide', (err, cards) ->
       eq err, null
-      eq cards[25].name, 'Crackleburr'
-      eq cards[25].mana_cost, '{1}{U/R}{U/R}'
+      eq cards[99].name, 'Crackleburr'
+      eq cards[99].mana_cost, '{1}{U/R}{U/R}'
 
   it 'extracts mana costs containing Phyrexian mana symbols',
     set 'New Phyrexia', (err, cards) ->
       eq err, null
-      eq cards[161].name, 'Vault Skirge'
-      eq cards[161].mana_cost, '{1}{B/P}'
+      eq cards[75].name, 'Vault Skirge'
+      eq cards[75].mana_cost, '{1}{B/P}'
 
   it 'extracts mana costs containing double-digit mana symbols', #71
     set 'Rise of the Eldrazi', (err, cards) ->
       eq err, null
-      eq cards[231].name, 'Ulamog, the Infinite Gyre'
-      eq cards[231].mana_cost, '{11}'
+      eq cards[11].name, 'Ulamog, the Infinite Gyre'
+      eq cards[11].mana_cost, '{11}'
 
   it 'includes mana costs discerningly',
     set 'Future Sight', (err, cards) ->
       eq err, null
-      eq cards[64].name, 'Horizon Canopy'
-      assert not _.has cards[64], 'mana_cost'
-      eq cards[111].name, 'Pact of Negation'
-      assert _.has cards[111], 'mana_cost'
+      eq cards[176].name, 'Horizon Canopy'
+      assert not _.has cards[176], 'mana_cost'
+      eq cards[41].name, 'Pact of Negation'
+      assert _.has cards[41], 'mana_cost'
 
   it 'calculates converted mana costs',
     set 'Shadowmoor', (err, cards) ->
       eq err, null
-      eq cards[72].name, 'Flame Javelin'
-      eq cards[72].mana_cost, '{2/R}{2/R}{2/R}'
-      eq cards[72].converted_mana_cost, 6
+      eq cards[91].name, 'Flame Javelin'
+      eq cards[91].mana_cost, '{2/R}{2/R}{2/R}'
+      eq cards[91].converted_mana_cost, 6
 
   it 'extracts supertypes',
     set 'Lorwyn', (err, cards) ->
       eq err, null
-      eq cards[56].name, 'Doran, the Siege Tower'
-      eq cards[56].supertypes.length, 1
-      eq cards[56].supertypes[0], 'Legendary'
+      eq cards[246].name, 'Doran, the Siege Tower'
+      eq cards[246].supertypes.length, 1
+      eq cards[246].supertypes[0], 'Legendary'
 
   it 'extracts types',
     set 'Lorwyn', (err, cards) ->
       eq err, null
-      eq cards[56].name, 'Doran, the Siege Tower'
-      eq cards[56].types.length, 1
-      eq cards[56].types[0], 'Creature'
+      eq cards[246].name, 'Doran, the Siege Tower'
+      eq cards[246].types.length, 1
+      eq cards[246].types[0], 'Creature'
 
   it 'extracts subtypes',
     set 'Lorwyn', (err, cards) ->
       eq err, null
-      eq cards[56].name, 'Doran, the Siege Tower'
-      eq cards[56].subtypes.length, 2
-      eq cards[56].subtypes[0], 'Treefolk'
-      eq cards[56].subtypes[1], 'Shaman'
+      eq cards[246].name, 'Doran, the Siege Tower'
+      eq cards[246].subtypes.length, 2
+      eq cards[246].subtypes[0], 'Treefolk'
+      eq cards[246].subtypes[1], 'Shaman'
 
   it 'extracts rules text',
     set 'Lorwyn', (err, cards) ->
       eq err, null
-      eq cards[184].text, '''
+      eq cards[75].text, '''
         Flying
 
         When Mulldrifter enters the battlefield, draw two cards.
@@ -200,7 +200,7 @@ describe 'tutor.set', ->
   it 'handles consecutive hybrid mana symbols',
     set 'Eventide', (err, cards) ->
       eq err, null
-      eq cards[54].text, '''
+      eq cards[138].text, '''
         {R/W}: Figure of Destiny becomes a Kithkin Spirit with base \
         power and toughness 2/2.
 
@@ -212,13 +212,13 @@ describe 'tutor.set', ->
         power and toughness 8/8, flying, and first strike.
       '''
 
-  it 'extracts color indicators',
+  it.skip 'extracts color indicators',
     set 'Future Sight', (err, cards) ->
       eq err, null
-      eq cards[34].name, 'Dryad Arbor'
-      eq cards[34].color_indicator, 'Green'
+      eq cards[173].name, 'Dryad Arbor'
+      eq cards[173].color_indicator, 'Green'
 
-  it 'includes color indicators discerningly',
+  it.skip 'includes color indicators discerningly',
     set 'Lorwyn', (err, cards) ->
       eq err, null
       for card in cards
@@ -234,41 +234,41 @@ describe 'tutor.set', ->
   it 'extracts stats',
     set 'Lorwyn', (err, cards) ->
       eq err, null
-      eq cards[201].name, 'Pestermite'
-      eq cards[201].power, 2
-      eq cards[201].toughness, 1
+      eq cards[77].name, 'Pestermite'
+      eq cards[77].power, 2
+      eq cards[77].toughness, 1
 
   it 'handles fractional stats', #39
     set 'Unhinged', (err, cards) ->
       eq err, null
-      eq cards[10].name, 'Bad Ass'
-      eq cards[10].power, 3.5
-      eq cards[10].toughness, 1
-      eq cards[20].name, 'Cheap Ass'
-      eq cards[20].power, 1
-      eq cards[20].toughness, 3.5
-      eq cards[67].name, 'Little Girl'
-      eq cards[67].power, 0.5
-      eq cards[67].toughness, 0.5
+      eq cards[48].name, 'Bad Ass'
+      eq cards[48].power, 3.5
+      eq cards[48].toughness, 1
+      eq cards[4].name, 'Cheap Ass'
+      eq cards[4].power, 1
+      eq cards[4].toughness, 3.5
+      eq cards[15].name, 'Little Girl'
+      eq cards[15].power, 0.5
+      eq cards[15].toughness, 0.5
 
   it 'handles dynamic stats',
     set 'Future Sight', (err, cards) ->
       eq err, null
-      eq cards[161].name, 'Tarmogoyf'
-      eq cards[161].power, '*'
-      eq cards[161].toughness, '1+*'
+      eq cards[152].name, 'Tarmogoyf'
+      eq cards[152].power, '*'
+      eq cards[152].toughness, '1+*'
 
   it 'extracts loyalties',
     set 'Lorwyn', (err, cards) ->
       eq err, null
-      eq cards[2].name, 'Ajani Goldmane'
-      eq cards[2].loyalty, 4
+      eq cards[0].name, 'Ajani Goldmane'
+      eq cards[0].loyalty, 4
 
   it 'includes loyalties discerningly',
     set 'Lorwyn', (err, cards) ->
       eq err, null
-      eq cards[201].name, 'Pestermite'
-      assert not _.has cards[201], 'loyalty'
+      eq cards[77].name, 'Pestermite'
+      assert not _.has cards[77], 'loyalty'
 
   it 'extracts hand modifiers',
     set 'Vanguard', (err, cards) ->
@@ -290,53 +290,53 @@ describe 'tutor.set', ->
   it 'extracts rarities',
     set 'New Phyrexia', (err, cards) ->
       eq err, null
-      eq cards[7].name, 'Batterskull'
-      eq cards[7].rarity, 'Mythic Rare'
-      eq cards[9].name, 'Birthing Pod'
-      eq cards[9].rarity, 'Rare'
-      eq cards[34].name, 'Dismember'
-      eq cards[34].rarity, 'Uncommon'
-      eq cards[52].name, 'Gitaxian Probe'
-      eq cards[52].rarity, 'Common'
-      eq cards[68].name, 'Island'
-      eq cards[68].rarity, 'Land'
+      eq cards[129].name, 'Batterskull'
+      eq cards[129].rarity, 'Mythic Rare'
+      eq cards[103].name, 'Birthing Pod'
+      eq cards[103].rarity, 'Rare'
+      eq cards[56].name, 'Dismember'
+      eq cards[56].rarity, 'Uncommon'
+      eq cards[34].name, 'Gitaxian Probe'
+      eq cards[34].rarity, 'Common'
+      eq cards[167].name, 'Island'
+      eq cards[167].rarity, 'Land'
 
   it 'extracts versions',
     set 'Lorwyn', (err, cards) ->
       eq err, null
-      eq cards[2].name, 'Ajani Goldmane'
-      eq cards[2].versions['Lorwyn'], 'Rare'
-      eq cards[2].versions['Magic 2010'], 'Mythic Rare'
-      eq cards[2].versions['Magic 2011'], 'Mythic Rare'
+      eq cards[0].name, 'Ajani Goldmane'
+      eq cards[0].versions['Lorwyn'], 'Rare'
+      eq cards[0].versions['Magic 2010'], 'Mythic Rare'
+      eq cards[0].versions['Magic 2011'], 'Mythic Rare'
 
   it 'includes all versions of each basic land', #66
     set 'Lorwyn', (err, cards) ->
       eq err, null
       eq cards.length, 301
-      eq cards[202].name, 'Plains'
-      eq cards[203].name, 'Plains'
-      eq cards[204].name, 'Plains'
-      eq cards[205].name, 'Plains'
-      eq cards[202].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143620'
-      eq cards[203].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143621'
-      eq cards[204].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143622'
-      eq cards[205].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143630'
-      eq cards[202].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143620&type=card'
-      eq cards[203].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143621&type=card'
-      eq cards[204].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143622&type=card'
-      eq cards[205].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143630&type=card'
+      eq cards[281].name, 'Plains'
+      eq cards[282].name, 'Plains'
+      eq cards[283].name, 'Plains'
+      eq cards[284].name, 'Plains'
+      eq cards[281].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143630'
+      eq cards[282].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143621'
+      eq cards[283].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143622'
+      eq cards[284].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143620'
+      eq cards[281].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143630&type=card'
+      eq cards[282].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143621&type=card'
+      eq cards[283].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143622&type=card'
+      eq cards[284].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143620&type=card'
 
   it 'handles split cards', #86
     set 'Apocalypse', (err, cards) ->
       eq err, null
-      eq cards[48].name, 'Fire'
-      eq cards[65].name, 'Ice'
+      eq cards[127].name, 'Fire'
+      eq cards[129].name, 'Ice'
 
   it 'handles flip cards', #86
     set 'Saviors of Kamigawa', (err, cards) ->
       eq err, null
-      eq cards[37].name, 'Erayo, Soratami Ascendant'
-      eq cards[38].name, "Erayo's Essence"
+      eq cards[35].name, 'Erayo, Soratami Ascendant'
+      eq cards[36].name, "Erayo's Essence"
 
 
 describe 'tutor.card', ->
@@ -814,10 +814,10 @@ describe '$ tutor set', ->
       eq err, null
       cards = JSON.parse stdout
       eq cards.length, 34
-      eq cards[22].name, 'Mountain'
-      eq cards[23].name, 'Mountain'
-      eq cards[24].name, 'Mountain'
-      eq cards[25].name, 'Mountain'
+      eq cards[30].name, 'Mountain'
+      eq cards[31].name, 'Mountain'
+      eq cards[32].name, 'Mountain'
+      eq cards[33].name, 'Mountain'
 
 
 describe '$ tutor card', ->

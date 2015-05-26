@@ -5,54 +5,49 @@ Q           = require 'q'
 _           = require 'underscore'
 
 gatherer    = require '../gatherer'
-rarities    = require '../rarities'
+pagination  = require '../pagination'
 supertypes  = require '../supertypes'
 
 
 module.exports = (name, callback) ->
   common_params =
-    advanced: 'true'
-    set: """["#{name}"]"""
-    special: 'true'
+    if name.toLowerCase() is 'vanguard'
+      advanced: 'true'
+      output: 'standard'
+      set: """["#{name}"]"""
+      special: 'true'
+    else
+      advanced: 'true'
+      output: 'standard'
+      set: """["#{name}"]"""
+      sort: 'cn+'
 
   gatherer.request gatherer.url(
     '/Pages/Search/Default.aspx'
-    _.extend output: 'checklist', common_params
+    _.extend page: '0', common_params
   ), (err, res) ->
     if err?
       callback err
       return
 
     $ = cheerio.load res.body
-    cards$ = _.map $('.cardItem'), (el) ->
-      get = (selector) -> $(el).find(selector).text()
 
-      color_indicator: get '.color'
-      name: get '.name'
-      rarity: rarities[get '.rarity']
+    {min, max} = pagination $ \
+      '#ctl00_ctl00_ctl00_MainContent_SubContent_topPagingControlsContainer'
 
-    Q.all _.map _.range(Math.ceil cards$.length / 25), (page) ->
+    Q.all _.map _.range(min, max), (page) ->
       deferred = Q.defer()
       gatherer.request gatherer.url(
         '/Pages/Search/Default.aspx'
-        _.extend output: 'standard', page: "#{page}", common_params
+        _.extend page: "#{page}", common_params
       ), deferred.makeNodeResolver yes
       deferred.promise
-    .then (xs) ->
-      for [res] in xs
-        for card_name, versions of extract cheerio.load(res.body), name
+    .then (rest) ->
+      cards$ = []
+      for body in [res.body, _.pluck(rest, '1')...]
+        for card_name, versions of extract cheerio.load(body), name
           for card, idx in versions
-            card$ = (c$ for c$ in cards$ when c$.name is card_name)[idx]
-            _.extend card$, card
-            card$.expansion = name
-            color = card$.color_indicator
-            delete card$.color_indicator unless (
-              color is 'White' and not /W/.test(card$.mana_cost) or
-              color is 'Blue'  and not /U/.test(card$.mana_cost) or
-              color is 'Black' and not /B/.test(card$.mana_cost) or
-              color is 'Red'   and not /R/.test(card$.mana_cost) or
-              color is 'Green' and not /G/.test(card$.mana_cost)
-            )
+            cards$.push _.extend {expansion: name}, card
       cards$
     .done _.partial(callback, null), callback
   return
@@ -97,6 +92,13 @@ extract_card = ($el, set_name) ->
       _.partition types.split(' '), _.partial(_.contains, supertypes)
     card$.subtypes = if subtypes? then subtypes.split(' ') else []
 
+    prefix = "#{set_name} ("
+    for img in $card.find('.setVersions').find('img')
+      {alt} = img.attribs
+      if alt.substring(0, prefix.length) is prefix
+        card$.rarity = alt.substring prefix.length, alt.length - 1
+        break
+
   card$
 
 extract = ($, set_name) ->
@@ -105,7 +107,6 @@ extract = ($, set_name) ->
   .filter ($el) -> $el.attr('alt').indexOf("#{set_name} (") is 0
   .invoke 'parent'
   .map _.partial extract_card, _, set_name
-  .sortBy 'gatherer_url'
   .groupBy 'name'
   .value()
 
