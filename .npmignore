@@ -1,0 +1,9 @@
+/node_modules/
+/scripts/
+/src/
+/test/
+/.npmignore
+/.travis.yml
+/Makefile
+/logo@2x.png
+/npm-debug.log
