@@ -32,7 +32,7 @@ gatherer.request = (args...) ->
       callback err
     else if res.statusCode isnt 200
       callback new Error 'unexpected status code'
-    else if body.indexOf('<title>Object moved</title>') >= 0
+    else if body.indexOf('<title>Object moved</title>') >= 0 and body.indexOf('Additional Sort:') < 0
       callback new Error 'no results'
     else
       callback null, res, body
