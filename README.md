@@ -1,4 +1,4 @@
-<img alt="Tutor" src="https://raw.github.com/davidchambers/tutor/master/logo@2x.png" width="722" height="215" />
+<img alt="Tutor" src="https://raw.githubusercontent.com/davidchambers/tutor/c015a8d85776a50189853a01aa7d5011d28d52e6/logo@2x.png" width="918" height="215" />
 
 [![Build Status](https://travis-ci.org/davidchambers/tutor.png)](https://travis-ci.org/davidchambers/tutor)
 
