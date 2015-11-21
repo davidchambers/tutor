@@ -1,6 +1,6 @@
 <img alt="Tutor" src="https://raw.githubusercontent.com/davidchambers/tutor/c015a8d85776a50189853a01aa7d5011d28d52e6/logo@2x.png" width="918" height="215" />
 
-[![Build Status](https://travis-ci.org/davidchambers/tutor.png)](https://travis-ci.org/davidchambers/tutor)
+[![Build Status](https://travis-ci.org/davidchambers/tutor.svg?branch=master)](https://travis-ci.org/davidchambers/tutor)
 
 
 [Gatherer][1] is the canonical source for _Magic: The Gathering_ card details.
