@@ -18,7 +18,7 @@ lib/%.js: src/%.coffee
 fixtures: $(FIXTURES)
 
 test/fixtures/%.html: test/fixtures/%
-	xargs curl --silent -- <$< >$@
+	xargs curl --location --silent -- <$< >$@
 
 
 .PHONY: clean

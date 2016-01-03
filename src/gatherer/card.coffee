@@ -13,7 +13,11 @@ module.exports = (details, callback) ->
     if err?
       callback err
     else
-      callback null, extract cheerio.load(body), details
+      $ = cheerio.load body
+      if $('title').text().trim().indexOf('Card Search - Search:') is 0
+        callback new Error 'no results'
+      else
+        callback null, extract $, details
     return
   return
 
