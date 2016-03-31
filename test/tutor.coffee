@@ -361,6 +361,11 @@ describe 'tutor.card', ->
       eq err, null
       eq card.mana_cost, '{1}{B/P}'
 
+  it 'extracts mana cost containing colorless mana symbols',
+    card 'Kozilek, the Great Distortion', (err, card) ->
+      eq err, null
+      eq card.mana_cost, '{8}{C}{C}'
+
   it 'includes mana cost only if present',
     card 'Ancestral Vision', (err, card) ->
       eq err, null
@@ -404,6 +409,13 @@ describe 'tutor.card', ->
         {U/R}{U/R}, {Q}, Untap two tapped blue creatures you control: \
         Return target creature to its owner's hand. \
         ({Q} is the untap symbol.)
+      '''
+
+  it 'recognizes colorless mana symbols',
+    card 'Sol Ring', (err, card) ->
+      eq err, null
+      eq card.text, '''
+        {T}: Add {C}{C} to your mana pool.
       '''
 
   it 'extracts flavor text from card identified by id',

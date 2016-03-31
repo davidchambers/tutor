@@ -8,6 +8,7 @@ module.exports = _.invert
   'R': 'Red'
   'G': 'Green'
   '2': 'Two'
+  'C': 'Colorless'
   'S': 'Snow'
   'T': 'Tap'
   'Q': 'Untap'
