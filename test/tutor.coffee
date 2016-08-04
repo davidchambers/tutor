@@ -637,7 +637,7 @@ describe 'tutor.card', ->
     card 'Braids, Cabal Minion', (err, card) ->
       eq err, null
       eq card.legality['Commander'], 'Banned'
-      eq card.legality['Prismatic'], 'Legal'
+      eq card.legality['Odyssey Block'], 'Legal'
 
   it 'parses left side of split card specified by name',
     card 'Fire', (err, card) ->
@@ -669,12 +669,12 @@ describe 'tutor.card', ->
       eq err, null
       eq card.name, 'Tomoya the Revealer'
 
-  it 'parses top half of flip card specified by id',
+  it.skip 'parses top half of flip card specified by id',
     card 247175, (err, card) ->
       eq err, null
       eq card.name, 'Nezumi Graverobber'
 
-  it 'parses bottom half of flip card specified by id',
+  it.skip 'parses bottom half of flip card specified by id',
     card id: 247175, which: 'b', (err, card) ->
       eq err, null
       eq card.name, 'Nighteyes the Desecrator'
