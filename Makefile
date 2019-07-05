@@ -1,5 +1,5 @@
 COFFEE = node_modules/.bin/coffee
-MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script/register
+MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script/register --reporter spec
 XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:davidchambers/tutor.git --script scripts/prepublish
 
 SRC = $(shell find src -name '*.coffee')
@@ -41,9 +41,9 @@ setup:
 
 .PHONY: test
 test: all
-	$(MOCHA) --grep '^\$$' --invert --timeout 5000
+	$(MOCHA) --grep '^\$$' --invert --timeout 15000
 
 
 .PHONY: testcli
 testcli: all
-	$(MOCHA) --grep '^\$$' --timeout 10000
+	$(MOCHA) --grep '^\$$' --timeout 30000

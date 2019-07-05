@@ -8,17 +8,17 @@
   },
   "contributors": [
     "David Chambers <dc@davidchambers.me>",
-    "Nick Novitski <nicknovitski@gmail.com> (http://www.nicknovitski.com)",
+    "Nick Novitski <nicknovitski@gmail.com> (http://nicknovitski.com)",
     "Pablo Castellazzi <pablo.castellazzi@gmail.com> (https://bitbucket.org/pcastellazzi)",
     "Rob Dennis <rdennis@gmail.com> (https://github.com/robdennis)",
-    "James Campos <james.r.campos@gmail.com> (http://aeosynth.github.io)"
+    "James Campos <james.r.campos@gmail.com> (https://aeosynth.github.io)"
   ],
   "main": "./lib/tutor",
   "bin": {
     "tutor": "./bin/tutor"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=6.0.0"
   },
   "dependencies": {
     "cheerio": "0.17.x",

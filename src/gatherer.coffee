@@ -7,7 +7,7 @@ symbols   = require './symbols'
 
 
 gatherer = module.exports
-gatherer.origin = 'http://gatherer.wizards.com'
+gatherer.origin = 'https://gatherer.wizards.com'
 gatherer.url = (pathname, query = {}) ->
   url = "#{gatherer.origin}#{pathname}"
   keys = _.keys(query).sort()
@@ -88,5 +88,5 @@ gatherer._set = (obj, key, value) ->
   obj[key] = value unless value is undefined or _.isNaN value
 
 gatherer._to_stat = (str) ->
-  num = +str?.replace('{1/2}', '.5')
+  num = +str?.replace('{1/2}', '.5').replace('½', '.5')
   if _.isNaN num then str else num

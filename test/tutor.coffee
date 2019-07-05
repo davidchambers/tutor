@@ -96,7 +96,7 @@ describe 'tutor.formats', ->
     index tutor.formats, (err, formatNames) ->
       eq err, null
       assert _.isArray formatNames
-      assert _.contains formatNames, 'Invasion Block'
+      assert _.contains formatNames, 'Vintage'
 
 
 describe 'tutor.sets', ->
@@ -273,14 +273,14 @@ describe 'tutor.set', ->
   it 'extracts hand modifiers',
     set 'Vanguard', (err, cards) ->
       eq err, null
-      eq cards[17].name, 'Eladamri'
-      eq cards[17].hand_modifier, -1
+      eq cards[3].name, 'Eladamri'
+      eq cards[3].hand_modifier, -1
 
   it 'extracts life modifiers',
     set 'Vanguard', (err, cards) ->
       eq err, null
-      eq cards[17].name, 'Eladamri'
-      eq cards[17].life_modifier, 15
+      eq cards[3].name, 'Eladamri'
+      eq cards[3].life_modifier, 15
 
   it 'includes expansion',
     set 'Lorwyn', (err, cards) ->
@@ -298,8 +298,8 @@ describe 'tutor.set', ->
       eq cards[56].rarity, 'Uncommon'
       eq cards[34].name, 'Gitaxian Probe'
       eq cards[34].rarity, 'Common'
-      eq cards[167].name, 'Island'
-      eq cards[167].rarity, 'Land'
+      eq cards[166].name, 'Island'
+      eq cards[166].rarity, 'Land'
 
   it 'extracts versions',
     set 'Lorwyn', (err, cards) ->
@@ -309,28 +309,31 @@ describe 'tutor.set', ->
       eq cards[0].versions['Magic 2010'], 'Mythic Rare'
       eq cards[0].versions['Magic 2011'], 'Mythic Rare'
 
-  it 'includes all versions of each basic land', #66
+  it 'does not include all versions of each basic land', #66
     set 'Lorwyn', (err, cards) ->
       eq err, null
-      eq cards.length, 301
+      eq cards.length, 301 - 5 * 3
       eq cards[281].name, 'Plains'
-      eq cards[282].name, 'Plains'
-      eq cards[283].name, 'Plains'
-      eq cards[284].name, 'Plains'
-      eq cards[281].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143630'
-      eq cards[282].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143621'
-      eq cards[283].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143622'
-      eq cards[284].gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143620'
-      eq cards[281].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143630&type=card'
-      eq cards[282].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143621&type=card'
-      eq cards[283].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143622&type=card'
-      eq cards[284].image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143620&type=card'
+      eq cards[282].name, 'Island'
+      eq cards[283].name, 'Swamp'
+      eq cards[284].name, 'Mountain'
+      eq cards[285].name, 'Forest'
+      eq cards[281].gatherer_url, 'https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143630'
+      eq cards[282].gatherer_url, 'https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143624'
+      eq cards[283].gatherer_url, 'https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143634'
+      eq cards[284].gatherer_url, 'https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143627'
+      eq cards[285].gatherer_url, 'https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=143625'
+      eq cards[281].image_url, 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143630&type=card'
+      eq cards[282].image_url, 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143624&type=card'
+      eq cards[283].image_url, 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143634&type=card'
+      eq cards[284].image_url, 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143627&type=card'
+      eq cards[285].image_url, 'https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=143625&type=card'
 
   it 'handles split cards', #86
     set 'Apocalypse', (err, cards) ->
       eq err, null
       eq cards[127].name, 'Fire'
-      eq cards[129].name, 'Ice'
+      eq cards[128].name, 'Ice'
 
   it 'handles flip cards', #86
     set 'Saviors of Kamigawa', (err, cards) ->
@@ -404,7 +407,7 @@ describe 'tutor.card', ->
       eq err, null
       eq card.text, '''
         {U/R}{U/R}, {T}, Tap two untapped red creatures you control: \
-        Crackleburr deals 3 damage to target creature or player.
+        Crackleburr deals 3 damage to any target.
 
         {U/R}{U/R}, {Q}, Untap two tapped blue creatures you control: \
         Return target creature to its owner's hand. \
@@ -415,7 +418,7 @@ describe 'tutor.card', ->
     card 'Sol Ring', (err, card) ->
       eq err, null
       eq card.text, '''
-        {T}: Add {C}{C} to your mana pool.
+        {T}: Add {C}{C}.
       '''
 
   it 'extracts flavor text from card identified by id',
@@ -501,8 +504,8 @@ describe 'tutor.card', ->
   it 'extracts an image_url and gatherer_url for a card identified by name', #73
     card 'Braids, Cabal Minion', (err, card) ->
       eq err, null
-      eq card.image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=Braids%2C%20Cabal%20Minion'
-      eq card.gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?name=Braids%2C%20Cabal%20Minion'
+      eq card.image_url, 'https://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=Braids%2C%20Cabal%20Minion'
+      eq card.gatherer_url, 'https://gatherer.wizards.com/Pages/Card/Details.aspx?name=Braids%2C%20Cabal%20Minion'
 
   it 'ignores expansion of card identified by name',
     card 'Hill Giant', (err, card) ->
@@ -517,8 +520,8 @@ describe 'tutor.card', ->
   it 'extracts an image_url and gatherer_url from card identified by id', #73
     card 2960, (err, card) ->
       eq err, null
-      eq card.image_url, 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=2960'
-      eq card.gatherer_url, 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2960'
+      eq card.image_url, 'https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=2960'
+      eq card.gatherer_url, 'https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=2960'
 
   it 'ignores rarity of card identified by name',
     card 'Hill Giant', (err, card) ->
@@ -636,8 +639,11 @@ describe 'tutor.card', ->
   it 'extracts legality info',
     card 'Braids, Cabal Minion', (err, card) ->
       eq err, null
+      assert.deepEqual _.keys(card.legality).sort(), ['Commander', 'Legacy', 'Pauper', 'Vintage']
       eq card.legality['Commander'], 'Banned'
-      eq card.legality['Odyssey Block'], 'Legal'
+      eq card.legality['Legacy'], 'Legal'
+      eq card.legality['Pauper'], 'Banned'
+      eq card.legality['Vintage'], 'Legal'
 
   it 'parses left side of split card specified by name',
     card 'Fire', (err, card) ->
@@ -669,12 +675,12 @@ describe 'tutor.card', ->
       eq err, null
       eq card.name, 'Tomoya the Revealer'
 
-  it.skip 'parses top half of flip card specified by id',
+  it 'parses top half of flip card specified by id',
     card 247175, (err, card) ->
       eq err, null
       eq card.name, 'Nezumi Graverobber'
 
-  it.skip 'parses bottom half of flip card specified by id',
+  it 'parses bottom half of flip card specified by id',
     card id: 247175, which: 'b', (err, card) ->
       eq err, null
       eq card.name, 'Nighteyes the Desecrator'
@@ -766,12 +772,12 @@ describe '$ tutor formats', ->
   it 'prints formats',
     $ 'tutor formats', (err, stdout) ->
       eq err, null
-      assert 'Tempest Block' in stdout.split('\n')
+      assert 'Vintage' in stdout.split('\n')
 
   it 'prints JSON representation of formats',
     $ 'tutor formats --format json', (err, stdout) ->
       eq err, null
-      assert 'Tempest Block' in JSON.parse stdout
+      assert 'Vintage' in JSON.parse stdout
 
 
 describe '$ tutor sets', ->
@@ -807,8 +813,8 @@ describe '$ tutor set', ->
       eq err, null
       eq stdout, '''
         Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block.
-        Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block.
-        Agent of Stromgald {R} 1/1 {R}: Add {B} to your mana pool.
+        Agent of Stromgald {R} 1/1 {R}: Add {B}.
+        Arcane Denial {1}{U} Counter target spell. Its controller may draw up to two cards at the beginning of the next turn's upkeep. You draw a card at the beginning of the next turn's upkeep.
 
       '''
 
@@ -817,25 +823,22 @@ describe '$ tutor set', ->
       eq err, null
       cards = JSON.parse stdout
       eq cards[0].name, 'Aesthir Glider'
-      eq cards[1].name, 'Aesthir Glider'
-      eq cards[2].name, 'Agent of Stromgald'
+      eq cards[1].name, 'Agent of Stromgald'
+      eq cards[2].name, 'Arcane Denial'
 
   it 'handles sets with (one version of) exactly one basic land', #69
     $ 'tutor set "Arabian Nights" --format json', (err, stdout) ->
       eq err, null
       cards = JSON.parse stdout
-      eq cards.length, 92
-      eq cards[62].name, 'Mountain'
+      eq cards.length, 78
+      eq cards[55].name, 'Mountain'
 
   it 'handles sets with (multiple versions of) exactly one basic land', #69
     $ 'tutor set "Premium Deck Series: Fire and Lightning" --format json', (err, stdout) ->
       eq err, null
       cards = JSON.parse stdout
-      eq cards.length, 34
+      eq cards.length, 31
       eq cards[30].name, 'Mountain'
-      eq cards[31].name, 'Mountain'
-      eq cards[32].name, 'Mountain'
-      eq cards[33].name, 'Mountain'
 
 
 describe '$ tutor card', ->

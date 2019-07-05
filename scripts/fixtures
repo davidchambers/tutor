@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-ORIGIN=http://gatherer.wizards.com
+ORIGIN=https://gatherer.wizards.com
 PATHNAME=/Pages/Search/Default.aspx
 
 slugify() {
@@ -13,13 +13,13 @@ uriencode() {
 }
 
 mkurlfile() {
-  echo "${ORIGIN}${PATHNAME}?advanced=true&output=standard&page=$2&set=%5B%22$(uriencode "$1")%22%5D&special=true" \
+  echo "${ORIGIN}${PATHNAME}?action=advanced&output=standard&page=$2&set=%5B%22$(uriencode "$1")%22%5D&sort=cn%2B" \
     >"test/fixtures/sets/$(slugify "$1")~$2"
 }
 
 mkurlfiles() {
   local idx
-  echo "${ORIGIN}${PATHNAME}?advanced=true&output=checklist&set=%5B%22$(uriencode "$1")%22%5D&special=true" \
+  echo "${ORIGIN}${PATHNAME}?action=advanced&output=checklist&set=%5B%22$(uriencode "$1")%22%5D&sort=cn%2B" \
     >"test/fixtures/sets/$(slugify "$1")~checklist"
   for idx in $(seq 0 "$2") ; do
     mkurlfile "$1" $idx

@@ -56,14 +56,13 @@ extract = ($, details) ->
     else if verbose and (details.id of get_versions(right) and
                          details.id not of get_versions(left))
       left
-    else if not verbose and \
-      $(right)
+    else if details.name?.toLowerCase() is $(right)
         .find '.label'
         .filter (idx, el) -> $(el).text().trim() is 'Card Name:'
         .next()
         .text()
         .trim()
-        .toLowerCase() is details.name.toLowerCase()
+        .toLowerCase()
       left
     else
       right
@@ -160,10 +159,7 @@ module.exports.url = (path, rest...) ->
   params[k] = v for k, v of o for o in rest
   {id, name, page} = params
   query = {}
-  if id? and name?
-    query.multiverseid = id
-    query.part = name
-  else if id?
+  if id?
     query.multiverseid = id
   else
     query.name = name

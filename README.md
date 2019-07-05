@@ -38,7 +38,7 @@ tutor.card 'Demonic Tutor', (err, card) ->
   console.log card.mana_cost
   # => "{1}{B}"
   console.log card.text
-  # => "Search your library for a card and put that card into your hand. Then shuffle your library."
+  # => "Search your library for a card, put that card into your hand, then shuffle your library."
 ```
 
 #### Split cards
@@ -161,11 +161,13 @@ Provides the names of all the game's formats:
 tutor.formats (err, formatNames) ->
   console.log formatNames
   # => [
-  #   "Classic",
+  #   "Brawl",
   #   "Commander",
-  #   ...
-  #   "Vintage",
-  #   "Zendikar Block"
+  #   "Legacy",
+  #   "Modern",
+  #   "Pauper",
+  #   "Standard",
+  #   "Vintage"
   # ]
 ```
 
@@ -179,11 +181,11 @@ Provides the names of all the game's sets:
 tutor.sets (err, setNames) ->
   console.log setNames
   # => [
+  #   "Aether Revolt"
   #   "Alara Reborn",
-  #   "Alliances",
   #   ...
-  #   "Worldwake",
-  #   "Zendikar"
+  #   "Zendikar",
+  #   "Zendikar Expeditions"
   # ]
 ```
 
@@ -200,8 +202,8 @@ tutor.types (err, types) ->
   #   "Artifact",
   #   "Basic",
   #   ...
-  #   "Vanguard",
-  #   "World"
+  #   "World",
+  #   "You'll"
   # ]
 ```
 
@@ -210,44 +212,41 @@ tutor.types (err, types) ->
 `npm install tutor --global` will make the `tutor` command available globally.
 
     $ tutor card 'Demonic Tutor'
-    Demonic Tutor {1}{B} Search your library for a card and put that card into your hand. Then shuffle your library.
+    Demonic Tutor {1}{B} Search your library for a card, put that card into your hand, then shuffle your library.
 
-    $ tutor card 'Demonic Tutor' --format json | python -mjson.tool | head -n 10
+    $ tutor card 'Demonic Tutor' --format json | jq '{name,mana_cost,types,text}'
     {
-        "community_rating": {
-            "rating": 4.714,
-            "votes": 229
-        },
-        "converted_mana_cost": 2,
-        "languages": {},
-        "legality": {
-            "Commander": "Legal",
-            "Legacy": "Banned",
+      "name": "Demonic Tutor",
+      "mana_cost": "{1}{B}",
+      "types": [
+        "Sorcery"
+      ],
+      "text": "Search your library for a card, put that card into your hand, then shuffle your library."
+    }
 
-    $ tutor card 60 --format json | python -mjson.tool | head -n 10
+    $ tutor card 666 --format json | jq '{name,mana_cost,types,text}'
     {
-        "artist": "Douglas Schuler",
-        "community_rating": {
-            "rating": 4.917,
-            "votes": 109
-        },
-        "converted_mana_cost": 2,
-        "expansion": "Limited Edition Alpha",
-        "languages": {},
-        "legality": {
+      "name": "Lich",
+      "mana_cost": "{B}{B}{B}{B}",
+      "types": [
+        "Enchantment"
+      ],
+      "text": "As Lich enters the battlefield, you lose life equal to your life total.\n\nYou don't lose the game for having 0 or less life.\n\nIf you would gain life, draw that many cards instead.\n\nWhenever you're dealt damage, sacrifice that many nontoken permanents. If you can't, you lose the game.\n\nWhen Lich is put into a graveyard from the battlefield, you lose the game."
+    }
 
     $ tutor set Alliances | head -n 2
     Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block.
-    Agent of Stromgald {R} 1/1 {R}: Add {B} to your mana pool.
-    
+    Agent of Stromgald {R} 1/1 {R}: Add {B}.
+
 #### Example of using the CLI from other applications:
+
 [Link to Wiki](https://github.com/davidchambers/tutor/wiki/Interact-with-the-CLI-from-other-applications)
 
 ### Running the tests
 
-    make fixtures
-    make test
-    make testcli
+    $ make fixtures
+    $ make test
+    $ make testcli
 
 
-[1]: http://gatherer.wizards.com/
+[1]: https://gatherer.wizards.com/
