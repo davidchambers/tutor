@@ -11,16 +11,10 @@ supertypes  = require '../supertypes'
 
 module.exports = (name, callback) ->
   common_params =
-    if name.toLowerCase() is 'vanguard'
-      advanced: 'true'
-      output: 'standard'
-      set: """["#{name}"]"""
-      special: 'true'
-    else
-      advanced: 'true'
-      output: 'standard'
-      set: """["#{name}"]"""
-      sort: 'cn+'
+    action: 'advanced'
+    output: 'standard'
+    set: """["#{name}"]"""
+    sort: 'cn+'
 
   gatherer.request gatherer.url(
     '/Pages/Search/Default.aspx'

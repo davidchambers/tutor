@@ -1,7 +1,6 @@
 withCaution = (view) -> (err, res) ->
   if err is null
     console.log view res
-    process.exit 0
   else if err.errno is 'ENOTFOUND'
     console.error 'cannot connect to gatherer'
     process.exit 1
