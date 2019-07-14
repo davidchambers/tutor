@@ -1,17 +1,13 @@
-COFFEE = node_modules/.bin/coffee
+ESLINT = node_modules/.bin/eslint --config node_modules/sanctuary-style/eslint-es6.json --env node --report-unused-disable-directives
 MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script/register --reporter spec
-XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:davidchambers/tutor.git --script scripts/prepublish
+XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:davidchambers/tutor.git
 
-SRC = $(shell find src -name '*.coffee')
-LIB = $(patsubst src/%.coffee,lib/%.js,$(SRC))
+LIB = $(shell find lib -name '*.js')
 FIXTURES = $(patsubst %,%.html,$(shell find test/fixtures -type f -not -name '*.html'))
 
 
 .PHONY: all
-all: $(LIB)
-
-lib/%.js: src/%.coffee
-	$(COFFEE) --compile --output $(@D) -- $<
+all:
 
 
 .PHONY: fixtures
@@ -23,8 +19,15 @@ test/fixtures/%.html: test/fixtures/%
 
 .PHONY: clean
 clean:
-	@rm -f -- $(LIB)
 	@rm -f -- $(FIXTURES)
+
+
+.PHONY: lint
+lint:
+	$(ESLINT) \
+	  --rule 'max-len: [error, {code: 79, ignoreStrings: true, ignoreUrls: true}]' \
+	  --rule 'object-shorthand: [error, always]' \
+	  -- $(LIB)
 
 
 .PHONY: release-major release-minor release-patch
@@ -35,8 +38,6 @@ release-major release-minor release-patch:
 .PHONY: setup
 setup:
 	npm install
-	make clean
-	git update-index --assume-unchanged -- $(LIB)
 
 
 .PHONY: test
