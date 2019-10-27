@@ -13,7 +13,7 @@ const gatherer  = require ('../lib/gatherer');
 const tutor     = require ('..');
 
 
-const fixtures$sets = path.join (__dirname, 'fixtures', 'sets')
+const fixtures$sets = path.join (__dirname, 'fixtures', 'sets');
 
 //    urls :: StrMap Url
 const urls = fs.readdirSync (fixtures$sets)
@@ -22,7 +22,7 @@ const urls = fs.readdirSync (fixtures$sets)
              Object.assign (map, {
                [filename]: url.parse (fs.readFileSync (path.join (fixtures$sets, filename), 'utf8')),
              }),
-           Object.create (null))
+           Object.create (null));
 
 const mockResponses = directory => filenames => {
   const scope = nock ('https://gatherer.wizards.com');
@@ -34,29 +34,20 @@ const mockResponses = directory => filenames => {
 };
 
 const card_url = (...args) =>
-  gatherer.card.url(...args).substr(gatherer.origin.length);
+  gatherer.card.url (...args)
+  .slice (gatherer.origin.length);
 
 const capitalize = text => text.replace (/./, chr => chr.toUpperCase ());
 
 const toSlug = value =>
-  String(value).toLowerCase().replace(/[ ]/g, '-').replace(/[^\w-]/g, '');
+  String (value)
+  .toLowerCase ()
+  .replace (/[ ]/g, '-')
+  .replace (/[^\w-]/g, '');
 
 const eq = assert.strictEqual;
 
 const page_ranges = {
-  'Apocalypse': [0, 1],
-  'Eventide': [0, 1],
-  'Future Sight': [0, 1],
-  'Lorwyn': [0, 1, 2],
-  'New Phyrexia': [0, 1],
-  'Rise of the Eldrazi': [0, 1, 2],
-  'Saviors of Kamigawa': [0, 1],
-  'Shadowmoor': [0, 1, 2],
-  'Unhinged': [0, 1],
-  'Vanguard': [0, 1],
-};
-
-const page_ranges_2 = {
   'Apocalypse': [
     'apocalypse~0',
     'apocalypse~1',
@@ -185,7 +176,7 @@ describe ('tutor.types', () => {
 describe ('tutor.set', () => {
 
   const set = expansion => assertions => () => {
-    const scope = mockResponses (fixtures$sets) (page_ranges_2[expansion]);
+    const scope = mockResponses (fixtures$sets) (page_ranges[expansion]);
     return tutor.set (expansion)
            .then (assertions)
            .finally (scope.done);
@@ -848,8 +839,8 @@ describe ('tutor.card', () => {
   );
 
   const assert_languages_equal = expected => card => {
-    const codes = _.keys(expected).sort();
-    assert.deepEqual (_.keys(card.languages).sort(), codes);
+    const codes = (_.keys (expected)).sort ();
+    assert.deepEqual ((_.keys (card.languages)).sort (), codes);
     _.each (card.languages, (value, code) => {
       eq (value.name, expected[code].name);
       assert.deepEqual (value.ids, expected[code].ids);
@@ -892,7 +883,7 @@ describe ('tutor.card', () => {
 
   it ('extracts legality info',
     card ({name: 'Braids, Cabal Minion'}, card => {
-      assert.deepEqual (_.keys(card.legality).sort(), ['Commander', 'Legacy', 'Vintage']);
+      assert.deepEqual ((_.keys (card.legality)).sort (), ['Commander', 'Legacy', 'Vintage']);
       eq (card.legality['Commander'], 'Banned');
       eq (card.legality['Legacy'], 'Legal');
       eq (card.legality['Vintage'], 'Legal');
@@ -1071,14 +1062,16 @@ describe ('$ tutor formats', () => {
   it ('prints formats',
     $ ('tutor formats', (err, stdout) => {
       eq (err, null);
-      assert (stdout.split('\n').includes('Vintage'));
+      const formats = stdout.split ('\n');
+      assert (formats.includes ('Vintage'));
     })
   );
 
   it ('prints JSON representation of formats',
     $ ('tutor formats --format json', (err, stdout) => {
       eq (err, null);
-      assert ((JSON.parse (stdout)).includes ('Vintage'));
+      const formats = JSON.parse (stdout);
+      assert (formats.includes ('Vintage'));
     })
   );
 
@@ -1090,14 +1083,16 @@ describe ('$ tutor sets', () => {
   it ('prints sets',
     $ ('tutor sets', (err, stdout) => {
       eq (err, null);
-      assert (stdout.split('\n').includes('Stronghold'));
+      const sets = stdout.split ('\n');
+      assert (sets.includes ('Stronghold'));
     })
   );
 
   it ('prints JSON representation of sets',
     $ ('tutor sets --format json', (err, stdout) => {
       eq (err, null);
-      assert ((JSON.parse (stdout)).includes ('Stronghold'));
+      const sets = JSON.parse (stdout);
+      assert (sets.includes ('Stronghold'));
     })
   );
 
@@ -1109,14 +1104,16 @@ describe ('$ tutor types', () => {
   it ('prints types',
     $ ('tutor types', (err, stdout) => {
       eq (err, null);
-      assert (stdout.split('\n').includes('Enchantment'));
+      const types = stdout.split ('\n');
+      assert (types.includes ('Enchantment'));
     })
   );
 
   it ('prints JSON representation of types',
     $ ('tutor types --format json', (err, stdout) => {
       eq (err, null);
-      assert ((JSON.parse (stdout)).includes ('Enchantment'));
+      const types = JSON.parse (stdout);
+      assert (types.includes ('Enchantment'));
     })
   );
 
@@ -1128,12 +1125,12 @@ describe ('$ tutor set', () => {
   it ('prints summary of cards in set',
     $ ('tutor set Alliances | head -n 3', (err, stdout) => {
       eq (err, null);
-      eq (stdout, `
-        Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block.
-        Agent of Stromgald {R} 1/1 {R}: Add {B}.
-        Arcane Denial {1}{U} Counter target spell. Its controller may draw up to two cards at the beginning of the next turn's upkeep. You draw a card at the beginning of the next turn's upkeep.
-
-      `);
+      eq (stdout,
+          "Aesthir Glider {3} 2/1 Flying Aesthir Glider can't block.\n" +
+          'Agent of Stromgald {R} 1/1 {R}: Add {B}.\n' +
+          'Arcane Denial {1}{U} Counter target spell. Its controller may ' +
+          "draw up to two cards at the beginning of the next turn's upkeep. " +
+          "You draw a card at the beginning of the next turn's upkeep.\n");
     })
   );
 
@@ -1180,14 +1177,14 @@ describe ('$ tutor card', () => {
   it ('prints JSON representation of card specified by name',
     $ ('tutor card Fireball --format json', (err, stdout) => {
       eq (err, null);
-      eq (JSON.parse(stdout).name, 'Fireball');
+      eq ((JSON.parse (stdout)).name, 'Fireball');
     })
   );
 
   it ('prints JSON representation of card specified by id',
     $ ('tutor card 987 --format json', (err, stdout) => {
       eq (err, null);
-      eq (JSON.parse(stdout).artist, 'Brian Snoddy');
+      eq ((JSON.parse (stdout)).artist, 'Brian Snoddy');
     })
   );
 

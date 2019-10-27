@@ -1,4 +1,4 @@
-ESLINT = node_modules/.bin/eslint --config node_modules/sanctuary-style/eslint-es6.json --env node --report-unused-disable-directives
+ESLINT = node_modules/.bin/eslint --report-unused-disable-directives
 MOCHA = node_modules/.bin/mocha --reporter spec
 XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:davidchambers/tutor.git
 
@@ -25,16 +25,7 @@ clean:
 
 .PHONY: lint
 lint:
-	# $(ESLINT) \
-	#   --rule 'max-len: [error, {code: 79, ignoreStrings: true, ignoreUrls: true}]' \
-	#   --rule 'object-shorthand: [error, always]' \
-	#   -- $(LIB)
-	$(ESLINT) \
-	  --global describe \
-	  --global it \
-	  --rule 'max-len: [error, {code: 79, ignoreStrings: true, ignoreUrls: true}]' \
-	  --rule 'object-shorthand: [error, always]' \
-	  -- $(TEST)
+	$(ESLINT) -- $(LIB) $(TEST)
 
 
 .PHONY: release-major release-minor release-patch
