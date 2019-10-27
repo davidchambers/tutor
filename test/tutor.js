@@ -122,9 +122,9 @@ const card = (details, test) => () => {
     }
   });
 
-  tutor.card (details)
-  .then (test)
-  .finally (scope.done);
+  return tutor.card (details)
+         .then (test)
+         .finally (scope.done);
 };
 
 
