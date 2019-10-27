@@ -21,7 +21,7 @@
     "node": ">=6.0.0"
   },
   "dependencies": {
-    "cheerio": "0.17.x",
+    "cheerio": "0.22.x",
     "commander": "2.3.x",
     "entities": "1.1.x",
     "q": "2.0.x",
