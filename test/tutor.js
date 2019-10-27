@@ -13,7 +13,7 @@ const tutor     = require ('..');
 const fixtures$cards = path.join (__dirname, 'fixtures', 'cards');
 const fixtures$sets = path.join (__dirname, 'fixtures', 'sets');
 
-const eq = assert.strictEqual;
+const eq = assert.deepStrictEqual;
 
 
 describe ('tutor.formats', () => {
@@ -197,8 +197,7 @@ describe ('tutor.set', () => {
     return tutor.set ('Lorwyn')
     .then (cards => {
       eq (cards[246].name, 'Doran, the Siege Tower');
-      eq (cards[246].supertypes.length, 1);
-      eq (cards[246].supertypes[0], 'Legendary');
+      eq (cards[246].supertypes, ['Legendary']);
     })
     .finally (scope.done);
   });
@@ -215,8 +214,7 @@ describe ('tutor.set', () => {
     return tutor.set ('Lorwyn')
     .then (cards => {
       eq (cards[246].name, 'Doran, the Siege Tower');
-      eq (cards[246].types.length, 1);
-      eq (cards[246].types[0], 'Creature');
+      eq (cards[246].types, ['Creature']);
     })
     .finally (scope.done);
   });
@@ -233,9 +231,7 @@ describe ('tutor.set', () => {
     return tutor.set ('Lorwyn')
     .then (cards => {
       eq (cards[246].name, 'Doran, the Siege Tower');
-      eq (cards[246].subtypes.length, 2);
-      eq (cards[246].subtypes[0], 'Treefolk');
-      eq (cards[246].subtypes[1], 'Shaman');
+      eq (cards[246].subtypes, ['Treefolk', 'Shaman']);
     })
     .finally (scope.done);
   });
@@ -1271,17 +1267,14 @@ describe ('tutor.card', () => {
 
     return tutor.card ({name: 'Ajani Goldmane'})
     .then (card => {
-      eq (card.rulings[0].length, 2);
-      eq (card.rulings[0][0], '2007-10-01');
-      eq (card.rulings[0][1],
-          'The vigilance granted to a creature by the second ability ' +
-          'remains until the end of the turn even if the +1/+1 counter ' +
-          'is removed.');
-      eq (card.rulings[1].length, 2);
-      eq (card.rulings[1][0], '2007-10-01');
-      eq (card.rulings[1][1],
-          'The power and toughness of the Avatar created by the third ' +
-          'ability will change as your life total changes.');
+      eq (card.rulings,
+          [['2007-10-01',
+            'The vigilance granted to a creature by the second ability ' +
+            'remains until the end of the turn even if the +1/+1 counter ' +
+            'is removed.'],
+           ['2007-10-01',
+            'The power and toughness of the Avatar created by the third ' +
+            'ability will change as your life total changes.']]);
     })
     .finally (scope.done);
   });
