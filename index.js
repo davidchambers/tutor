@@ -1,15 +1,32 @@
 'use strict';
 
+const entities = require ('entities');
+
 const gatherer = require ('./lib/gatherer');
 const U = require ('./lib/util');
 
 
 const tutor = module.exports;
 
-tutor.formats = gatherer.formats;
 tutor.set = gatherer.set;
-tutor.sets = gatherer.sets;
-tutor.types = gatherer.types;
+
+const collect_options = label => () =>
+  gatherer.request (gatherer.origin + '/Pages/Default.aspx')
+  .then (U.T ('#ctl00_ctl00_MainContent_Content_SearchControls_' +
+              label +
+              'AddText'))
+  .then (U.children)
+  .then (U.map (U.attr ('value')))
+  .then (U.map (entities.decode));
+
+//    formats :: () -> Promise ???
+tutor.formats = collect_options ('format');
+
+//    sets :: () -> Promise ???
+tutor.sets = collect_options ('set');
+
+//    types :: () -> Promise ???
+tutor.types = collect_options ('type');
 
 tutor.card = function recur(spec) {
   const details = typeof spec === 'number' ? {id: spec} :
