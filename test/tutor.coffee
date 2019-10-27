@@ -639,10 +639,9 @@ describe 'tutor.card', ->
   it 'extracts legality info',
     card 'Braids, Cabal Minion', (err, card) ->
       eq err, null
-      assert.deepEqual _.keys(card.legality).sort(), ['Commander', 'Legacy', 'Pauper', 'Vintage']
+      assert.deepEqual _.keys(card.legality).sort(), ['Commander', 'Legacy', 'Vintage']
       eq card.legality['Commander'], 'Banned'
       eq card.legality['Legacy'], 'Legal'
-      eq card.legality['Pauper'], 'Banned'
       eq card.legality['Vintage'], 'Legal'
 
   it 'parses left side of split card specified by name',
