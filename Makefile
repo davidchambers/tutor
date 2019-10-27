@@ -25,6 +25,10 @@ clean:
 
 .PHONY: lint
 lint:
+	# $(ESLINT) \
+	#   --rule 'max-len: [error, {code: 79, ignoreStrings: true, ignoreUrls: true}]' \
+	#   --rule 'object-shorthand: [error, always]' \
+	#   -- $(LIB)
 	$(ESLINT) \
 	  --global describe \
 	  --global it \
