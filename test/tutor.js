@@ -630,18 +630,15 @@ describe ('tutor.card', () => {
 
   it ('recognizes colorless mana symbols',
     card ({name: 'Sol Ring'}, card => {
-      eq (card.text, `
-        {T}: Add {C}{C}.
-      `);
+      eq (card.text, '{T}: Add {C}{C}.');
     })
   );
 
   it ('extracts flavor text from card identified by id',
     card ({id: 2960}, card => {
-      eq (card.flavor_text, `
-        Joskun and the other Constables serve with passion, \
-        if not with grace.
-      `);
+      eq (card.flavor_text,
+          'Joskun and the other Constables serve with passion, ' +
+          'if not with grace.');
       eq (card.flavor_text_attribution, 'Devin, Faerie Noble');
     })
   );
@@ -832,17 +829,15 @@ describe ('tutor.card', () => {
     card ({name: 'Ajani Goldmane'}, card => {
       eq (card.rulings[0].length, 2);
       eq (card.rulings[0][0], '2007-10-01');
-      eq (card.rulings[0][1], `
-        The vigilance granted to a creature by the second ability \
-        remains until the end of the turn even if the +1/+1 counter \
-        is removed.
-      `);
+      eq (card.rulings[0][1],
+          'The vigilance granted to a creature by the second ability ' +
+          'remains until the end of the turn even if the +1/+1 counter ' +
+          'is removed.');
       eq (card.rulings[1].length, 2);
       eq (card.rulings[1][0], '2007-10-01');
-      eq (card.rulings[1][1], `
-        The power and toughness of the Avatar created by the third \
-        ability will change as your life total changes.
-      `);
+      eq (card.rulings[1][1],
+          'The power and toughness of the Avatar created by the third ' +
+          'ability will change as your life total changes.');
     })
   );
 
