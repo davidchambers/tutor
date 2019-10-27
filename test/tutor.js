@@ -33,10 +33,6 @@ const mockResponses = directory => filenames => {
   return scope;
 };
 
-const card_url = (...args) =>
-  gatherer.card.url (...args)
-  .slice (gatherer.origin.length);
-
 const capitalize = text => text.replace (/./, chr => chr.toUpperCase ());
 
 const toSlug = value =>
@@ -101,13 +97,17 @@ const card = (details, test) => () => {
       parts.push (toSlug (details.name));
     }
     parts.push (resource);
+    const url = '/Pages/Card/' + capitalize (resource) + '.aspx?' +
+                ('id' in details ?
+                 'multiverseid=' + encodeURIComponent (details.id) :
+                 'name=' + encodeURIComponent (details.name));
     scope
-      .get (card_url (`${capitalize (resource)}.aspx`, details))
+      .get (url)
       .replyWithFile (200, `${__dirname}/fixtures/cards/${parts.join ('~')}.html`);
     if ('_pages' in details && details._pages > 1) {
       for (let page = 2; page <= details._pages; page += 1) {
         scope
-          .get (card_url (`${capitalize (resource)}.aspx`, details, {page}))
+          .get (url + '&page=' + String (page))
           .replyWithFile (200, `${__dirname}/fixtures/cards/${parts.join ('~')}~${page}.html`);
       }
     }
