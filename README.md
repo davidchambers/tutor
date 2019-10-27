@@ -244,7 +244,7 @@ tutor.types (err, types) ->
 
 ### Running the tests
 
-    $ make fixtures
+    $ make --jobs="$(nproc)" fixtures
     $ make test
     $ make testcli
 
