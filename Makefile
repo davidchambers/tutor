@@ -1,8 +1,9 @@
 ESLINT = node_modules/.bin/eslint --config node_modules/sanctuary-style/eslint-es6.json --env node --report-unused-disable-directives
-MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script/register --reporter spec
+MOCHA = node_modules/.bin/mocha --reporter spec
 XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:davidchambers/tutor.git
 
 LIB = $(shell find lib -name '*.js')
+TEST = $(shell find test -name '*.js')
 FIXTURES = $(patsubst %,%.html,$(shell find test/fixtures -type f -not -name '*.html'))
 
 
@@ -25,9 +26,11 @@ clean:
 .PHONY: lint
 lint:
 	$(ESLINT) \
+	  --global describe \
+	  --global it \
 	  --rule 'max-len: [error, {code: 79, ignoreStrings: true, ignoreUrls: true}]' \
 	  --rule 'object-shorthand: [error, always]' \
-	  -- $(LIB)
+	  -- $(TEST)
 
 
 .PHONY: release-major release-minor release-patch
