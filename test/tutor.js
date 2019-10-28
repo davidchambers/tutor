@@ -807,8 +807,8 @@ describe ('tutor.card', () => {
     return tutor.card ({id: 2960})
     .then (card => {
       eq (card.flavor_text,
-          'Joskun and the other Constables serve with passion, ' +
-          'if not with grace.');
+          '"Joskun and the other Constables serve with passion, ' +
+          'if not with grace."');
       eq (card.flavor_text_attribution, 'Devin, Faerie Noble');
     })
     .finally (scope.done);

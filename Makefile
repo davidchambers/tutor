@@ -2,7 +2,7 @@ ESLINT = node_modules/.bin/eslint --report-unused-disable-directives
 MOCHA = node_modules/.bin/mocha --reporter spec
 XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:davidchambers/tutor.git
 
-LIB = $(shell find lib -name '*.js')
+LIB = index.js $(shell find lib -name '*.js')
 TEST = $(shell find test -name '*.js')
 FIXTURES = $(patsubst %,%.html,$(shell find test/fixtures -type f -not -name '*.html'))
 
